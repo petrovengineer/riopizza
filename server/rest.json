@@ -1,0 +1,60 @@
+###env
+base_url = 'http://localhost:3100'
+access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6Iis3OTUwMDQyNDM0MiIsImFkbWluIjp0cnVlLCJpYXQiOjE2MTQyODA2OTEsImV4cCI6MTY0NTgxNjY5MX0.NNcuOOIsx8eM5GM1EfKTrsfWk3KoVkr6dn1J9alerT4'
+headers = {"authorization": "Bearer " + access_token}
+###env
+
+//=============AUTH=============================	
+post(base_url + '/auth/reg', json= {
+    "password":"1212",
+    "phone":"+79500424342",
+    "name":"Pavel"
+})
+
+post(base_url + '/auth/login', json= {
+    "password":"1212",
+    "phone":"+79500424342"
+})
+
+get(base_url + '/auth/makeadmin', headers=headers, params= {
+    "_id":"6037a671b3ca0858a4e2329e",
+})
+//==============USER==============================
+get(base_url + '/user', headers=headers, params= {
+    "_id":"6037a671b3ca0858a4e2329e",
+})
+
+//===============ITEM===============================
+post(base_url + '/item', headers=headers, json= {
+    "value":"Тонкое"
+})
+
+get(base_url + '/item', headers=headers)
+
+//===============PARAMETER===========================
+post(base_url + '/parameter', headers=headers, json= {
+    "name":"Тесто",
+    "type":2,
+    "available_items": [{"value":"Тонкое","item_id":"603805d1ebe26a59c4c0698c"}]
+})
+
+put(base_url + '/parameter', headers=headers, json= {
+    "_id":"6038087beb12fd59d27c9582",
+    "available_items": [{"value":"Тонкое","item_id":"603805d1ebe26a59c4c0698c"}]
+})
+
+get(base_url + '/parameter', headers=headers)
+
+//===============PRODUCT============================
+post(base_url + '/product', headers=headers, json= {
+    "name":"Пицца Токио",
+    "parameters": [{"name":"Тесто","parameter_id":"6038087beb12fd59d27c9582"}]
+})
+
+put(base_url + '/product', headers=headers, json= {
+    "_id":"60380e3b3216e059f9cea665",
+    "name": "Пицца Санкт-Петербург"
+})
+
+get(base_url + '/product', headers=headers)
+
