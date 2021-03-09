@@ -1,10 +1,11 @@
 import Layout from '../components/layout.js'
+import Product from '../components/product.js'
 import axios from 'axios';
 
 export default function Home({products}) {
   return (
     <Layout>
-      {products.map(p=>p.name)}
+      {products.map((product, i)=><Product key={i+'pr'} product = {product}/>)}
     </Layout>
   )
 }
