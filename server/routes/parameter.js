@@ -9,7 +9,7 @@ router.get('/', authenticateToken, async (req, res)=>{
         filter = JSON.parse(req.query.filter)
     }
     try{
-        const parameters = await Parameter.find(filter);
+        const parameters = await Parameter.find(filter, {}, { sort: { 'created' : -1 }});
         res.send(parameters);
     }
     catch(err){
@@ -23,8 +23,8 @@ router.put('/', authenticateToken, isAdmin, async (req, res)=>{
     const update = Object.assign({}, req.body);
     delete update._id;
     try{
-        await Parameter.findByIdAndUpdate(_id, update);
-        res.sendStatus(200);
+        const parameter = await Parameter.findByIdAndUpdate(_id, update);
+        res.send(parameter);
     }
     catch(err){
         console.log(err);
@@ -42,8 +42,8 @@ router.post('/', authenticateToken, isAdmin, async (req, res)=>{
             unit = null,
             type = 0 
         } = req.body;
-        await Parameter.create({name, value, items, available_items, unit, type});
-        res.sendStatus(200);
+        const parameter = await Parameter.create({name, value, items, available_items, unit, type});
+        res.send(parameter);
     }
     catch(err){
         res.sendStatus(500);
@@ -51,10 +51,10 @@ router.post('/', authenticateToken, isAdmin, async (req, res)=>{
 })
 
 router.delete('/', authenticateToken, isAdmin, async (req, res)=>{
-    const {id} = req.query;
+    const {_id} = req.query;
     try{
-        if(id!=null){
-            await Parameter.findByIdAndDelete(id);
+        if(_id){
+            await Parameter.findByIdAndDelete(_id);
             res.sendStatus(200);
         }
         else{res.sendStatus(500)}

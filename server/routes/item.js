@@ -5,11 +5,12 @@ const {authenticateToken, isAdmin} = require('./auth');
 
 router.get('/', authenticateToken, async (req, res)=>{
     let filter = {};
-    if(req.query.filter!=null){
-        filter = JSON.parse(req.query.filter)
+    console.log(req.query);
+    if(req.query){
+        filter = req.query;
     }
     try{
-        const items = await Item.find(filter);
+        const items = await Item.find(filter,{}, { sort: { 'created' : -1 }});
         res.send(items);
     }
     catch(err){
@@ -36,10 +37,11 @@ router.post('/', authenticateToken, isAdmin, async (req, res)=>{
     try{
         const {
             value = "New value",
-            affect = []
+            affect = [],
+            group
         } = req.body;
-        await Item.create({value, affect});
-        res.sendStatus(200);
+        let newItem = await Item.create({value, affect, group});
+        res.send(newItem);
     }
     catch(err){
         res.sendStatus(500);
@@ -47,10 +49,10 @@ router.post('/', authenticateToken, isAdmin, async (req, res)=>{
 })
 
 router.delete('/', authenticateToken, isAdmin, async (req, res)=>{
-    const {id} = req.query;
+    const {_id} = req.query;
     try{
-        if(id!=null){
-            await Item.findByIdAndDelete(id);
+        if(_id){
+            await Item.findByIdAndDelete(_id);
             res.sendStatus(200);
         }
         else{res.sendStatus(500)}

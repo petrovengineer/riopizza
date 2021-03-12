@@ -12,9 +12,10 @@ const path = require('path');
 
 router.get('/', authenticateToken, async (req, res)=>{
     let filter = {};
-    if(req.query.filter!=null){
-        filter = JSON.parse(req.query.filter)
+    if(req.query){
+        filter = req.query
     }
+    console.log("QQUERY", filter)
     try{
         let products = await Product.find(filter, {},  { sort: { 'created' : -1 }});
         let extProducts = [];

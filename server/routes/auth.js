@@ -18,12 +18,13 @@ router.post('/login', async (req, res)=>{
             const refreshToken = jwt.sign(phone, process.env.REFRESH_TOKEN_SECRET);
             user.refreshToken = refreshToken;
             await user.save();
-            res.send({accessToken, refreshToken, user});
+            res.send({accessToken, refreshToken, user:{name:user.name, phone:user.phone, admin: user.admin}});
         }else{
             res.sendStatus(401);
         }
     }
-    catch{
+    catch(e){
+        console.log(e)
         res.sendStatus(500);
     } 
 })

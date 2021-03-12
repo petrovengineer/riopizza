@@ -3,7 +3,7 @@ const router = express.Router();
 const {User} = require('../models');
 const {authenticateToken, isAdmin, isSuper} = require('./auth');
 
-router.get('/', authenticateToken, isAdmin, async (req, res)=>{
+router.get('/', authenticateToken, async (req, res)=>{
     User.find(req.query, {password:0}).
     exec((err, users)=>{
         res.send(users);

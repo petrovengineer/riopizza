@@ -19,7 +19,8 @@ module.exports.Product = model('Product',{
 	name: String,
 	description: String,
 	img: {data: Buffer, contentType: String},
-	parameters: [{name: String, parameter_id: String}]
+    parameters: [{name: String, parameter_id: String}],
+    created: {type: Date, default: Date.now},
 })
 
 module.exports.Parameter = model('Parameter',{
@@ -28,11 +29,13 @@ module.exports.Parameter = model('Parameter',{
 	items: [{value: String, parameter_item_id: String}],
 	available_items: [{value: String, item_id: String}],
 	unit: String,
-	type: Number //0-single, 1-checkable, 2-select
+    type: {type: Number, default: 0}, //0-single, 1-checkable, 2-select
+    created: {type: Date, default: Date.now},
 })
 
 module.exports.Item = model('Item',{
-	value: String,
+    value: String,
+    group: String,
 	affect: [
 		{
 			value: String, 
@@ -40,7 +43,13 @@ module.exports.Item = model('Item',{
 				parameter_name: String, 
 				parameter_id: String
 			}
-		}]
+        }],
+    created: {type: Date, default: Date.now},
+})
+
+module.exports.ItemGroup = model('ItemGroup',{
+	name: String,
+    created: {type: Date, default: Date.now},
 })
 
 module.exports.Order = model('Order',

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Image from 'next/image'
-import styles from '../styles/layout.module.scss'
+import User from './user'
+// import Image from 'next/image'
 export default function Layout({children}){
 	return (
 		<div>
@@ -10,15 +10,16 @@ export default function Layout({children}){
 				<link rel="icon" href="/favicon.ico"/>
 			</Head>
       		<header>
-		        <Image
+		        <img
 		          src="/images/logo.png"
 		          width={130}
 		          height={60}
 		        />
-		        <Link href="/basket">Корзина</Link>
+		        <Link href="/cart">Корзина</Link>
+				<User/>
 		    </header>
-		    <main className={styles.main}>
-				{children}
+		    <main className={'container'}>
+					{children}
 		    </main>
 			<footer>
 

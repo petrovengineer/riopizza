@@ -5,14 +5,15 @@ import axios from 'axios';
 export default function Home({products}) {
   return (
     <Layout>
-      {products.map((product, i)=><Product key={i+'pr'} product = {product}/>)}
+      <div className='row'>
+        {products.map((product, i)=><Product key={i+'pr'} product = {product}/>)}
+      </div>
     </Layout>
   )
 }
 
 export async function getStaticProps() {
   const products = await axios.get('/product');
-  console.log("PRODUCTS", products.data)
   return {
     props: {
       products: products.data
