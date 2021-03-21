@@ -19,15 +19,22 @@ module.exports.Product = model('Product',{
 	name: String,
 	description: String,
 	img: {data: Buffer, contentType: String},
-    parameters: [{name: String, parameter_id: String}],
+    parameters: [{
+        name: String, 
+        _id: String, 
+        value: String, 
+        items: [{value: String, _id: String}],
+        selected: {type: Boolean, default: false}
+    }],
+    show: {type: Boolean, default: true},
+    place: {type: Number, default: 0},
     created: {type: Date, default: Date.now},
 })
 
 module.exports.Parameter = model('Parameter',{
 	name: String,
 	value: String,
-	items: [{value: String, parameter_item_id: String}],
-	available_items: [{value: String, item_id: String}],
+	available_items: [{value: String, _id: String}],
 	unit: String,
     type: {type: Number, default: 0}, //0-single, 1-checkable, 2-select
     created: {type: Date, default: Date.now},
@@ -35,13 +42,13 @@ module.exports.Parameter = model('Parameter',{
 
 module.exports.Item = model('Item',{
     value: String,
-    group: String,
+    group: {_id: String, name: String},
 	affect: [
 		{
 			value: String, 
 			parameter:{
-				parameter_name: String, 
-				parameter_id: String
+				name: String, 
+				_id: String
 			}
         }],
     created: {type: Date, default: Date.now},

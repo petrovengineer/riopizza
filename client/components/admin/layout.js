@@ -4,7 +4,7 @@ import User from '../user'
 // import Image from 'next/image'
 export default function Layout({children}){
 	return (
-		<div>
+		<>
 			<Head>
 				<title>Панель администратора</title>
 				<link rel="icon" href="/favicon.ico"/>
@@ -29,6 +29,6 @@ export default function Layout({children}){
 			<footer>
 
       		</footer>
-		</div>
+		</>
 	)
 }

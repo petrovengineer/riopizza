@@ -49,7 +49,6 @@ function MyApp({ Component, pageProps }) {
       // axios.defaults.baseURL = process.env.API;
       axios.interceptors.request.use(
         config => {
-          console.log("INTERCEPTOR")
           if (!config.headers.Authorization) {
             const token = JSON.parse(localStorage.getItem("accessToken"));
             if (token) {

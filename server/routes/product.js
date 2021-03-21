@@ -15,7 +15,6 @@ router.get('/', authenticateToken, async (req, res)=>{
     if(req.query){
         filter = req.query
     }
-    console.log("QQUERY", filter)
     try{
         let products = await Product.find(filter, {},  { sort: { 'created' : -1 }});
         let extProducts = [];
@@ -23,26 +22,35 @@ router.get('/', authenticateToken, async (req, res)=>{
             let {_id, name, description, img, parameters=[]} = products[p];
             const extParameters = [];
             for (let i=0; i<parameters.length; i++){
-                let parameter = await Parameter.findById(parameters[i].parameter_id);
-                let {name, value, available_items, unit, type} = parameter;
-                const extAvailableItems = [];
-                if (parameter.type !== 0) {
-                    for (let k = 0; k < parameter.available_items.length; k++){
-                        let availableItem = await Item.findById(parameter.available_items[k].item_id);
-                        extAvailableItems.push(availableItem);
+                let parameter = await Parameter.findById(parameters[i]._id);
+                if(parameter){
+                    let {_id, name, unit, type} = parameter;
+                    let {items = []} = parameters[i];
+                    const extItems = [];
+                    if (type !== 0 && items && items.length!==0) {
+                        for (let k = 0; k < items.length; k++){
+                            let item = await Item.findById(items[k]._id);
+                            extItems.push(item);
+                        }
                     }
+                    extParameters.push({_id, name, value: parameters[i].value, selected: parameters[i].selected, items: extItems, unit, type});
+                }else{
+                    extParameters.push({name: parameters[i].name, 
+                        // parameter_id: parameters[i].parameter_id, 
+                        deleted: true});
                 }
-                extParameters.push({name, value, extAvailableItems, unit, type});
             }
             extProducts.push({
                 _id,
                 name,
                 description,
                 img: img.data!=null?{data: Buffer(img.data, 'binary').toString('base64'), contentType: String}:null,
-                extParameters
+                parameters: extParameters
             })
         }
-        res.send(extProducts);
+        if(extProducts.length===1){
+            res.send(extProducts[0]);
+        }else{res.send(extProducts);}
     }
     catch(err){
         console.log(err);
@@ -52,12 +60,34 @@ router.get('/', authenticateToken, async (req, res)=>{
 
 router.post('/', authenticateToken, isAdmin, async (req, res)=>{
     try{
-        const {name='New product', parameters=[], description=""} = req.body;
-        const product = new Product({name, description, parameters});
+        const {name='New product', description=""} = req.body;
+        const count = await Product.countDocuments({});
+        const product = new Product({name, description, place:count});
         await product.save();
-        res.sendStatus(200);
+        let {parameters=[]} = product;
+        const extParameters = [];
+        for (let i=0; i<parameters.length; i++){
+            let parameter = await Parameter.findById(parameters[i].parameter_id);
+            if(parameter){
+                let {name, available_items, unit, type} = parameter;
+                const extAvailableItems = [];
+                if (parameter.type !== 0) {
+                    for (let k = 0; k < available_items.length; k++){
+                        let availableItem = await Item.findById(available_items[k].item_id);
+                        extAvailableItems.push(availableItem);
+                    }
+                }
+                extParameters.push({name, value: parameters[i].value, extAvailableItems, unit, type, selected: parameters[i].selected});
+            }else{
+                extParameters.push({name: parameters[i].name, parameter_id: parameters[i].parameter_id, deleted: true});
+            }
+        }
+        const {_doc: newExtProduct} = Object.assign({}, product)
+        newExtProduct.extParameters = extParameters;
+        res.send(newExtProduct);
     }
     catch(err){
+        console.log(err);
         res.sendStatus(500);
     }
 })
@@ -84,21 +114,34 @@ router.post('/upload', upload.single('file'), async (req, res)=>{
 router.put('/', authenticateToken, isAdmin, async (req, res)=>{
     const {_id} = req.body;
     const update = Object.assign({}, req.body);
-    delete update._id;
+    delete update._id;    
     try{
-        const food = await Product.findByIdAndUpdate(_id, update);
-        res.sendStatus(200);
+        const product = await Product.findOne({_id});
+        Object.keys(update).map(key=>{
+            product[key] = update[key];
+        })
+        await product.save();
+        const img = product.img.data!=null?{data: Buffer(product.img.data, 'binary').toString('base64'), contentType: String}:null;
+        let {name, description, parameters} = product;
+        res.send({
+            _id: product._id,
+            name,
+            description,
+            img,
+            parameters
+        });
     }
     catch(err){
+        console.log(err);
         res.sendStatus(500);
     }
 })
 
 router.delete('/', authenticateToken, isAdmin, async (req, res)=>{
-    const {id} = req.query;
+    const {_id} = req.query;
     try{
-        if(id!=null){
-            await Product.findByIdAndDelete(id);
+        if(_id!=null){
+            await Product.findByIdAndDelete(_id);
             res.sendStatus(200);
         }
         else{res.sendStatus(500)}

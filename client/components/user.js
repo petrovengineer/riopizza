@@ -12,13 +12,13 @@ export default function User(){
         refreshToken.set(context, null);
     }
     return(
-        (user && user.value && 
-            <div>
-                {user.value.name} {user.value.phone}
-                {user.value.admin && <Link href="/admin">Панель администратора</Link>}
-                <button onClick={exit}>Exit</button>
-            </div>
-        ) || <Link href='/login'>Login</Link>
-        
+        <div className='user'>
+
+        {(user && user.value && 
+                <>{user.value.name}
+                {user.value.admin && <Link href="/admin"><a><i class="fas fa-cog ml-2"></i></a></Link>}
+                <a href="#" onClick={exit}><i class="fas fa-sign-out-alt"></i></a></>
+        ) || <Link href='/login'>Login</Link>}
+</div>        
     )
 }

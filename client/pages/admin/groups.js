@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../../components/admin/layout";
 import {Element} from "../../mylib"
 
-export default function Admin(){
+export default function Groups(){
     const [groups, setGroups] = useState([])
     const Group = new Element('/group', groups, setGroups);
     useEffect(async ()=>{

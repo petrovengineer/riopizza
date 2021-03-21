@@ -5,12 +5,14 @@ const {authenticateToken, isAdmin} = require('./auth');
 
 router.get('/', authenticateToken, async (req, res)=>{
     let filter = {};
-    if(req.query.filter!=null){
-        filter = JSON.parse(req.query.filter)
+    console.log(req.query);
+    if(req.query){
+        filter = req.query;
     }
     try{
         const parameters = await Parameter.find(filter, {}, { sort: { 'created' : -1 }});
-        res.send(parameters);
+        if(parameters.length===1){res.send(parameters[0])}
+        else {res.send(parameters)}
     }
     catch(err){
         console.log(err);
