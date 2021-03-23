@@ -3,6 +3,7 @@ import AppContext from '../context'
 import {useState, useContext} from 'react'
 import Layout from '../components/layout'
 import {useRouter} from 'next/router'
+import Link from 'next/link'
 
 export default function Login(){
     const router = useRouter();
@@ -36,10 +37,26 @@ export default function Login(){
         }
     }
     return (
-        <Layout>
-            <input type="text" id="phone" onChange={handlePhone} value={phone}></input>
-            <input type="text" id="password" onChange={handlePassword} value={password}></input>
-            <button onClick={login}>Login</button>
-        </Layout>
+        // <Layout>
+            <div class="form-signin mt-4">
+                <Link href="/">
+                    <a href="#">
+                        <img class="mb-4" src="/images/logo.png" alt="" height="72"/>
+                    </a>
+                </Link>
+                <h1 class="h3 mb-3 font-weight-normal">Авторизация</h1>
+                <label for="inputEmail" class="sr-only">Номер телефона</label>
+                <input type="text" id="phone" onChange={handlePhone} value={phone} class="form-control mb-2" placeholder="Номер телефона" required="" autofocus=""/>
+                <label for="inputPassword" class="sr-only">Пароль</label>
+                <input type="password" id="password" onChange={handlePassword} value={password} class="form-control" placeholder="Пароль" required=""/>
+                <div class="checkbox mb-3">
+                    <label>
+                    <input type="checkbox" value="remember-me"/> Запомнить меня
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" onClick={login}>Войти</button>
+                <p class="mt-5 mb-3 text-muted">© 2021</p>
+            </div>
+        // </Layout>
     )
 }

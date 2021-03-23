@@ -38,13 +38,13 @@ export default function Product({product}){
               <h2>{name}</h2>
               <p>{description}</p>
               {parameters.map((parameter,i) =>
-                <Parameter 
+                (parameter.show && <Parameter 
                   key={i+'pa'} 
                   parameter = {parameter} 
                   setGlobalSelected = {setGlobalSelected} 
                   globalSelected = {globalSelected}
                   computed = {parameter.type===0?affects.filter(a=>a.parameter._id===parameter._id).map(a=>(a.value)):0}
-                />
+                />)
               )}
               <button onClick={addToCart}>В корзину</button>
             </div>

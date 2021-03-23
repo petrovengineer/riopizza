@@ -18,6 +18,7 @@ module.exports.User = model('User', {
 module.exports.Product = model('Product',{
 	name: String,
 	description: String,
+	group: {_id: String, name: String},
 	img: {data: Buffer, contentType: String},
     parameters: [{
         name: String, 
@@ -33,7 +34,8 @@ module.exports.Product = model('Product',{
 
 module.exports.Parameter = model('Parameter',{
 	name: String,
-	value: String,
+    value: String,
+    show: {type: Boolean, default: true},
 	available_items: [{value: String, _id: String}],
 	unit: String,
     type: {type: Number, default: 0}, //0-single, 1-checkable, 2-select
@@ -43,6 +45,7 @@ module.exports.Parameter = model('Parameter',{
 module.exports.Item = model('Item',{
     value: String,
     group: {_id: String, name: String},
+    sort: {type: Number, default: 999},
 	affect: [
 		{
 			value: String, 
@@ -55,6 +58,11 @@ module.exports.Item = model('Item',{
 })
 
 module.exports.ItemGroup = model('ItemGroup',{
+	name: String,
+    created: {type: Date, default: Date.now},
+})
+
+module.exports.ProductGroup = model('ProductGroup',{
 	name: String,
     created: {type: Date, default: Date.now},
 })

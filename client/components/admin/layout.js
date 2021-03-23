@@ -21,6 +21,7 @@ export default function Layout({children}){
 		        <Link href="/admin/parameters">Параметры</Link>
 		        <Link href="/admin/items">Элементы</Link>
 		        <Link href="/admin/groups">Группы элементов</Link>
+		        <Link href="/admin/productgroups">Группы продуктов</Link>
 		        <Link href="/admin/users">Пользователи</Link>
 		    </header>
 		    <main className={'container'}>

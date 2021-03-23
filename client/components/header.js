@@ -1,7 +1,7 @@
 import { useState } from "react"
 import User from './user'
 
-export default function Header(){
+export default function Header({sorted={}}){
     const [show, setShow] = useState(true)
     return (
                 <nav className="navbar navbar-expand-md navbar-dark " style={{position:'sticky', top:'0'}}>
@@ -14,15 +14,11 @@ export default function Header(){
                         </button>
                         <div className={"navbar-collapse collapse d-flex justify-content-between flex-column flex-md-row align-items-start "+ (show?'show':'')} id="navbarCollapse">
                             <ul className="navbar-nav me-auto mb-2 mb-md-0">
-                            <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="#">Пицца</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Соусы</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Напитки</a>
-                            </li>
+                                {Object.keys(sorted).sort(function(a,b){return sorted[a].sort-sorted[b].sort}).map(_id=>(
+                                    <li className="nav-item" key={_id}>
+                                        <a className="nav-link active" aria-current="page" href={`#${_id}`}>{sorted[_id].name}</a>
+                                    </li>
+                                ))}
                             </ul>
                             {/* <div class="col-lg-4 col-md-9 col-8"> */}
                                 <div class="customer-area">

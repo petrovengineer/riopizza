@@ -7,6 +7,7 @@ router.use('/product', require('./product'));
 router.use('/parameter', require('./parameter'));
 router.use('/item', require('./item'));
 router.use('/group', require('./group'));
+router.use('/productgroup', require('./productgroup'));
 
 // router.use('/foodtype', require('./foodtype'));
 // router.use('/order', require('./order'));

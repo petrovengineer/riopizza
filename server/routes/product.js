@@ -24,7 +24,7 @@ router.get('/', authenticateToken, async (req, res)=>{
             for (let i=0; i<parameters.length; i++){
                 let parameter = await Parameter.findById(parameters[i]._id);
                 if(parameter){
-                    let {_id, name, unit, type} = parameter;
+                    let {_id, name, unit, type, show} = parameter;
                     let {items = []} = parameters[i];
                     const extItems = [];
                     if (type !== 0 && items && items.length!==0) {
@@ -33,7 +33,7 @@ router.get('/', authenticateToken, async (req, res)=>{
                             extItems.push(item);
                         }
                     }
-                    extParameters.push({_id, name, value: parameters[i].value, selected: parameters[i].selected, items: extItems, unit, type});
+                    extParameters.push({_id, name, value: parameters[i].value, selected: parameters[i].selected, items: extItems, unit, type, show});
                 }else{
                     extParameters.push({name: parameters[i].name, 
                         // parameter_id: parameters[i].parameter_id, 

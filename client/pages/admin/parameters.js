@@ -65,9 +65,11 @@ export default function Parameters(){
     async function change(parameter){
         const nameInput = document.getElementById("name");
         const unitInput = document.getElementById("unit");
+        const showInput = document.getElementById("show");
         // const valueInput = document.getElementById("value");
         nameInput && (nameInput.value = parameter.name);
         unitInput && (unitInput.value = parameter.unit);
+        showInput && (showInput.checked = parameter.show);
         // valueInput && (valueInput.value = parameter.value);
         setSelectedType({value: parameter.type, label: types.find(t=>t.value===parameter.type).label});
         setSelectedGroup(null);
@@ -79,12 +81,14 @@ export default function Parameters(){
     function save(){
         const nameInput = document.getElementById("name");
         const unitInput = document.getElementById("unit");
+        const showInput = document.getElementById("show");
         // const valueInput = document.getElementById("value");
         Parameter.update({
             _id: updateId,
             name: nameInput.value,
             type: selectedType.value,
             unit: unitInput?unitInput.value:null,
+            show: showInput.checked,
             // value: valueInput?valueInput.value:null,
             available_items: selectedItem?selectedItem.map(s=>({value:s.label, _id:s.value})):null
         })
@@ -100,6 +104,7 @@ export default function Parameters(){
             <div className='mb-3 col' style={{border: '2px solid ' + (updateId?'#0bc3e0':'#28a745')}}>
                 <div className='col mb-2 mt-2'><input type="text" id="name" placeholder='Наименование'/></div>
                 <div className='col mb-2'><input type="text" id="unit" placeholder='Единица измерения'/></div>
+                <div>Показывать <input type="checkbox" id='show'/></div>
                 <div className='mb-2 col-md-6'><Select
                     value={selectedType}
                     onChange={handleChangeType}

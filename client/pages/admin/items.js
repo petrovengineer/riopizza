@@ -23,8 +23,10 @@ export default function Items(){
     },[])
     function create(){
         const input = document.getElementById("value");
+        const inputSort = document.getElementById("sort");
         Item.create({
             value:input.value, 
+            sort:inputSort.value, 
             group: selectedGroup? {name: selectedGroup.label, _id:selectedGroup.value}: null});
         input.value = '';
         setSelectedGroup(null);
@@ -37,7 +39,9 @@ export default function Items(){
     }
     function change(item){
         const itemInput = document.getElementById('value');
+        const itemInputSort = document.getElementById('sort');
         itemInput.value = item.value;
+        itemInputSort.value = item.sort?item.sort:0;
         item.group && setSelectedGroup({value: item.group._id, label: item.group.name});
         setUpdateId(item._id);
     }
@@ -50,9 +54,11 @@ export default function Items(){
     }
     function save(){
         const itemInput = document.getElementById('value');
+        const itemInputSort = document.getElementById('sort');
         Item.update({
             _id: updateId,
             value: itemInput.value,
+            sort: itemInputSort.value,
             group: {name: selectedGroup.label, _id: selectedGroup.value}
         })
         reset();
@@ -84,6 +90,7 @@ export default function Items(){
                 Элементы
             </h2>
             <p><input type="text" id="value" placeholder='Новый элемент'/></p>
+            <p><input type="text" id="sort" placeholder='Место в списке'/></p>
             <div style={{maxWidth:'300px'}}><Select
                 value={selectedGroup}
                 onChange={handleChangeGroup}

@@ -26,12 +26,15 @@
  }
 html,
 body {
+  height: 100%;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-family: 'Lato';
   color: #2a435d;
+}
+body{
   background: url(/images/fon.png);
 }
 .navbar{
@@ -95,6 +98,9 @@ a:hover{
     // font-weight: 900;
     font-family: 'Rubic';
   }
+  a{
+    padding: 0;
+  }
 }
 .price{
   font-weight: 700;
@@ -151,4 +157,34 @@ a:hover{
   a:hover{
     color: $yellow;
   }
+}
+$fh: 100px;
+.footer{
+  color: white;
+  // height: $fh;
+  // margin-top: -$fh;
+}
+
+#__next{
+  height: 100%;
+  position: relative;
+}
+.wrap{
+  min-height: 100%;min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  // padding-bottom: $fh;
+}
+.form-signin{
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+  background-color: white;
+  border: 1px solid $blue;
+  border-radius: 5px;;
+}
+.group{
+  font-family: 'Rubic';
+  color: $red;
 }
