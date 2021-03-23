@@ -7,13 +7,26 @@ import Select from 'react-select'
 export default function Product({product}){
     const context = useContext(AppContext);
     let {_id, name = 'No name', description = '', parameters = [], img} = product;
-    const [globalSelected, setGlobalSelected] = useState({});
+
+    const typeZeroGlobal = {}
+    const typeZeroParams = parameters.filter(p=>(p.type===0));
+    typeZeroParams.map(tz=>{
+      typeZeroGlobal[tz.name] = {value: tz._id, label: tz.value, affect:[], type: tz.type}
+    })
+
+    console.log("typeZeroParams ", typeZeroGlobal)
+    const [globalSelected, setGlobalSelected] = useState(typeZeroGlobal);
     const [affects, setAffects] = useState([]);
     function addToCart(){
       let newCart = [];
       if(context.cart.value){newCart.push(...context.cart.value)}
-      newCart.push(product);
-      console.log(newCart)
+      newCart.push({
+        img: product.img,
+        name: product.name,
+        parameters: globalSelected,
+        affects: affects
+      });
+      console.log("NEW CART", newCart)
       context.cart.set(context, newCart)
     }
     useEffect(()=>{
@@ -21,34 +34,39 @@ export default function Product({product}){
           Array.isArray(globalSelected[index])?globalSelected[index].filter(f=>!f.selected).map(a=>(a.affect)):
           globalSelected[index].affect
         )).flat(2);
-      console.log("GS", affectArray);
       setAffects(affectArray);
+      console.log("PRODUCT ", product)
+      console.log("GLOBAL ", globalSelected)
+      console.log("AFFECT ", affects)
     },[globalSelected])
     return(
       <Layout>
+        <div className='container mt-4 product-page p-4'>
           <div className='row'>
-            <div className='col-md-6'>
+            <div className='col-12 col-md-6 d-flex justify-content-center d-md-block'>
               <img 
-                className='float-md-right'
+                className=' float-md-right rounded mb-4'
                 width="300"
                 src={img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'}
               />
             </div>
             <div className='col-md-6'>
-              <h2>{name}</h2>
-              <p>{description}</p>
+              <h2 className='mb-4'>{name}</h2>
+              <p className='mb-4'>{description}</p>
               {parameters.map((parameter,i) =>
                 (parameter.show && <Parameter 
                   key={i+'pa'} 
                   parameter = {parameter} 
                   setGlobalSelected = {setGlobalSelected} 
                   globalSelected = {globalSelected}
-                  computed = {parameter.type===0?affects.filter(a=>a.parameter._id===parameter._id).map(a=>(a.value)):0}
+                  computed = {parameter.type===0?affects.filter(a=>{console.log("AFFECT",affects); return(a.parameter._id===parameter._id)}).map(a=>(a.value)):0}
                 />)
               )}
-              <button onClick={addToCart}>В корзину</button>
+              <button onClick={addToCart} className='btn btn-danger'>В корзину</button>
             </div>
           </div>
+        </div>
+
       </Layout>
   )
 }
@@ -76,31 +94,33 @@ function Parameter({parameter, setGlobalSelected, globalSelected, computed}){
         return s;
       })]
     }else{
-      newSelected = Object.assign({}, selected)
+      newSelected = Object.assign({parameterName:name}, selected)
       newSelected.selected = selectedItems;
     }
-    newGlobalSelected[_id] = newSelected;
+    newGlobalSelected[name] = newSelected;
     setGlobalSelected(newGlobalSelected);
   }
   return(
-      <div>
-          <h5>{name}</h5>
+      <div className='d-flex flex-wrap align-items-center mb-4'>
+          <span className='mr-2'>{name}</span>
           {
               type===0?
                 <>
-                  <span>{+value + computed.reduce((acc, cur)=>(+acc + +cur),0)} {unit}</span>
+                  <span className='ml-2'>{+value + computed.reduce((acc, cur)=>(+acc + +cur),0)} {unit}</span>
                 </>
               :type===1 || type===2?
-                <Select
-                  value={selected}
-                  onChange={onChangeItem}
-                  options={items.map(i=>({
-                    value: i._id, label: i.value, affect: i.affect
-                  }))}
-                  instanceId={_id}
-                  placeholder={'Выбрать ' + name}
-                  isMulti={type===1}
-                />
+                <div style={{minWidth:'300px'}} className=''>
+                  <Select
+                    value={selected}
+                    onChange={onChangeItem}
+                    options={items.map(i=>({
+                      value: i._id, label: i.value, affect: i.affect
+                    }))}
+                    instanceId={_id}
+                    placeholder={'Выбрать ' + name}
+                    isMulti={type===1}
+                  />
+                </div>
               :''
           }
       </div>

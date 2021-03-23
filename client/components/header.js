@@ -7,7 +7,7 @@ export default function Header({sorted={}}){
                 <nav className="navbar navbar-expand-md navbar-dark " style={{position:'sticky', top:'0'}}>
                     <div className='container'>
                         <a href="/">
-                            <img src="/images/logo2.png" className='mb-2 mt-2' height={50}/>
+                            <img src="/images/logo2.png" className='mb-2 mt-2 mr-4' height={50}/>
                         </a>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation" onClick={()=>{setShow(!show)}}>
                             <span className="navbar-toggler-icon"></span>
@@ -19,8 +19,12 @@ export default function Header({sorted={}}){
                                         <a className="nav-link active" aria-current="page" href={`#${_id}`}>{sorted[_id].name}</a>
                                     </li>
                                 ))}
+                                {Object.keys(sorted).length===0 &&
+                                    <li className="nav-item" key={'main'}>
+                                        <a className="nav-link active" aria-current="page" href='/'>На главную</a>
+                                    </li>
+                                }
                             </ul>
-                            {/* <div class="col-lg-4 col-md-9 col-8"> */}
                                 <div class="customer-area">
                                     <span className='mr-3'>
                                         <a href="#"><i class="fas fa-heart"></i></a>
@@ -29,7 +33,7 @@ export default function Header({sorted={}}){
                                         <a href="#"><i class="fas fa-user"></i></a>
                                     </span>
                                     <span className='mr-3'>
-                                        <a href="shopping-cart.html"><i class="fas fa-shopping-basket"></i></a>
+                                        <a href="/cart"><i class="fas fa-shopping-basket"></i></a>
                                     </span>
                                     {/* <a href="#" class="btn">login</a> */}
                                     <User/>

@@ -188,3 +188,17 @@ $fh: 100px;
   font-family: 'Rubic';
   color: $red;
 }
+.product-page{
+  background-color: white;
+  border: 1px solid $yellow;
+  border-radius: 5px;
+  h2{
+    font-family: 'Rubic';
+  }
+}
+.table{
+  thead{
+    background-color: $blue;
+    color: white;
+  }
+}

@@ -18,7 +18,7 @@ export default function Product({product}){
 
                 />
                 <div className='d-flex flex-column justify-content-between' style={{height:'220px'}}>
-                    <h5 className='mb-0'>
+                    <h5 className='mb-0' style={{minHeight:'50px'}}>
                         <Link href={'/products/'+_id}>{name}</Link><br/>
                     </h5>
                     <div style={{wordWrap:'break-word'}} className='mb-4'>
