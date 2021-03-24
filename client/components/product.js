@@ -11,7 +11,6 @@ export default function Product({product}){
     }, [parameters])
     return (
         <div className='col-sm-6 col-md-4 col-lg-3'>
-
             <div className='product'>
                 <img 
                     src={img && img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'} style={{width: '100%'}}
@@ -31,12 +30,18 @@ export default function Product({product}){
                             {/* <i class="fas fa-ruble-sign"></i> */}
                         </span>
                         <div className="cart-opt">
-                            <span className='mr-2'>
-                                <a href="#"><i class="fas fa-heart"></i></a>
-                            </span>
-                            <span>
-                                <a href="single-food.html"><i className="fas fa-shopping-basket"></i></a>
-                            </span>
+                                <a href="#">
+                                    <span className='mr-2'>
+                                        <i class="fas fa-heart"></i>
+                                    </span>
+                                </a>
+                                <Link href={'/products/'+_id}>
+                                        <a href="#">
+                                            <span>
+                                                <i className="fas fa-shopping-basket"></i>
+                                            </span>
+                                        </a>
+                                </Link>
                         </div>
                     </div>
                 </div>

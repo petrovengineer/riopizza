@@ -6,15 +6,12 @@ const {authenticateToken, isAdmin} = require('./auth');
 
 router.get('/', authenticateToken, async (req, res)=>{
     let filter = {};
-    if(req.query.filter!=null){
-        filter = JSON.parse(req.query.filter)
+    if(req.query){
+        filter = req.query
     }
     try{
         Order.find(filter,{}, { sort: { 'created' : -1 }}).
-        populate('cart.food').
-        populate('customer').
         exec((err, docs)=>{
-            console.log("DOCS ",docs);
             res.send(docs);
         })
     }

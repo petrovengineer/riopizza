@@ -37,6 +37,7 @@ export default function Product(){
     }
     function addParameter(){
         const newValueInput = document.getElementById('singleItemValue');
+        const selectedInput = (document.getElementById('selected') && document.getElementById('selected').checked) || false;
         if(!selectedParameter){alert('Параметр не выбран'); return;}
         if(!selectedItems && !newValueInput){alert('Элементы не выбраны'); return;}
         const normSelectedParameter = {
@@ -44,7 +45,7 @@ export default function Product(){
             name: selectedParameter.label,
             items: selectedItems && selectedItems.map(si=>({_id:si.value, value: si.label})),
             value: newValueInput && newValueInput.value,
-            selected: true
+            selected: selectedInput
         }
         const oldParameters = [...product.parameters.filter(p=>(!p.deleted)).map(p=>({
             _id: p._id,
@@ -95,16 +96,21 @@ export default function Product(){
             _id: p._id,
             name: p.name,
             items: p.items.map(({_id, value})=>({_id, value})),
-            value: p.value
+            value: p.value,
+            selected: p.selected
         }))]
         productElement.updateOne({
             _id: product._id,
             parameters: newParameters
         })
     }
+    function handleSelected(e){
+        const selectedInput = document.getElementById('selected');
+        console.log(selectedInput.checked)
+    }
     return(
         <Layout>
-            <div className='row'>
+            <div className='row shadow p-2' style={{backgroundColor:'white'}}>
                 <h2 className='col-md-12 mb-5'>
                     Редактор продукта
                 </h2>
@@ -115,6 +121,7 @@ export default function Product(){
                                 alt="" 
                                 height="300" 
                                 width="300" 
+                                className='rounded'
                                 src={(!product.img || !product.img.data)?'/images/noimage.png':`data:image/jpeg;base64,${product.img.data}`}
                             />
                         </label>
@@ -150,8 +157,14 @@ export default function Product(){
                                 isMulti
                             />
                         </div>}
+                    
+                    {selectedParameter && (selectedParameter.type===1) && 
+                        <input type='checkbox' name='selected' id='selected' onChange={handleSelected}/>
+                    }
+                    
                     {selectedParameter && selectedParameter.type===0 && 
                         <input className='ml-2 mb-2' type="text" id="singleItemValue" placeholder="Значение параметра"/>}
+
                     <button className='btn mb-2 ml-2' onClick={addParameter}>Добавить параметр</button>
                     <h5 className='ml-2'>Параметры</h5>
                     <div className='col mb-2' style={{color:'white'}}>

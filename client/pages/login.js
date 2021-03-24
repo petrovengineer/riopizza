@@ -38,7 +38,7 @@ export default function Login(){
     }
     return (
         // <Layout>
-            <div class="form-signin mt-4">
+            <div class="form-signin mt-4 shadow">
                 <Link href="/">
                     <a href="#">
                         <img class="mb-4" src="/images/logo.png" alt="" height="72"/>

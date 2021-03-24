@@ -5,8 +5,8 @@ export default function HeaderTop(){
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-12 d-flex flex-wrap justify-content-between">
                         <div className="contact-box">
-                            <span> <a href="#"><i className="fas fa-phone-square-alt"></i> 123-58794069</a> </span>
-                            <span> <a href="#"><i className="fas fa-envelope-open-text"></i> supportfoodkhan@.com</a></span>
+                            <span> <a href="#"><i className="fas fa-phone-square-alt"></i> +7-901-701-55-01</a> </span>
+                            <span> <a href="#"><i className="fas fa-clock"></i> пн-вс с 9:00-22:00</a></span>
                         </div>
                         <div className="social-box">
                             <span><a href="#"><i className="fab fa-facebook"></i></a></span>

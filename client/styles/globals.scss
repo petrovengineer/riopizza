@@ -122,6 +122,11 @@ a:hover{
     -webkit-transition: .5s;
     -o-transition: .5s;
     transition: .5s;
+    a:hover{
+      span{
+        color:white;
+      }
+    }
     span {
       border: 1px solid #cc3333;
       background: transparent;
@@ -139,13 +144,13 @@ a:hover{
       a:hover{
         color: white;
       }
-  }
-  span:hover{
-    background-color: $red;
-    a{
-      color: white;
     }
-  }
+    span:hover{
+      background-color: $red;
+      a{
+        color: white;
+      }
+    }
 }
 .composition{
     text-transform: uppercase;
@@ -181,7 +186,7 @@ $fh: 100px;
   padding: 15px;
   margin: 0 auto;
   background-color: white;
-  border: 1px solid $blue;
+  // border: 1px solid $blue;
   border-radius: 5px;;
 }
 .group{
@@ -190,7 +195,7 @@ $fh: 100px;
 }
 .product-page{
   background-color: white;
-  border: 1px solid $yellow;
+  // border: 1px solid $yellow;
   border-radius: 5px;
   h2{
     font-family: 'Rubic';
@@ -201,4 +206,22 @@ $fh: 100px;
     background-color: $blue;
     color: white;
   }
+}
+.shadow{
+  -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+.bg-white{
+  background-color: white;
+}
+.hide{
+  display: none;
+}
+.btn-remove{
+  color: #dee2e6;
+  cursor: pointer;
+}
+.btn-remove:hover{
+    color: $red;
 }

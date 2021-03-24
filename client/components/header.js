@@ -26,15 +26,21 @@ export default function Header({sorted={}}){
                                 }
                             </ul>
                                 <div class="customer-area">
-                                    <span className='mr-3'>
-                                        <a href="#"><i class="fas fa-heart"></i></a>
-                                    </span>
-                                    <span className='mr-3'>
-                                        <a href="#"><i class="fas fa-user"></i></a>
-                                    </span>
-                                    <span className='mr-3'>
-                                        <a href="/cart"><i class="fas fa-shopping-basket"></i></a>
-                                    </span>
+                                    <a href="#" className='p-0'>
+                                        <span className='mr-3'>
+                                            <i class="fas fa-heart"></i>
+                                        </span>
+                                    </a>
+                                    <a href="#" className='p-0'>
+                                        <span className='mr-3'>
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </a>
+                                    <a href="/cart" className='p-0'>
+                                        <span className='mr-3'>
+                                            <i class="fas fa-shopping-basket"></i>
+                                        </span>
+                                    </a>
                                     {/* <a href="#" class="btn">login</a> */}
                                     <User/>
                                 </div>

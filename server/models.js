@@ -72,13 +72,15 @@ module.exports.Order = model('Order',
         number:{type: Number, default: 1},
         created: {type: Date, default: Date.now},
         done: {type: Date, default: null},
-        status: {type: Number, min: 0, max:3, default: 0},
+        status: {type: Number, min: 0, max:3, default: 0}, //0 - новый 1-принят 2-доставка 3-получен
         cart:[
             {
-                product: {name: String, product_id: String}, 
+                name: {type: String}, 
                 count: Number,
-                coast: Number,
-                parameters: [{name: String, }]
+                parameters: {
+                    type: Map,
+                    of: String
+                }
             }
         ],
         user:{name: String, phone: String, user_id: String},

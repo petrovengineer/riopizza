@@ -7,41 +7,45 @@ import Select from 'react-select'
 export default function Product({product}){
     const context = useContext(AppContext);
     let {_id, name = 'No name', description = '', parameters = [], img} = product;
-
+    const [alert, setAlert] = useState(false);
     const typeZeroGlobal = {}
     const typeZeroParams = parameters.filter(p=>(p.type===0));
     typeZeroParams.map(tz=>{
       typeZeroGlobal[tz.name] = {value: tz._id, label: tz.value, affect:[], type: tz.type}
     })
 
-    console.log("typeZeroParams ", typeZeroGlobal)
     const [globalSelected, setGlobalSelected] = useState(typeZeroGlobal);
     const [affects, setAffects] = useState([]);
+
     function addToCart(){
       let newCart = [];
       if(context.cart.value){newCart.push(...context.cart.value)}
       newCart.push({
+        product,
         img: product.img,
         name: product.name,
         parameters: globalSelected,
-        affects: affects
+        affects: affects,
+        count: 1
       });
       console.log("NEW CART", newCart)
       context.cart.set(context, newCart)
+      setAlert(true);
     }
+
     useEffect(()=>{
       let affectArray = Object.keys(globalSelected).map(index=>(
           Array.isArray(globalSelected[index])?globalSelected[index].filter(f=>!f.selected).map(a=>(a.affect)):
           globalSelected[index].affect
         )).flat(2);
       setAffects(affectArray);
-      console.log("PRODUCT ", product)
+      // console.log("PRODUCT ", product)
       console.log("GLOBAL ", globalSelected)
-      console.log("AFFECT ", affects)
+      // console.log("AFFECT ", affects)
     },[globalSelected])
     return(
       <Layout>
-        <div className='container mt-4 product-page p-4'>
+        <div className='container mt-4 product-page p-4 shadow'>
           <div className='row'>
             <div className='col-12 col-md-6 d-flex justify-content-center d-md-block'>
               <img 
@@ -62,6 +66,12 @@ export default function Product({product}){
                   computed = {parameter.type===0?affects.filter(a=>{console.log("AFFECT",affects); return(a.parameter._id===parameter._id)}).map(a=>(a.value)):0}
                 />)
               )}
+              {true && <div class={"alert alert-success alert-dismissible fade "+(alert?'show ':'')+(!alert?'hide':'')} role="alert">
+                <strong>Продукт добавлен в корзину.</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onClick={()=>{setAlert(false)}}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>}
               <button onClick={addToCart} className='btn btn-danger'>В корзину</button>
             </div>
           </div>
@@ -88,15 +98,32 @@ function Parameter({parameter, setGlobalSelected, globalSelected, computed}){
     setSelected(selected);
     let newGlobalSelected = Object.assign({}, globalSelected);
     let newSelected;
+    // if(Array.isArray(selected)){
+    //   newSelected = [...selected.map(s=>{
+    //     s.selected = selectedItems;
+    //     return s;
+    //   })]
     if(Array.isArray(selected)){
-      newSelected = [...selected.map(s=>{
-        s.selected = selectedItems;
-        return s;
-      })]
+      if(selectedItems){
+        // const fullItems = [...items.map(i=>({
+        //   value: i._id, label: i.value, affect: i.affect
+        // }))]
+        newSelected = [...items.filter(i=>{
+          // i.selected = selectedItems;
+          return selected.find(s=>s.value===i._id)?false:true;
+        }).map(i=>({value: i._id, label: i.value, affect: i.affect, selected: selectedItems}))]
+      }
+      else{
+        newSelected = [...selected.map(s=>{
+          s.selected = selectedItems;
+          return s;
+        })]
+      }
     }else{
       newSelected = Object.assign({parameterName:name}, selected)
       newSelected.selected = selectedItems;
     }
+    console.log("NEW SELECTED", newSelected);
     newGlobalSelected[name] = newSelected;
     setGlobalSelected(newGlobalSelected);
   }
