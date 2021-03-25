@@ -159,7 +159,9 @@ export default function Product(){
                         </div>}
                     
                     {selectedParameter && (selectedParameter.type===1) && 
-                        <input type='checkbox' name='selected' id='selected' onChange={handleSelected}/>
+                        <div className='ml-2 mb-2 mt-3'>
+                            <input className='mr-2' type='checkbox' name='selected' id='selected' onChange={handleSelected}/>Выбраны заране (Не влияют на цену)
+                        </div>
                     }
                     
                     {selectedParameter && selectedParameter.type===0 && 

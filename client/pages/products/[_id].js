@@ -20,6 +20,7 @@ export default function Product({product}){
     function addToCart(){
       let newCart = [];
       if(context.cart.value){newCart.push(...context.cart.value)}
+      console.log("CONTEXT ", context.cart.value)
       newCart.push({
         product,
         img: product.img,
@@ -72,7 +73,7 @@ export default function Product({product}){
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>}
-              <button onClick={addToCart} className='btn btn-danger'>В корзину</button>
+              {!alert && <button onClick={addToCart} className='btn btn-danger'>В корзину</button>}
             </div>
           </div>
         </div>
@@ -111,17 +112,19 @@ function Parameter({parameter, setGlobalSelected, globalSelected, computed}){
         newSelected = [...items.filter(i=>{
           // i.selected = selectedItems;
           return selected.find(s=>s.value===i._id)?false:true;
-        }).map(i=>({value: i._id, label: i.value, affect: i.affect, selected: selectedItems}))]
+        }).map(i=>({value: i._id, label: i.value, affect: i.affect, selected: selectedItems, type}))]
       }
       else{
         newSelected = [...selected.map(s=>{
           s.selected = selectedItems;
+          s.type = type;
           return s;
         })]
       }
     }else{
       newSelected = Object.assign({parameterName:name}, selected)
       newSelected.selected = selectedItems;
+      newSelected.type = type;
     }
     console.log("NEW SELECTED", newSelected);
     newGlobalSelected[name] = newSelected;

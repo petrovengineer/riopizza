@@ -31,7 +31,7 @@ export default function Header({sorted={}}){
                                             <i class="fas fa-heart"></i>
                                         </span>
                                     </a>
-                                    <a href="#" className='p-0'>
+                                    <a href="/orders" className='p-0'>
                                         <span className='mr-3'>
                                             <i class="fas fa-user"></i>
                                         </span>

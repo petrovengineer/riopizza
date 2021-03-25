@@ -9,7 +9,7 @@ export default function Basket(){
 	const context = useContext(AppContext);
 	let {cart:{value:cart=[]}} = context;
 	let amount = 0; 
-    cart.map(({affects, parameters, count})=>{
+    cart && cart.map(({affects, parameters, count})=>{
         const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label;
         amount = amount + (coast*count);
     })
@@ -96,7 +96,7 @@ function CartItem({item, index, removeFromCart}){
 				{Object.keys(parameters).map((key)=>{
 						if(Array.isArray(parameters[key])){
 							return (
-									parameters[key].selected===false ?
+									parameters[key][0].selected===false ?
 									<span className='badge bg-secondary mr-1' style={{color: 'white'}}>{key}
 										{parameters[key].map((p)=>(
 											<span className='badge bg-success ml-1'>{p.label}</span>

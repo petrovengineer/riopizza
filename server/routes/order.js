@@ -6,9 +6,13 @@ const {authenticateToken, isAdmin} = require('./auth');
 
 router.get('/', authenticateToken, async (req, res)=>{
     let filter = {};
-    if(req.query){
-        filter = req.query
+    if(req.phone){
+        filter = {phone: req.phone}
+    }else if(!req.phone){
+        filter = {_id:0}
+        // res.sendStatus(200);
     }
+    console.log("FILTER",req.admin, req.phone, filter)
     try{
         Order.find(filter,{}, { sort: { 'created' : -1 }}).
         exec((err, docs)=>{
@@ -20,38 +24,46 @@ router.get('/', authenticateToken, async (req, res)=>{
     }
 })
 
+// router.get('/', authenticateToken, async (req, res)=>{
+//     let filter = {};
+//     if(req.query){
+//         filter = req.query
+//     }
+//     try{
+//         Order.find(filter,{}, { sort: { 'created' : -1 }}).
+//         exec((err, docs)=>{
+//             res.send(docs);
+//         })
+//     }
+//     catch(err){
+//         res.sendStatus(500);
+//     }
+// })
+
 router.post('/', authenticateToken, async (req, res)=>{
     try{
-        const {cart, name, phone, email, address, apnumber, floor, comment} = req.body;
+        const {cart, name, phone, address, apnumber, floor, comment, pay} = req.body;
+        let user = {};
+        if(phone!=null){
+            user = await User.findOne({phone})
+        }
         if(cart.length>0){
-            let user = null;
-            if(req.email!=null){
-                user = await User.findOne({email:req.email})
-                .populate('customer');
-            }else{
-                var customer = await Customer.findOne({phone});
-                if(customer==null){
-                    customer = new Customer({_id: new mongoose.Types.ObjectId(), name, phone, address, apnumber, floor, email});
-                    await customer.save();
-                }else{
-                    customer.name = name;
-                    customer.email = email;
-                    customer.address = address;
-                    customer.apnumber = apnumber;
-                    customer.floor = floor;
-                    await customer.save();
-                }
-            }
             const last = await Order.findOne({},{}, { sort: { 'created' : -1 } })
             const newOrder = new Order({
                 cart,
-                customer: user!=null?user.customer._id:customer._id,
+                name, 
+                phone,
+                user_id: user._id || null,
+                address,
+                apnumber,
+                floor,
+                pay,
                 comment,
                 number: last==null?1:last.number+1
             });
             const saved = await newOrder.save();
-            const order = await Order.findOne({_id:saved._id}).populate('cart.food');
-            res.send(order);
+            // const order = await Order.findOne({_id:saved._id});
+            res.send(saved);
         }   
         else{res.sendStatus(500)}
     }

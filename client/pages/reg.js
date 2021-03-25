@@ -8,15 +8,19 @@ import Link from 'next/link'
 export default function Login(){
     const router = useRouter();
     const [phone, changePhone] = useState('+79500424342');
+    const [name, changeName] = useState('');
     const [password, changePassword] = useState('1212');
     const context = useContext(AppContext);
     const handlePhone = (e)=>{
         changePhone(e.currentTarget.value);
     }
+    const handleName = (e)=>{
+        changeName(e.currentTarget.value);
+    }
     const handlePassword = (e)=>{
         changePassword(e.currentTarget.value);
     }
-    const login = async ()=>{
+    const reg = async ()=>{
         try{
             let re = /\+(\b7\d{10}\b)/;
             var valid = re.test(phone);
@@ -24,13 +28,8 @@ export default function Login(){
                 alert('Неверный формат телефона!');
                 return;
             }
-            const res = await axios.post('/auth/login', {phone, password});
-            if(res.data.accessToken!=null && res.data.refreshToken!=null){
-                context.accessToken.set(context, res.data.accessToken);
-                context.refreshToken.set(context, res.data.refreshToken);
-                context.user.set(context, res.data.user);
-                router.push('/');
-            }
+            await axios.post('/auth/reg', {name, phone, password});
+            router.push('/login');
         } catch(err){
             console.log(err)
             alert('Ошибка авторизации!');
@@ -44,22 +43,16 @@ export default function Login(){
                         <img class="mb-4" src="/images/logo.png" alt="" height="72"/>
                     </a>
                 </Link>
-                <h1 class="h3 mb-3 font-weight-normal">Авторизация</h1>
+                <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
+                {/* <label for="inputEmail" class="sr-only">Номер телефона</label> */}
+                <input type="text" id="name" onChange={handleName} value={name} class="form-control mb-2" placeholder="Имя" required="" autofocus=""/>
                 <label for="inputEmail" class="sr-only">Номер телефона</label>
                 <input type="text" id="phone" onChange={handlePhone} value={phone} class="form-control mb-2" placeholder="Номер телефона" required="" autofocus=""/>
                 <label for="inputPassword" class="sr-only">Пароль</label>
                 <input type="password" id="password" onChange={handlePassword} value={password} class="form-control" placeholder="Пароль" required=""/>
-                <div class="checkbox mb-3">
-                    <label>
-                    <input type="checkbox" value="remember-me"/> Запомнить меня
-                    </label>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" onClick={login}>Войти</button>
-                <Link href='/reg'>
-                    <div className='pt-2'>
-                        <a href='#' >Регистрация</a>
-                    </div>
-                </Link>
+                <label for="inputPassword" class="sr-only mt-2">Повторите пароль</label>
+                <input type="password" id="password" onChange={handlePassword} value={password} class="form-control mt-2 mb-2" placeholder="Повторите пароль" required=""/>
+                <button class="btn btn-lg btn-primary btn-block" onClick={reg}>Подтвердить</button>
                 <p class="mt-5 mb-3 text-muted">© 2021</p>
             </div>
         // </Layout>

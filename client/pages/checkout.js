@@ -3,13 +3,14 @@ import Head from 'next/head';
 import AppContext from '../context';
 import { useContext } from 'react';
 import Layout from '../components/layout';
-// import {fetch} from '../usefull';
-// import FoodOrder from '../components/FoodOrder';
-// import FoodOrderCart from '../components/FoodOrderCart';
-// const loadGif = require('../public/images/load.gif');
+import axios from 'axios';
+import {useRouter} from 'next/router'
+
 
 const Order = ()=>{
+    const router = useRouter();
     const context = useContext(AppContext);
+    const {cart: cartFull} = context;
     const {cart:{value:cart=[]}, user} = context;
     const [err, setErr] = useState(false);
     const [name, setName] = useState('');
@@ -26,7 +27,7 @@ const Order = ()=>{
     const [help, showHelp] = useState(false);
 
     let amount = 0; 
-    cart.map(({affects, parameters, count})=>{
+    cart && cart.map(({affects, parameters, count})=>{
         const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label;
         amount = amount + (coast * count);
     })
@@ -94,28 +95,53 @@ const Order = ()=>{
             const min = fullCity.min;
             if(amount<min)
             {
-                setErr(`Минимальная сумма заказа для вашего населённого пункта ${fullCity.min} руб!`);
+                setErr(`Минимальная сумма заказа для вашего населённого пункта ${fullCity.min} руб...`);
                 return;
             }
             if(address==''){
                 setErr('Адрес не должен быть пустым!');
                 return;
             }
-            if(cart.get.length==0){
+            if(cart.length==0){
                 setErr('Корзина не должна быть пустой!');
                 return;
             }
             setErr(false);
             setLoad(true);
-            const newCart = cart.get.map(item=>(
-                {
-                    food: item.food._id, 
-                    count: item.count,
-                    coast: item.coast,
-                    ingredients: item.ings.map(i=>(i._id)),
-                    selected: item.selected.map(s=>({_id:s._id, name: s.name, pname: s.pname}))
-                }
-            ))
+            const newCart = cart.map(
+                ({affects, parameters, count, product})=>(
+                    {
+                        product: {_id: product._id, name: product.name},
+                        count,
+                        coast: affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label,
+                        parameters: Object.keys(parameters).map(key=>{
+                            if(Array.isArray(parameters[key])){
+                                return {
+                                    name: key,
+                                    selected: parameters[key][0].selected,
+                                    items: parameters[key].map(item=>({
+                                        _id: item.value,
+                                        name: item.label,
+                                    })),
+                                    ptype: parameters[key][0].type || 0,
+                                }
+                            }
+                            else{
+                                return (
+                                    {
+                                        name: key,
+                                        ptype: parameters[key].type || 0,
+                                        items: [{
+                                            _id: parameters[key].value,
+                                            name: parameters[key].label
+                                        }]
+                                    }
+                                )
+                            }
+                        })
+                    }
+                )
+            )
             const payload = {
                 cart: newCart, 
                 name, 
@@ -123,17 +149,15 @@ const Order = ()=>{
                 address, 
                 apnumber, 
                 floor, 
+                pay,
                 comment
             }
-            var newOrder = await fetch(
-                {
-                    query: 'mutation MakeOrder($input:OrderInputType){makeOrder(input:$input){_id number cart{food{name composition coast} ingredients{name coast} selected{name pname coast} coast count}}}',
-                    variables:{input: payload},
-                });
+            var {data:newOrder} = await axios.post('/order', payload);
+            console.log("PAYLOAD ", newOrder)
             setLoad(false);
-            cart.set([]);
-            setOrder(newOrder.data.data.makeOrder);
-            setComplite(true);
+            cartFull.clear(context);
+            router.push('/orders?=complite');
+            // setComplite(true);
         }catch(err){
             setLoad(false);
             console.log(err);
@@ -149,16 +173,16 @@ const Order = ()=>{
             <div className="container bg-white shadow mt-2">
                 {complite?
                 <div className="row paper m-2">
-                    <h4 className="pl-4 pt-4" style={{color: 'green'}}>Заказ успешно оформлен! Номер заказа: {order.number}
+                    <h4 className="pl-4 pt-4" style={{color: 'green'}}>Заказ успешно оформлен! Номер заказа: {order && order.number}
                     </h4>
                     {/* {cart.get!=null?order.cart.map((item)=>(
                             <FoodOrder item={item} key={item._id}/>
                     )):null} */}
-                    <div style={{borderTop:'1px solid #e1e1e1'}}
+                    {/* <div style={{borderTop:'1px solid #e1e1e1'}}
                     className="d-flex w-100 align-items-center justify-content-end p-3">
                         <h4 className="order-amount">Итого: {order.cart.length>0?order.cart.map((g)=>g.coast*g.count).reduce((a, v)=>a+v):0} руб
                         </h4>
-                    </div>
+                    </div> */}
                 </div>
                 :<><div className="row paper m-2">
                     <h4 className="pl-3 pt-3">Оформление заказа</h4>

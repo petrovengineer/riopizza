@@ -7,9 +7,9 @@ export default function User(){
     const context = useContext(AppContext);
     const {user, accessToken, refreshToken} = context;
     function exit(){
-        user.set(context, null);
-        accessToken.set(context, null);
-        refreshToken.set(context, null);
+        user.clear(context);
+        accessToken.clear(context);
+        refreshToken.clear(context);
     }
     return(
         <div className='user'>
