@@ -1,4 +1,10 @@
-const {authenticateToken} = require('./routes/auth');
+// const fs = require('fs')
+// const https = require('https')
+
+// const privateKey  = fs.readFileSync('./ssl/server.key', 'utf8');
+// const certificate = fs.readFileSync('./ssl/server.crt', 'utf8');
+
+// const credentials = {key: privateKey, cert: certificate}
 const express = require('express');
 require('dotenv').config();
 require('./mongo');
@@ -22,7 +28,13 @@ app.use('/graphql',
     }),
   );
 
-app.use('/',require("./routes"));
+app.use('/api',require("./routes"));
 
 app.listen(port);
-console.log('GraphQL API server running at localhost: ' + port);
+
+// const httpsServer = https.createServer(credentials, app)
+
+// httpsServer.listen(port)
+
+console.log('API server running at localhost: ' + port);
+

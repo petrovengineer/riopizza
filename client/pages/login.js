@@ -7,8 +7,8 @@ import Link from 'next/link'
 
 export default function Login(){
     const router = useRouter();
-    const [phone, changePhone] = useState('+79500424342');
-    const [password, changePassword] = useState('1212');
+    const [phone, changePhone] = useState('');
+    const [password, changePassword] = useState('');
     const context = useContext(AppContext);
     const handlePhone = (e)=>{
         changePhone(e.currentTarget.value);
@@ -24,7 +24,7 @@ export default function Login(){
                 alert('Неверный формат телефона!');
                 return;
             }
-            const res = await axios.post('/auth/login', {phone, password});
+            const res = await axios.post(process.env.NEXT_PUBLIC_API+'/auth/login', {phone, password});
             if(res.data.accessToken!=null && res.data.refreshToken!=null){
                 context.accessToken.set(context, res.data.accessToken);
                 context.refreshToken.set(context, res.data.refreshToken);
