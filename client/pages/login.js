@@ -38,29 +38,29 @@ export default function Login(){
     }
     return (
         // <Layout>
-            <div class="form-signin mt-4 shadow">
+            <div className="form-signin mt-4 shadow">
                 <Link href="/">
                     <a href="#">
-                        <img class="mb-4" src="/images/logo.png" alt="" height="72"/>
+                        <img className="mb-4" src="/images/logo.png" alt="" height="72"/>
                     </a>
                 </Link>
-                <h1 class="h3 mb-3 font-weight-normal">Авторизация</h1>
-                <label for="inputEmail" class="sr-only">Номер телефона</label>
-                <input type="text" id="phone" onChange={handlePhone} value={phone} class="form-control mb-2" placeholder="Номер телефона" required="" autofocus=""/>
-                <label for="inputPassword" class="sr-only">Пароль</label>
-                <input type="password" id="password" onChange={handlePassword} value={password} class="form-control" placeholder="Пароль" required=""/>
-                <div class="checkbox mb-3">
+                <h1 className="h3 mb-3 font-weight-normal">Авторизация</h1>
+                <label htmlFor="inputEmail" className="sr-only">Номер телефона</label>
+                <input type="text" id="phone" onChange={handlePhone} value={phone} className="form-control mb-2" placeholder="Номер телефона" required="" autofocus=""/>
+                <label htmlFor="inputPassword" className="sr-only">Пароль</label>
+                <input type="password" id="password" onChange={handlePassword} value={password} className="form-control" placeholder="Пароль" required=""/>
+                <div className="checkbox mb-3">
                     <label>
                     <input type="checkbox" value="remember-me"/> Запомнить меня
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" onClick={login}>Войти</button>
+                <button className="btn btn-lg btn-primary btn-block" onClick={login}>Войти</button>
                 <Link href='/reg'>
                     <div className='pt-2'>
                         <a href='#' >Регистрация</a>
                     </div>
                 </Link>
-                <p class="mt-5 mb-3 text-muted">© 2021</p>
+                <p className="mt-5 mb-3 text-muted">© 2021</p>
             </div>
         // </Layout>
     )

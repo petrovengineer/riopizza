@@ -15,11 +15,11 @@ export default function Slider(){
                         {/* <p className="legend">Legend 1</p> */}
                     </div>
                     <div>
-                        <img src="/images/banner1.png" />
+                        <img src="/images/banner2.png" />
                         {/* <p className="legend">Legend 1</p> */}
                     </div>
                     <div>
-                        <img src="/images/banner1.png" />
+                        <img src="/images/banner3.png" />
                         {/* <p className="legend">Legend 3</p> */}
                     </div>
             </Carousel>

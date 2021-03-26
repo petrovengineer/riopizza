@@ -42,23 +42,23 @@ export default function Login(){
     }
     return (
         // <Layout>
-            <div class="form-signin mt-4 shadow">
+            <div className="form-signin mt-4 shadow">
                 <Link href="/">
                     <a href="#">
-                        <img class="mb-4" src="/images/logo.png" alt="" height="72"/>
+                        <img className="mb-4" src="/images/logo.png" alt="" height="72"/>
                     </a>
                 </Link>
-                <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
-                {/* <label for="inputEmail" class="sr-only">Номер телефона</label> */}
-                <input type="text" id="name" onChange={handleName} value={name} class="form-control mb-2" placeholder="Имя" required="" autofocus=""/>
-                <label for="inputEmail" class="sr-only">Номер телефона</label>
-                <input type="text" id="phone" onChange={handlePhone} value={phone} class="form-control mb-2" placeholder="Номер телефона" required="" autofocus=""/>
-                <label for="inputPassword" class="sr-only">Пароль</label>
-                <input type="password" id="password" onChange={handlePassword} value={password} class="form-control" placeholder="Пароль" required=""/>
-                <label for="inputPassword" class="sr-only mt-2">Повторите пароль</label>
-                <input type="password" id="password" onChange={handlePassword2} value={password2} class="form-control mt-2 mb-2" placeholder="Повторите пароль" required=""/>
-                <button class="btn btn-lg btn-primary btn-block" onClick={reg}>Подтвердить</button>
-                <p class="mt-5 mb-3 text-muted">© 2021</p>
+                <h1 className="h3 mb-3 font-weight-normal">Регистрация</h1>
+                {/* <label htmlFor="inputEmail" className="sr-only">Номер телефона</label> */}
+                <input type="text" id="name" onChange={handleName} value={name} className="form-control mb-2" placeholder="Имя" required="" autofocus=""/>
+                <label htmlFor="inputEmail" className="sr-only">Номер телефона</label>
+                <input type="text" id="phone" onChange={handlePhone} value={phone} className="form-control mb-2" placeholder="Номер телефона" required="" autofocus=""/>
+                <label htmlFor="inputPassword" className="sr-only">Пароль</label>
+                <input type="password" id="password" onChange={handlePassword} value={password} className="form-control" placeholder="Пароль" required=""/>
+                <label htmlFor="inputPassword" className="sr-only mt-2">Повторите пароль</label>
+                <input type="password" id="password" onChange={handlePassword2} value={password2} className="form-control mt-2 mb-2" placeholder="Повторите пароль" required=""/>
+                <button className="btn btn-lg btn-primary btn-block" onClick={reg}>Подтвердить</button>
+                <p className="mt-5 mb-3 text-muted">© 2021</p>
             </div>
         // </Layout>
     )

@@ -24,13 +24,13 @@ export default function Product({product}){
                         ))}
                     </div>
                     <div className='d-flex justify-content-between '>
-                        <span className='' style={{fontSize:'26px', fontWeight:'900'}}>{price && price.value+''}
+                        <span className='mt-2' style={{fontSize:'24px', fontWeight:'900'}}>{price && price.value+''}
                             <i className="fas fa-ruble-sign ml-1" style={{fontWeight:'900', fontSize:'22px'}}></i>
                         </span>
                         <div className="cart-opt">
                                 <a href="#">
                                     <span className='mr-2'>
-                                        <i class="fas fa-heart"></i>
+                                        <i className="fas fa-heart"></i>
                                     </span>
                                 </a>
                                 <Link href={'/products/'+_id}>

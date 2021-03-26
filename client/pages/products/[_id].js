@@ -67,9 +67,9 @@ export default function Product({product}){
                   computed = {parameter.type===0?affects.filter(a=>{console.log("AFFECT",affects); return(a.parameter._id===parameter._id)}).map(a=>(a.value)):0}
                 />)
               )}
-              {true && <div class={"alert alert-success alert-dismissible fade "+(alert?'show ':'')+(!alert?'hide':'')} role="alert">
+              {true && <div className={"alert alert-success alert-dismissible fade "+(alert?'show ':'')+(!alert?'hide':'')} role="alert">
                 <strong>Продукт добавлен в корзину.</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onClick={()=>{setAlert(false)}}>
+                <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={()=>{setAlert(false)}}>
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>}
