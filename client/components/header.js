@@ -15,7 +15,7 @@ export default function Header({sorted={}}){
                         <div className={(show?'d-flex ':'d-none ')+"navbar-collapse collapse justify-content-between flex-column flex-md-row align-items-start "} id="navbarCollapse">
                             <ul className="navbar-nav me-auto mb-2 mb-md-0 mt-4 mt-md-0">
                                 {Object.keys(sorted).sort(function(a,b){return sorted[a].sort-sorted[b].sort}).map(_id=>(
-                                    sorted[_id].data.length>0 && <li className="nav-item" key={_id}>
+                                    <li className="nav-item" key={_id}>
                                         <a className="nav-link active" onClick={()=>{setShow(false)}} aria-current="page" href={`#${_id}`}>{sorted[_id].name}</a>
                                     </li>
                                 ))}
