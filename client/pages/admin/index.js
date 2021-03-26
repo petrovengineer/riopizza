@@ -1,11 +1,11 @@
 import Layout from "../../components/admin/layout";
+import {useRouter} from 'next/router' 
+import { useEffect } from "react";
 
 export default function Admin(){
-    return(
-        <Layout>
-            <h2>
-                Статистика
-            </h2>
-        </Layout>
-    )
+    const router = useRouter()
+    useEffect(()=>{
+        router.push('/admin/products');
+    },[])
+    return null
 }

@@ -110,12 +110,12 @@ export default function Product(){
     }
     return(
         <Layout>
-            <div className='row shadow p-2' style={{backgroundColor:'white'}}>
-                <h2 className='col-md-12 mb-5'>
+            <div className='row shadow p-2 py-4 my-4' style={{backgroundColor:'white'}}>
+                <h4 className='col-md-12 mb-5 rubic'>
                     Редактор продукта
-                </h2>
+                </h4>
                 <div className='col'>
-                    <form style={{textAlign:'right'}}>
+                    <form className='d-flex justify-content-center justify-content-md-end'>
                         <label htmlFor={product._id} style={{cursor:'pointer'}}>
                             <img 
                                 alt="" 

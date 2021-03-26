@@ -58,7 +58,7 @@ export default function Items(){
         Item.update({
             _id: updateId,
             value: itemInput.value,
-            sort: itemInputSort.value,
+            sort: itemInputSort.value || 999,
             group: {name: selectedGroup.label, _id: selectedGroup.value}
         })
         reset();
@@ -86,72 +86,77 @@ export default function Items(){
     }
     return(
         <Layout>
-            <h2>
+            <h4 className='my-4 rubic'>
                 Элементы
-            </h2>
-            <p><input type="text" id="value" placeholder='Новый элемент'/></p>
-            <p><input type="text" id="sort" placeholder='Место в списке'/></p>
-            <div style={{maxWidth:'300px'}}><Select
-                value={selectedGroup}
-                onChange={handleChangeGroup}
-                options={groups}
-                instanceId="selectGroup"
-                placeholder='Группа'
-            /></div>
-            {!updateId?<p><button className='btn' onClick={create}>Создать</button></p>
-            :<>
-                <div style={{maxWidth:'300px'}}>
-                    <Select
-                        value={selectedParameter}
-                        onChange={handleChangeParameter}
-                        options={parameters}
-                        instanceId="selectParameter"
-                        placeholder='Параметр влияния'
-                        style={{width:'300px'}}
-                    />
-                </div>
-                <p>
-                    <input type="text" id="affect_value" placeholder='Величина влияния'/>
-                </p>
-                <p>
-                    <button className='btn' onClick={addAffect}>Добавить</button>
-                </p>
-                <h4>Влияния:</h4>
-                <p>
-                    {items.find(i=>i._id===updateId) && items.find(i=>i._id===updateId).affect.map((a, i)=>(
-                        <span key={i+'aff'} style={{background:'gray', color: 'white', padding:'10px', marginRight:'10px'}}>
-                            {a.parameter.name + ' ' + a.value + ' '}
-                            <a href="#" onClick={()=>removeAffect(i)}>X</a>
-                        </span>
+            </h4>
+            <div className='row bg-white p-4 shadow mb-4'>
+                <div className='col-12'><input type="text" id="value" placeholder='Новый элемент'/></div>
+                <div className='col-12 mt-2'><input type="text" id="sort" placeholder='Место в списке'/></div>
+                <div className='col-12 col-md-6 mt-2'><Select
+                    value={selectedGroup}
+                    onChange={handleChangeGroup}
+                    options={groups}
+                    instanceId="selectGroup"
+                    placeholder='Группа'
+                /></div>
+                {!updateId?<div className='col-12 col-md-6 mt-2'><button className='btn btn-success' onClick={create}>Создать</button></div>
+                :<>
+                    <div className='col-12 col-md-6 mt-2'>
+                        <Select
+                            value={selectedParameter}
+                            onChange={handleChangeParameter}
+                            options={parameters}
+                            instanceId="selectParameter"
+                            placeholder='Параметр влияния'
+                            style={{width:'300px'}}
+                        />
+                    </div>
+                    <div className='col-12 col-md-6 my-2'>
+                        <input type="text" id="affect_value" className='w-100 p-2' placeholder='Величина влияния'/>
+                    </div>
+                    <div className='col-12'>
+                        <button className='btn' onClick={addAffect}>Добавить</button>
+                    </div>
+                    <h5 className='col-12 mt-4 mb-2'>Влияния:</h5>
+                    <div className='col'>
+                        {items.find(i=>i._id===updateId) && items.find(i=>i._id===updateId).affect.map((a, i)=>(
+                            <span key={i+'aff'} className='badge bg-primary white p-2'>
+                                {a.parameter.name + ' ' + a.value + ' '}
+                                <a href="#" onClick={()=>removeAffect(i)}>X</a>
+                            </span>
+                        ))}
+                    </div>
+                    <div className='col-12 mt-4 d-flex'>
+                        <button className='btn mr-2' onClick={save}>Сохранить</button>
+                        <button className='btn' onClick={reset}>Отмена</button>
+                    </div>
+                </>}
+            </div>
+            <div className="table-responsive p-2">
+                <table className='table bg-white shadow'>
+                    <thead className='thead-dark'>
+                        <tr>
+                            <th>Название</th>
+                            <th>Место в списке</th>
+                            <th>Группа</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {items.map((item, i)=>(
+                        <tr key={i+'it'}>
+                            <td>{item.value}</td>
+                            <td>{item.sort}</td>
+                            <td>{item.group && item.group.name}</td>
+                            <td className='d-flex'>
+                                <button className='btn mr-2' onClick={()=>{Item.remove(item._id)}}>Удалить</button>
+                                <button className='btn' onClick={()=>{change(item)}}>Изменить</button>
+                            </td>
+                        </tr>
                     ))}
-                </p>
-                <p>
-                    <button className='btn' onClick={save}>Сохранить</button>|
-                    <button className='btn' onClick={reset}>Отмена</button>
-                </p>
-            </>}
-            <table className='table'>
-                <thead className='thead-dark'>
-                    <tr>
-                        <th>Название</th>
-                        <th>Группа</th>
-                        <th>Действие</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {items.map((item, i)=>(
-                    <tr key={i+'it'}>
-                        <td>{item.value}</td>
-                        <td>{item.group && item.group.name}</td>
-                        <td>
-                            <button className='btn' onClick={()=>{Item.remove(item._id)}}>Удалить</button>|
-                            <button className='btn' onClick={()=>{change(item)}}>Изменить</button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-
+                    </tbody>
+                </table>
+            </div>
         </Layout>
     )
 }

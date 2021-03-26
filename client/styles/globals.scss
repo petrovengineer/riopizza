@@ -42,6 +42,9 @@ body{
   background-color: $blue;
   top: 40px;
   z-index: 100;
+  a:hover{
+    color: $yellow;
+  }
 }
 .header-top{
   background-color: $blue;
@@ -224,4 +227,10 @@ $fh: 100px;
 }
 .btn-remove:hover{
     color: $red;
+}
+.rubic{
+  font-family: 'Rubic';
+}
+.white{
+  color: white;
 }
