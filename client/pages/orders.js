@@ -13,7 +13,7 @@ export default function Orders(){
 		if(accessToken){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken.value;
             axios.defaults.headers.post['Content-Type'] = 'application/json';
-			const {data=[]} = await axios.get('/order');
+			const {data=[]} = await axios.get(process.env.NEXT_PUBLIC_API+'/order');
 			setOrders(data)
 			console.log(data)
 		}

@@ -152,7 +152,7 @@ const Order = ()=>{
                 pay,
                 comment
             }
-            var {data:newOrder} = await axios.post('/order', payload);
+            var {data:newOrder} = await axios.post(process.env.NEXT_PUBLIC_API+'/order', payload);
             console.log("PAYLOAD ", newOrder)
             setLoad(false);
             cartFull.clear(context);

@@ -158,7 +158,7 @@ function Parameter({parameter, setGlobalSelected, globalSelected, computed}){
 }
 
 export async function getStaticPaths() {
-  const {data} = await axios.get('http://localhost:3100/product');
+  const {data} = await axios.get('http://localhost:3100/api/product');
   const products = Array.isArray(data)?data:[data];
   const paths = products.map((product) => ({
     params: {_id: product._id.toString()},

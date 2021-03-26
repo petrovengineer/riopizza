@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import AppContext from '../context'
 
-axios.defaults.baseURL = 'http://localhost:3100';
+axios.defaults.baseURL = 'http://localhost:3100/api';
 // const AppContext = require('react').createContext('123');
 
 function MyApp({ Component, pageProps }) {
