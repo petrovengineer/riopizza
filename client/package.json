@@ -8,10 +8,7 @@
     "start": "next start -p 3000"
   },
   "dependencies": {
-    "@popperjs/core": "^2.9.1",
     "axios": "^0.21.1",
-    "bootstrap": "^4.6.0",
-    "jquery": "^3.6.0",
     "next": "10.0.7",
     "query-string": "^7.0.0",
     "react": "17.0.1",
