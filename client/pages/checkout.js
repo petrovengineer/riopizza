@@ -222,7 +222,7 @@ const Order = ()=>{
                         value={city}
                         className="form-control" aria-describedby="emailHelp"/>
                             {help?
-                            <div class="dropdown-menu" style={{display:'block', left:'20px'}}>
+                            <div className="dropdown-menu" style={{display:'block', left:'20px'}}>
                                 {
                                     cities.filter(c=>c.name.indexOf(city.toUpperCase())>-1).map(
                                         c=>(

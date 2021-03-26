@@ -130,7 +130,7 @@ function CartItem({item, index, removeFromCart}){
 				<span>{+coast*context.cart.value[index].count} руб</span>
 			</td>
 			<td>
-				<i class="fas fa-trash btn-remove" onClick={()=>handleRemove(index)}></i>
+				<i className="fas fa-trash btn-remove" onClick={()=>handleRemove(index)}></i>
 			</td>
 		</tr>
 	)

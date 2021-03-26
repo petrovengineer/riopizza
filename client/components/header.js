@@ -15,8 +15,8 @@ export default function Header({sorted={}}){
                         <div className={(show?'d-flex ':'d-none ')+"navbar-collapse collapse justify-content-between flex-column flex-md-row align-items-start "} id="navbarCollapse">
                             <ul className="navbar-nav me-auto mb-2 mb-md-0 mt-4 mt-md-0">
                                 {Object.keys(sorted).sort(function(a,b){return sorted[a].sort-sorted[b].sort}).map(_id=>(
-                                    <li className="nav-item" key={_id}>
-                                        <a className="nav-link active" aria-current="page" href={`#${_id}`}>{sorted[_id].name}</a>
+                                    sorted[_id].data.length>0 && <li className="nav-item" key={_id}>
+                                        <a className="nav-link active" onClick={()=>{setShow(false)}} aria-current="page" href={`#${_id}`}>{sorted[_id].name}</a>
                                     </li>
                                 ))}
                                 {Object.keys(sorted).length===0 &&
@@ -25,23 +25,23 @@ export default function Header({sorted={}}){
                                     </li>
                                 }
                             </ul>
-                            <div class="customer-area mb-4 mb-md-0 mt-4 mt-md-0">
+                            <div className="customer-area mb-4 mb-md-0 mt-4 mt-md-0">
                                 <a href="#" className='p-0'>
                                     <span className='mr-3'>
-                                        <i class="fas fa-heart"></i>
+                                        <i className="fas fa-heart"></i>
                                     </span>
                                 </a>
                                 <a href="/orders" className='p-0'>
                                     <span className='mr-3'>
-                                        <i class="fas fa-user"></i>
+                                        <i className="fas fa-user"></i>
                                     </span>
                                 </a>
                                 <a href="/cart" className='p-0'>
                                     <span className='mr-3'>
-                                        <i class="fas fa-shopping-basket"></i>
+                                        <i className="fas fa-shopping-basket"></i>
                                     </span>
                                 </a>
-                                {/* <a href="#" class="btn">login</a> */}
+                                {/* <a href="#" className="btn">login</a> */}
                                 <User/>
                             </div>
                             {/* </div> */}
