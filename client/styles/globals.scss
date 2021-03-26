@@ -42,6 +42,9 @@ body{
   background-color: $blue;
   top: 40px;
   z-index: 100;
+  position: sticky;
+  position: -webkit-sticky;
+  display: block;
   a:hover{
     color: $yellow;
   }
