@@ -18,7 +18,7 @@ export default function Product(){
     useEffect(async()=>{
         let query = queryString.parse(location.search);
         setProductElement(new Element('/product?_id='+query._id, product, setProduct))        
-        const {data} = await axios.get('/parameter');
+        const {data} = await axios.get(process.env.NEXT_PUBLIC_API+'/parameter');
         const parametersData = Array.isArray(data)?data : [data];
         console.log("PDATA ", parametersData, data);
         setParameters(parametersData.map(p=>({value:p._id, label:p.name, type:p.type, available_items:p.available_items})))
@@ -68,7 +68,7 @@ export default function Product(){
         let file = e.target.files[0];
         let formData = new FormData();
         formData.append('file', file);
-        axios.post(`/product/upload?_id=${_id}`, formData,
+        axios.post(process.env.NEXT_PUBLIC_API+`/product/upload?_id=${_id}`, formData,
             { headers: {'Content-Type': 'multipart/form-data'}}
         ).then(function(){
             productElement.fetch();

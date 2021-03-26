@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export function Element(url, data, setData){
-    this.url = url;
+    this.url = 'https://airspb.com/api'+url;
     this.fetch = async function(){
         const {data} = await axios.get(this.url);
         setData(data);

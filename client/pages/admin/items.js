@@ -14,9 +14,9 @@ export default function Items(){
     const Item = new Element('/item', items, setItems);
     useEffect(async ()=>{
         Item.fetch();
-        const {data} = await axios.get('/group');
+        const {data} = await axios.get(process.env.NEXT_PUBLIC_API+'/group');
         setGroups(data.map(d=>({value:d._id, label: d.name})));
-        const {data:parameters} = await axios.get('/parameter?type=0');
+        const {data:parameters} = await axios.get(process.env.NEXT_PUBLIC_API+'/parameter?type=0');
         setParameters(Array.isArray(parameters)?parameters.map(p=>({value:p._id, label:p.name})):
             [{value: parameters._id, label: parameters.name}]
         )

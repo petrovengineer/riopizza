@@ -21,9 +21,9 @@ export default function Parameters(){
     useEffect(async ()=>{
         const dataParameters = await Parameter.fetchWithPromise();
         setParameters(Array.isArray(dataParameters)?dataParameters:[dataParameters]);
-        const {data: itemData} = await axios.get('/item');
+        const {data: itemData} = await axios.get(process.env.NEXT_PUBLIC_API+'/item');
         setItems(itemData.map(i=>({value:i._id, label:i.value})));
-        const {data: groupData} = await axios.get('/group');
+        const {data: groupData} = await axios.get(process.env.NEXT_PUBLIC_API+'/group');
         setGroups(groupData.map(i=>({value:i._id, label:i.name})));
     },[])
     function reset(){
@@ -59,7 +59,7 @@ export default function Parameters(){
     };
     async function handleChangeGroup(selectedGroup){
         setSelectedGroup(selectedGroup);
-        const {data} = await axios.get('/item?group._id='+selectedGroup.value);
+        const {data} = await axios.get(process.env.NEXT_PUBLIC_API+'/item?group._id='+selectedGroup.value);
         setItems(data.map(i=>({value:i._id, label:i.value})));
     };
     async function change(parameter){
@@ -73,7 +73,7 @@ export default function Parameters(){
         // valueInput && (valueInput.value = parameter.value);
         setSelectedType({value: parameter.type, label: types.find(t=>t.value===parameter.type).label});
         setSelectedGroup(null);
-        const {data} = await axios.get('/item');
+        const {data} = await axios.get(process.env.NEXT_PUBLIC_API+'/item');
         setItems(data.map(i=>({value:i._id, label:i.value})));
         setSelectedItem(parameter.available_items.map(i=>({value:i._id, label: i.value})));
         setUpdateId(parameter._id);
