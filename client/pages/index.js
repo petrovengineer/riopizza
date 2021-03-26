@@ -31,10 +31,11 @@ export default function Home({products, parameter}) {
   },[])
   return (
     <Layout sorted = {sorted}>
+      {/* <img src='/images/banner1.png' style={{width:'100%'}}/> */}
       <Slider/>
       <div className={'container main'}>
         {Object.keys(sorted).sort(function(a,b){return sorted[a].sort-sorted[b].sort}).map((_id)=>(
-          sorted[_id].data.length>0 && <div key={_id}>
+          <div key={_id}>
             <a className="anchor" id={_id} href="#"></a>
             <h5 className='mt-3 group'>
               {sorted[_id].name}
