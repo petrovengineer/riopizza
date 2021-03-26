@@ -4,7 +4,7 @@ import User from '../user'
 import {useState} from 'react'
 
 export default function Layout({children}){
-    const [show, setShow] = useState(true)
+    const [show, setShow] = useState(false)
 	return (
 		<>
 			<Head>

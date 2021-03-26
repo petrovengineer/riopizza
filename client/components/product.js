@@ -10,12 +10,10 @@ export default function Product({product}){
         setPrice(parameters.find(p=>(p.name==='Цена')));
     }, [parameters])
     return (
-        <div className='col-sm-6 col-md-4 col-lg-3'>
-            <div className='product'>
-                <img 
-                    src={img && img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'} style={{width: '100%'}}
-
-                />
+        <div className='col-sm-6 col-md-6 col-lg-4 col-xl-3 rounded '>
+            <div className='shadow'>
+            <img src={img && img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'} style={{width: '100%'}}/>
+            <div className='product p-5 p-sm-4'>
                 <div className='d-flex flex-column justify-content-between' style={{height:'220px'}}>
                     <h5 className='mb-0' style={{minHeight:'50px'}}>
                         <Link href={'/products/'+_id}>{name}</Link><br/>
@@ -26,8 +24,8 @@ export default function Product({product}){
                         ))}
                     </div>
                     <div className='d-flex justify-content-between '>
-                        <span className='price'>{price && price.value+'руб'}
-                            {/* <i class="fas fa-ruble-sign"></i> */}
+                        <span className='' style={{fontSize:'26px', fontWeight:'900'}}>{price && price.value+''}
+                            <i className="fas fa-ruble-sign ml-1" style={{fontWeight:'900', fontSize:'22px'}}></i>
                         </span>
                         <div className="cart-opt">
                                 <a href="#">
@@ -45,6 +43,7 @@ export default function Product({product}){
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     )

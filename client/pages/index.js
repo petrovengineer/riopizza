@@ -1,5 +1,6 @@
 import Layout from '../components/layout.js'
 import Product from '../components/product.js'
+import Slider from '../components/slider.js'
 import axios from 'axios';
 import {useEffect, useState} from 'react'
 
@@ -30,7 +31,8 @@ export default function Home({products, parameter}) {
   },[])
   return (
     <Layout sorted = {sorted}>
-      <img src='/images/banner1.png' style={{width:'100%'}}/>
+      {/* <img src='/images/banner1.png' style={{width:'100%'}}/> */}
+      <Slider/>
       <div className={'container main'}>
         {Object.keys(sorted).sort(function(a,b){return sorted[a].sort-sorted[b].sort}).map(_id=>(
           <>

@@ -30,23 +30,25 @@ export default function Basket(){
 					<h2 className='mt-4'>
 						Корзина
 					</h2>
-					<table className='table'>
-						<thead>
-							<tr>
-								<th>Название</th>
-								<th>Параметры</th>
-								<th>Цена</th>
-								<th>Количество</th>
-								<th>Итого</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							{cart && cart.map((item, i)=>(
-							<CartItem item={item} index={i} key={'item'+i} removeFromCart={removeFromCart}/>
-							))}
-						</tbody>
-					</table>
+					<div className='table-responsive p-2'>
+						<table className='table shadow'>
+							<thead>
+								<tr>
+									<th>Название</th>
+									<th>Параметры</th>
+									<th>Цена</th>
+									<th>Количество</th>
+									<th>Итого</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{cart && cart.map((item, i)=>(
+								<CartItem item={item} index={i} key={'item'+i} removeFromCart={removeFromCart}/>
+								))}
+							</tbody>
+						</table>
+					</div>
 					{(!cart || cart.length===0) ?<h5>В корзине пока пусто...</h5>:
 					<div className='d-flex justify-content-end' style={{width:'100%'}}>
                         <h5 className='mr-4 pt-2'>К оплате {amount} руб</h5>

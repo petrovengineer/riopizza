@@ -73,7 +73,7 @@ export default function Product({product}){
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>}
-              {!alert && <button onClick={addToCart} className='btn btn-danger'>В корзину</button>}
+              {!alert && <button onClick={addToCart} className='btn btn-danger mt-2'>В корзину</button>}
             </div>
           </div>
         </div>
@@ -131,20 +131,20 @@ function Parameter({parameter, setGlobalSelected, globalSelected, computed}){
     setGlobalSelected(newGlobalSelected);
   }
   return(
-      <div className='d-flex flex-wrap align-items-center mb-4'>
-          <span className='mr-2'>{name}</span>
+      <div className='row'>
+          <div className={(type===0 ?'col-2 ':'') + 'col-md-4'}><span className='mr-2'>{name}</span></div>
           {
               type===0?
                 <>
-                  <span className='ml-2'>{+value + computed.reduce((acc, cur)=>(+acc + +cur),0)} {unit}</span>
+                  <div className='col-10 col-md-8 mb-4'><span className='ml-2'>{+value + computed.reduce((acc, cur)=>(+acc + +cur),0)} {unit}</span></div>
                 </>
               :type===1 || type===2?
-                <div style={{minWidth:'300px'}} className=''>
+                <div className='col-md-8 mb-4'>
                   <Select
                     value={selected}
                     onChange={onChangeItem}
                     options={items.map(i=>({
-                      value: i._id, label: i.value, affect: i.affect
+                      value: i._id, label: i.value+' '+unit, affect: i.affect
                     }))}
                     instanceId={_id}
                     placeholder={'Выбрать ' + name}

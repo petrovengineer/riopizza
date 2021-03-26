@@ -29,23 +29,25 @@ export default function Orders(){
 					<h2 className='mt-4'>
 						Заказы
 					</h2>
-					<table className='table'>
-						<thead>
-							<tr>
-								<th>№</th>
-								<th>Время</th>
-								<th>Состав</th>
-								<th>Сумма</th>
-								<th>Оплата</th>
-								<th>Статус</th>
-							</tr>
-						</thead>
-						<tbody>
-							{orders && orders.map((order, i)=>(
-							<Order order={order} index={i} key={'order'+i}/>
-							))}
-						</tbody>
-					</table>
+					<div className='table-responsive p-2'>
+						<table className='table shadow'>
+							<thead>
+								<tr>
+									<th>№</th>
+									<th>Время</th>
+									<th>Состав</th>
+									<th>Сумма</th>
+									<th>Оплата</th>
+									<th>Статус</th>
+								</tr>
+							</thead>
+							<tbody>
+								{orders && orders.map((order, i)=>(
+									<Order order={order} index={i} key={'order'+i}/>
+								))}
+							</tbody>
+						</table>
+					</div>
 					{(!orders || orders.length===0) ?<h5>Заказов пока нет...</h5>:''}
 				</div>
 			</div>
