@@ -24,31 +24,32 @@ export default function Orders(){
 			<Head>
 				<title>Заказы</title>
 			</Head>
-			<div className='container'>
+			<div className='container shadow'>
 				<div className='row bg-white mt-4 p-4'>
-					<h2 className='mt-4'>
+					<h2 className='mt-4 w-100'>
 						Заказы
 					</h2>
-					<div className='table-responsive p-2'>
-						<table className='table shadow'>
-							<thead>
-								<tr>
-									<th>№</th>
-									<th>Время</th>
-									<th>Состав</th>
-									<th>Сумма</th>
-									<th>Оплата</th>
-									<th>Статус</th>
-								</tr>
-							</thead>
-							<tbody>
-								{orders && orders.map((order, i)=>(
-									<Order key={'order'+i} order={order} index={i} />
-								))}
-							</tbody>
-						</table>
-					</div>
-					{(!orders || orders.length===0) ?<h5>Заказов пока нет...</h5>:''}
+					{(!orders || orders.length===0) ?<h5>Заказов пока нет...</h5>:
+						<div className='table-responsive shadow'>
+							<table className='table '>
+								<thead>
+									<tr>
+										<th>№</th>
+										<th>Время</th>
+										<th>Состав</th>
+										<th>Сумма</th>
+										<th>Оплата</th>
+										<th>Статус</th>
+									</tr>
+								</thead>
+								<tbody>
+									{orders && orders.map((order, i)=>(
+										<Order key={'order'+i} order={order} index={i} />
+									))}
+								</tbody>
+							</table>
+						</div>
+					}
 				</div>
 			</div>
 		</Layout>

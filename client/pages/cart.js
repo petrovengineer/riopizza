@@ -25,13 +25,14 @@ export default function Basket(){
 			<Head>
 				<title>Корзина</title>
 			</Head>
-			<div className='container'>
+			<div className='container shadow'>
 				<div className='row bg-white mt-4 p-4'>
-					<h2 className='mt-4'>
+					<h2 className='mt-4 w-100'>
 						Корзина
 					</h2>
-					<div className='table-responsive p-2'>
-						<table className='table shadow'>
+					{(!cart || cart.length===0) ?<h5>В корзине пока пусто...</h5>:<>
+					<div className='table-responsive shadow'>
+						<table className='table'>
 							<thead>
 								<tr>
 									<th>Название</th>
@@ -49,13 +50,13 @@ export default function Basket(){
 							</tbody>
 						</table>
 					</div>
-					{(!cart || cart.length===0) ?<h5>В корзине пока пусто...</h5>:
-					<div className='d-flex justify-content-end' style={{width:'100%'}}>
+					<div className='d-flex justify-content-end mt-4' style={{width:'100%'}}>
                         <h5 className='mr-4 pt-2'>К оплате {amount} руб</h5>
 						<Link href={'/checkout'}>
 							<button className='btn btn-danger' style={{float:'right'}}>Оформить</button>
 						</Link>
 					</div>
+					</>
 					}
 				</div>
 			</div>
