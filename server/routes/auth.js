@@ -98,7 +98,7 @@ function generateAccessToken({phone, admin}){
 function authenticateToken(req, res, next){
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    console.log("TOKEN ", authHeader);
+    console.log("TOKEN ", authHeader?true:false);
     if (token == null){
         next();
     }else{

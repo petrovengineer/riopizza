@@ -26,7 +26,7 @@ export default function Basket(){
 				<title>Корзина</title>
 			</Head>
 			<div className='container'>
-				<div className='row shadow bg-white mt-4 p-4'>
+				<div className='row bg-white mt-4 p-4'>
 					<h2 className='mt-4'>
 						Корзина
 					</h2>
@@ -100,14 +100,14 @@ function CartItem({item, index, removeFromCart}){
 							return (
 									parameters[key][0].selected===false ?
 									<span className='badge bg-secondary mr-1' style={{color: 'white'}}>{key}
-										{parameters[key].map((p)=>(
-											<span className='badge bg-success ml-1'>{p.label}</span>
+										{parameters[key].map((p, i)=>(
+											<span key={'pk'+i} className='badge bg-success ml-1'>{p.label}</span>
 										))}
 									</span>:
 									<span className='badge bg-secondary mr-1' style={{color: 'white'}}>
 										Исключить: 
 										{parameters[key].map((p)=>(
-											<span className='badge bg-danger mr-1'>{p.label}</span>
+											<span key={'pp'+i} className='badge bg-danger mr-1'>{p.label}</span>
 										))}
 									</span>
 							)

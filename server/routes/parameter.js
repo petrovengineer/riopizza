@@ -5,14 +5,12 @@ const {authenticateToken, isAdmin} = require('./auth');
 
 router.get('/', authenticateToken, async (req, res)=>{
     let filter = {};
-    console.log(req.query);
     if(req.query){
         filter = req.query;
     }
     try{
         const parameters = await Parameter.find(filter, {}, { sort: { 'created' : -1 }});
-        if(parameters.length===1){res.send(parameters[0])}
-        else {res.send(parameters)}
+        res.send(parameters);
     }
     catch(err){
         console.log(err);
@@ -21,6 +19,7 @@ router.get('/', authenticateToken, async (req, res)=>{
 })
 
 router.put('/', authenticateToken, isAdmin, async (req, res)=>{
+    console.log("UPDATE ")
     const {_id} = req.body;
     const update = Object.assign({}, req.body);
     delete update._id;

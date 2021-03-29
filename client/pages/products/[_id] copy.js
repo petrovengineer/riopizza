@@ -11,8 +11,8 @@ export default function Product({product}){
     const [alert, setAlert] = useState(false);
     const typeZeroGlobal = {}
     const typeZeroParams = parameters.filter(p=>(p.type===0));
-  typeZeroParams.map(tz=>{
-      typeZeroGlobal[tz.name] = tz;
+    typeZeroParams.map(tz=>{
+      typeZeroGlobal[tz.name] = {value: tz._id, label: tz.value, affect:[], type: tz.type}
     })
     const [globalSelected, setGlobalSelected] = useState(typeZeroGlobal);
     const [affects, setAffects] = useState([]);
@@ -167,21 +167,11 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({params}) {
   let {_id} = params;
-  const {data: products=[]} = await axios.get('/product?_id='+_id);
-  // const {data: parameters} = await axios.get('/parameter', {_id:[...products[0].parameters.map(p=>p===_id)]});
-  const {data: parameters} = await axios.get('/parameter');
-  const newParams = [...products[0].parameters.map(pp=>{
-    let x = parameters.find(p=>p._id===pp._id)
-    let newPP = Object.assign({}, pp);
-    newPP.type = x.type;
-    return newPP;
-  })]
-  const newProduct = Object.assign({}, products[0])
-  newProduct.parameters = newParams;
-  console.log("NEW PRODUCT", newProduct)
+  let link = '/product?_id='+_id;
+  const {data: products=[]} = await axios.get(link);
   return {
     props: {
-      product: newProduct
+      product: products[0]
     }
   }
 }

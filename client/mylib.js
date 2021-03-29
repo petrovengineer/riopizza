@@ -1,11 +1,25 @@
 import axios from "axios";
 
 export function Element(url, data, setData){
-    this.url = 'https://airspb.com/api'+url;
+    this.url = process.env.NEXT_PUBLIC_API+url;
+
     this.fetch = async function(){
-        const {data} = await axios.get(this.url);
-        setData(data);
+        try{
+            const {data} = await axios.get(this.url);
+            if(!data) return null;
+            setData(data);
+        }
+        catch(e){
+            console.log(e)
+        }
     }
+
+    this.fetchOne = async function(){
+        const {data} = await axios.get(this.url);
+            // console.log("DATA ", data)
+            setData(((Array.isArray(data) && data.length===1) && data[0]) || null);
+    }
+
     this.fetchWithPromise = function(){
         return new Promise(async (done, fail)=>{
             try{

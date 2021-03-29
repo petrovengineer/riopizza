@@ -25,7 +25,7 @@ export default function Orders(){
 				<title>Заказы</title>
 			</Head>
 			<div className='container'>
-				<div className='row shadow bg-white mt-4 p-4'>
+				<div className='row bg-white mt-4 p-4'>
 					<h2 className='mt-4'>
 						Заказы
 					</h2>
@@ -43,7 +43,7 @@ export default function Orders(){
 							</thead>
 							<tbody>
 								{orders && orders.map((order, i)=>(
-									<Order order={order} index={i} key={'order'+i}/>
+									<Order key={'order'+i} order={order} index={i} />
 								))}
 							</tbody>
 						</table>
@@ -77,18 +77,18 @@ function Order({order:{number, created, cart, pay, status}}){
                 {formatTime(created)}
 			</td>
 			<td style={{color: 'white'}}>
-				{cart.map(item=>(
-                    <span className='badge bg-secondary mr-2'>
+				{cart.map((item,i)=>(
+                    <span className='badge bg-secondary mr-2' key={'ci'+i}>
                         {item.product.name}
-                        {item.parameters.map(p=>{
+                        {item.parameters.map((p,i)=>{
                             if(p.ptype!==0){
                                 if(p.selected){
-                                    return <span className='badge bg-danger ml-2'>
+                                    return <span key={'pi'+i} className='badge bg-danger ml-2'>
                                                 Исключить: {p.items.map(i=>(i.name))}
                                             </span>
                                 }
                                 else{
-                                    return <span className='badge bg-success ml-2'>
+                                    return <span key={'pi'+i} className='badge bg-success ml-2'>
                                         {p.name} {p.items.map(i=>(i.name))}
                                     </span>
                                 }

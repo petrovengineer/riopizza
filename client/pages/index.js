@@ -4,31 +4,25 @@ import Slider from '../components/slider.js'
 import axios from 'axios';
 import {useEffect, useState} from 'react'
 
-export default function Home({products, parameter}) {
+export default function Home({products, items}) {
   const [sorted, setSorted] = useState({});
   useEffect(()=>{
-    if(Array.isArray(products)){
-      const sorted = {
-        0: {name:'Другое', sort: 999, data: []}
-      };
+      const sorted = {};
       products.map((product)=>{
-        const type = product.parameters.find(p=>(p.name==='Тип'));
-        if(type){
-          type.items.map(item=>{
-            if(!sorted[item._id]){
-              sorted[item._id]={name: item.value, sort: item.sort?+item.sort:999, data: [product]}
-            }else{
-              sorted[item._id].data = [...sorted[item._id].data, product]
-            }
-          })
-        }else{
-          sorted[0].data = [...sorted[0].data, product]
+          const typeParameter = product.parameters.find(p=>(p.name==='Тип'));
+          console.log("TYPE ",typeParameter)
+          if(typeParameter){
+          const extItems = items.filter(i=>typeParameter.items.find(tpi=>tpi._id===i._id))
+          console.log("EXT ITEMS ",extItems)
+          typeParameter.items.map(item=>(
+            !sorted[item._id]?sorted[item._id]={name: item.value, sort: item.sort?+item.sort:999, data: [product]}
+            :sorted[item._id].data = [...sorted[item._id].data, product]
+          ))
         }
       })
       console.log("SORTED ", sorted)
       setSorted(sorted)
-    }
-  },[])
+  },[products])
   return (
     <Layout sorted = {sorted}>
       {/* <img src='/images/banner1.png' style={{width:'100%'}}/> */}
@@ -41,7 +35,7 @@ export default function Home({products, parameter}) {
               {sorted[_id].name}
             </h5>          
             <div className='row mt-4'>
-              {sorted[_id].data.map((product, i)=><Product key={i+'pr'} product = {product}/>)}
+              {sorted[_id].data.map((product, i)=><Product key={i+'pr'} product = {product} items={items} />)}
             </div>
           </div>
         ))}
@@ -54,12 +48,18 @@ export default function Home({products, parameter}) {
 }
 
 export async function getStaticProps() {
-  const {data: products} = await axios.get('/product');
-  const {data: parameter} = await axios.get('/parameter?_id=605530346336510160aaa186');
-  return {
-    props: {
-      products: Array.isArray(products)?products:[products],
-      parameter
+  try{
+    const {data: products} = await axios.get('/product');
+    const {data: items} = await axios.get('/item');
+    return {
+      props: {
+        products, items
+      }
     }
   }
+  catch(e){
+    console.log(e);
+    return {props: {}}
+  }
+
 }

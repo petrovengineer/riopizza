@@ -19,12 +19,12 @@ export default function Parameters(){
         { value: 2, label: 'Одиночный выбор' },
       ];
     useEffect(async ()=>{
-        const dataParameters = await Parameter.fetchWithPromise();
-        setParameters(Array.isArray(dataParameters)?dataParameters:[dataParameters]);
+        const {data: parameterData} = await axios.get(process.env.NEXT_PUBLIC_API+'/parameter');
+        setParameters(parameterData);
         const {data: itemData} = await axios.get(process.env.NEXT_PUBLIC_API+'/item');
-        setItems(itemData.map(i=>({value:i._id, label:i.value})));
+        setItems(itemData);
         const {data: groupData} = await axios.get(process.env.NEXT_PUBLIC_API+'/group');
-        setGroups(groupData.map(i=>({value:i._id, label:i.name})));
+        setGroups(groupData);
     },[])
     function reset(){
         const nameInput = document.getElementById("name");
@@ -47,7 +47,7 @@ export default function Parameters(){
             type: selectedType.value,
             unit: unitInput?unitInput.value:null,
             value: valueInput?valueInput.value:null,
-            available_items: selectedItem.map(s=>({value:s.label, _id:s.value}))
+            available_items: selectedItem.map(s=>({value:s.label, _id:s.value, sort: s.sort}))
         });
         reset();
     }
@@ -55,42 +55,42 @@ export default function Parameters(){
         setSelectedType(selectedType);
     };
     function handleChangeItem(selectedItem){
+        console.log("SELECTED ", selectedItem)
         setSelectedItem(selectedItem);
     };
     async function handleChangeGroup(selectedGroup){
         setSelectedGroup(selectedGroup);
         const {data} = await axios.get(process.env.NEXT_PUBLIC_API+'/item?group._id='+selectedGroup.value);
-        setItems(data.map(i=>({value:i._id, label:i.value})));
+        setItems(data);
     };
     async function change(parameter){
         const nameInput = document.getElementById("name");
         const unitInput = document.getElementById("unit");
         const showInput = document.getElementById("show");
-        // const valueInput = document.getElementById("value");
         nameInput && (nameInput.value = parameter.name);
         unitInput && (unitInput.value = parameter.unit);
         showInput && (showInput.checked = parameter.show);
-        // valueInput && (valueInput.value = parameter.value);
         setSelectedType({value: parameter.type, label: types.find(t=>t.value===parameter.type).label});
         setSelectedGroup(null);
         const {data} = await axios.get(process.env.NEXT_PUBLIC_API+'/item');
-        setItems(data.map(i=>({value:i._id, label:i.value})));
+        setItems(data);
         setSelectedItem(parameter.available_items.map(i=>({value:i._id, label: i.value})));
+        console.log("AVAILABLE ", parameter.available_items)
         setUpdateId(parameter._id);
     }
     function save(){
         const nameInput = document.getElementById("name");
         const unitInput = document.getElementById("unit");
         const showInput = document.getElementById("show");
-        // const valueInput = document.getElementById("value");
+        const available_items = selectedItem?selectedItem.map(s=>({value:s.label, _id:s.value, sort: items.find(i=>i._id===s.value).sort || 999})):null;
+        console.log("AV", available_items);
         Parameter.update({
             _id: updateId,
             name: nameInput.value,
             type: selectedType.value,
             unit: unitInput?unitInput.value:null,
             show: showInput.checked,
-            // value: valueInput?valueInput.value:null,
-            available_items: selectedItem?selectedItem.map(s=>({value:s.label, _id:s.value})):null
+            available_items
         })
         reset();
     }
@@ -115,21 +115,25 @@ export default function Parameters(){
                     placeholder='Тип параметра'
                 /></div>
                 {(selectedType.value!==0) && <>
+                <div className='col-12'></div>
                 <div className='col-md-6 mb-2'><Select
                     value={selectedGroup}
                     onChange={handleChangeGroup}
-                    options={groups}
+                    options={groups.map(i=>({value:i._id, label:i.name}))}
                     instanceId="selectGroup"
                     placeholder='Группа элементов'
                 /></div>
+                <div className='col-12'></div>
                 <div className='col-md-6 mb-2'><Select
                     value={selectedItem}
                     onChange={handleChangeItem}
-                    options={items}
+                    options={items.map(i=>({value:i._id, label:i.value}))}
                     instanceId="selectItem"
                     placeholder='Элементы'
                     isMulti
-                /></div></>}
+                /></div>
+                <div className='col-12'></div>
+                </>}
                 {!updateId?<p><button className='btn ml-2 btn-success' onClick={create}>Создать</button></p>
                 :<div className='col mb-2'>
                     <button className='btn mr-2' onClick={save}>Сохранить</button>
