@@ -10,7 +10,6 @@ export default function Home({products, items}) {
       const sorted = {};
       products.map((product)=>{
           const typeParameter = product.parameters.find(p=>(p.name==='Тип'));
-          console.log("TYPE ",typeParameter)
           if(typeParameter){
           const extItems = items.filter(i=>typeParameter.items.find(tpi=>tpi._id===i._id))
           console.log("EXT ITEMS ",extItems)

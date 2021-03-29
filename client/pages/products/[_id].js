@@ -11,11 +11,13 @@ export default function Product({product}){
     const [alert, setAlert] = useState(false);
     const typeZeroGlobal = {}
     const typeZeroParams = parameters.filter(p=>(p.type===0));
-  typeZeroParams.map(tz=>{
+    typeZeroParams.map(tz=>{
       typeZeroGlobal[tz.name] = tz;
     })
     const [globalSelected, setGlobalSelected] = useState(typeZeroGlobal);
     const [affects, setAffects] = useState([]);
+
+    console.log("Parameters ",product.parameters);
 
     useEffect(()=>{
       let affectArray = Object.keys(globalSelected).map(index=>(
@@ -92,6 +94,7 @@ function Parameter({parameter, setGlobalSelected, globalSelected, computed}){
       type = 0,
       selected: selectedItems = false
   } = parameter;
+  
   const [selected, setSelected] = useState((selectedItems && type===1)?[...items.map(i=>({
     value: i._id, label: i.value, affect: i.affect
   }))]:null);
