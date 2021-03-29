@@ -12,33 +12,26 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
         selected: selectedItems = false
     } = parameter;
     
-    const [selected, setSelected] = useState((selectedItems && type===1)?[...items.map(i=>({
-      value: i._id, label: i.value, affect: i.affect
-    }))]:null);
+    const [selected, setSelected] = useState((selectedItems && type===1)?[...items.map(i=>({value: i._id, label: i.value}))]:null);
     function onChangeItem(selected){
       setSelected(selected);
       let newGlobalSelected = Object.assign({}, globalSelected);
       let newSelected;
+
       if(Array.isArray(selected)){
         if(selectedItems){
           newSelected = [...items.filter(i=>{
-            // i.selected = selectedItems;
-            return selected.find(s=>s.value===i._id)?false:true;
-          }).map(i=>({value: i._id, label: i.value, affect: i.affect, selected: selectedItems, type}))]
+            return selected.find(s=>s.value===i._id)?false:true; //ИСКЛЮЧИТЬ
+          })]
         }
         else{
-          newSelected = [...selected.map(s=>{
-            s.selected = selectedItems;
-            s.type = type;
-            return s;
+          newSelected = [...items.filter(i=>{
+            return selected.find(s=>s.value===i._id)?true:false; 
           })]
         }
       }else{
-        newSelected = Object.assign({parameterName:name}, selected)
-        newSelected.selected = selectedItems;
-        newSelected.type = type;
+        newSelected = items.find(i=>i._id===selected.value)
       }
-      console.log("NEW SELECTED", newSelected);
       newGlobalSelected[name] = newSelected;
       setGlobalSelected(newGlobalSelected);
     }

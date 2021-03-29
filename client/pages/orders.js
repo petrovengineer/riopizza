@@ -24,13 +24,13 @@ export default function Orders(){
 			<Head>
 				<title>Заказы</title>
 			</Head>
-			<div className='container shadow'>
-				<div className='row bg-white mt-4 p-4'>
-					<h2 className='mt-4 w-100'>
+			<div className='container'>
+				<div className='row px-3'>
+					<h3 className='mt-4 mb-2 w-100 rubic'>
 						Заказы
-					</h2>
+					</h3>
 					{(!orders || orders.length===0) ?<h5>Заказов пока нет...</h5>:
-						<div className='table-responsive shadow'>
+						<div className='table-responsive shadow bg-white'>
 							<table className='table '>
 								<thead>
 									<tr>

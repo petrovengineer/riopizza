@@ -17,8 +17,6 @@ export default function Product({product}){
     const [globalSelected, setGlobalSelected] = useState(typeZeroGlobal);
     const [affects, setAffects] = useState([]);
 
-    console.log("Parameters ",product.parameters);
-
     useEffect(()=>{
       let affectArray = Object.keys(globalSelected)
         .filter(index=>globalSelected[index].type!==0)
