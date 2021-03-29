@@ -90,7 +90,7 @@ export default function Product(){
         const newParameters = [...product.parameters.filter((p,i)=>(i!=index)).map(p=>({
             _id: p._id,
             name: p.name,
-            items: p.items.map(({_id, value})=>({_id, value})),
+            items: p.items?p.items.map(({_id, value})=>({_id, value})):null,
             value: p.value,
             selected: p.selected
         }))]

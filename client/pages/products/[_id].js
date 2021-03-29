@@ -5,7 +5,6 @@ import Parameter from '../../components/parameter';
 import AppContext from '../../context'
 
 export default function Product({product}){
-  console.log("PRODUCT ",product)
     const context = useContext(AppContext);
     let {_id, name = 'No name', description = '', parameters = [], img} = product;
     const [alert, setAlert] = useState(false);
@@ -14,19 +13,20 @@ export default function Product({product}){
     typeZeroParams.map(tz=>{
       typeZeroGlobal[tz.name] = tz;
     })
+    console.log("typeZeroParams ",typeZeroParams);
     const [globalSelected, setGlobalSelected] = useState(typeZeroGlobal);
     const [affects, setAffects] = useState([]);
 
     console.log("Parameters ",product.parameters);
 
     useEffect(()=>{
-      let affectArray = Object.keys(globalSelected).map(index=>(
+      let affectArray = Object.keys(globalSelected)
+        .filter(index=>globalSelected[index].type!==0)
+        .map(index=>(
           Array.isArray(globalSelected[index])?globalSelected[index].filter(f=>!f.selected).map(a=>(a.affect)):
-          globalSelected[index].affect
-        )).flat(2);
+          globalSelected[index].affect))
+        .flat(2);
       setAffects(affectArray);
-      // console.log("PRODUCT ", product)
-      // console.log("AFFECT ", affects)
     },[globalSelected])
 
     function addToCart(){
@@ -68,7 +68,6 @@ export default function Product({product}){
                   computed = {
                     parameter.type===0?affects.filter(
                       a=>{
-                        console.log("AFFECT",a); 
                         return(a && a.parameter && (a.parameter._id===parameter._id))
                       }).map(a=>(a.value))
                     :0
@@ -112,7 +111,6 @@ export async function getStaticProps({params}) {
     newPP.unit = x.unit;
     //========================
     newPP.items = pp.items?[...pp.items.map(ppi=>items.find(i=>i._id===ppi._id))]:null;
-    console.log("NEW PP ITEMS ", newPP)
     return newPP;
   })]
   const newProduct = Object.assign({}, products[0])
