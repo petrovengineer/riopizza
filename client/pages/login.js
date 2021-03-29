@@ -46,7 +46,7 @@ export default function Login(){
                 </Link>
                 <h1 className="h3 mb-3 font-weight-normal">Авторизация</h1>
                 <label htmlFor="inputEmail" className="sr-only">Номер телефона</label>
-                <input type="text" id="phone" onChange={handlePhone} value={phone} className="form-control mb-2" placeholder="Номер телефона" required="" autofocus=""/>
+                <input type="text" id="phone" onChange={handlePhone} value={phone} className="form-control mb-2" placeholder="Номер телефона" required="" autoFocus=""/>
                 <label htmlFor="inputPassword" className="sr-only">Пароль</label>
                 <input type="password" id="password" onChange={handlePassword} value={password} className="form-control" placeholder="Пароль" required=""/>
                 <div className="checkbox mb-3">

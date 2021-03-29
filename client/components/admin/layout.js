@@ -11,7 +11,7 @@ export default function Layout({children}){
 				<title>Панель администратора</title>
 				<link rel="icon" href="/favicon.ico"/>
 			</Head>
-			<nav className="navbar navbar-expand-md navbar-dark " style={{position:'sticky', top:'0', color: 'white'}}>
+			<nav className="navbar navbar-expand-md bg-dark " style={{position:'sticky', top:'0', color: 'white'}}>
 				<div className='container'>
 					<a href="/">
 						<img src="/images/admin_logo.png" className='mb-2 mt-2 mr-4' height={50}/>

@@ -20,15 +20,9 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.use('/graphql',
-    (req,res, next)=>{console.log("REQ ",req.body); next();},
-    graphqlHTTP({
-      schema: schema,
-      graphiql: true,
-    }),
-  );
-
-app.use('/api',require("./routes"));
+app.use('/api',
+  (req,res, next)=>{console.log("REQ ",req.body); next();},
+  require("./routes"));
 
 app.listen(port);
 

@@ -17,40 +17,46 @@ router.get('/', authenticateToken, async (req, res)=>{
     }
     try{
         let products = await Product.find(filter, {},  { sort: { 'created' : -1 }});
-        let extProducts = [];
-        for (let p = 0; p < products.length; p++){
-            let {_id, name, description, img, parameters=[]} = products[p];
-            const extParameters = [];
-            for (let i=0; i<parameters.length; i++){
-                let parameter = await Parameter.findById(parameters[i]._id);
-                if(parameter){
-                    let {_id, name, unit, type, show} = parameter;
-                    let {items = []} = parameters[i];
-                    const extItems = [];
-                    if (type !== 0 && items && items.length!==0) {
-                        for (let k = 0; k < items.length; k++){
-                            let item = await Item.findById(items[k]._id);
-                            extItems.push(item);
-                        }
-                    }
-                    extParameters.push({_id, name, value: parameters[i].value, selected: parameters[i].selected, items: extItems, unit, type, show});
-                }else{
-                    extParameters.push({name: parameters[i].name, 
-                        // parameter_id: parameters[i].parameter_id, 
-                        deleted: true});
-                }
-            }
-            extProducts.push({
-                _id,
-                name,
-                description,
-                img: img.data!=null?{data: Buffer(img.data, 'binary').toString('base64'), contentType: String}:null,
-                parameters: extParameters
-            })
-        }
-        if(extProducts.length===1){
-            res.send(extProducts[0]);
-        }else{res.send(extProducts);}
+        return res.send(products.map(p=>{
+                let newP = Object.assign({}, p.toObject());
+                newP.img = p.img.data!=null?{data: Buffer(p.img.data, 'binary').toString('base64')}:null;
+                // console.log(newP)
+                return newP;
+            }))
+        // let extProducts = [];
+        // for (let p = 0; p < products.length; p++){
+        //     let {_id, name, description, img, parameters=[]} = products[p];
+        //     const extParameters = [];
+        //     for (let i=0; i<parameters.length; i++){
+        //         let parameter = await Parameter.findById(parameters[i]._id);
+        //         if(parameter){
+        //             let {_id, name, unit, type, show} = parameter;
+        //             let {items = []} = parameters[i];
+        //             const extItems = [];
+        //             if (type !== 0 && items && items.length!==0) {
+        //                 for (let k = 0; k < items.length; k++){
+        //                     let item = await Item.findById(items[k]._id);
+        //                     extItems.push(item);
+        //                 }
+        //             }
+        //             extParameters.push({_id, name, value: parameters[i].value, selected: parameters[i].selected, items: extItems, unit, type, show});
+        //         }else{
+        //             extParameters.push({name: parameters[i].name, 
+        //                 // parameter_id: parameters[i].parameter_id, 
+        //                 deleted: true});
+        //         }
+        //     }
+        //     extProducts.push({
+        //         _id,
+        //         name,
+        //         description,
+        //         img: img.data!=null?{data: Buffer(img.data, 'binary').toString('base64'), contentType: String}:null,
+        //         parameters: extParameters
+        //     })
+        // }
+        // if(extProducts.length===1){
+        //     res.send(extProducts[0]);
+        // }else{res.send(extProducts);}
     }
     catch(err){
         console.log(err);

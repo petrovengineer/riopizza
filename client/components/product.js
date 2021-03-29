@@ -2,17 +2,17 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react';
 
 export default function Product({product}){
-    let {_id, name = 'No name', description = '', img, parameters} = product;
+    let {_id, name = 'No name', description = '', img} = product;
     const [composition, setComposition] = useState(null);
     const [price, setPrice] = useState(null);
     useEffect(()=>{
-        setComposition(parameters.find(p=>(p.name==='Состав')));
-        setPrice(parameters.find(p=>(p.name==='Цена')));
-    }, [parameters])
+        setComposition(product.parameters.find(p=>(p.name==='Состав')));
+        setPrice(product.parameters.find(p=>(p.name==='Цена')));
+    }, [])
     return (
         <div className='col-sm-6 col-md-6 col-lg-4 col-xl-3 rounded '>
             <div className='shadow'>
-            <img src={img && img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'} style={{width: '100%'}}/>
+            <img src={img && img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'} className='w-100'/>
             <div className='product p-5 p-sm-4'>
                 <div className='d-flex flex-column justify-content-between' style={{height:'220px'}}>
                     <h5 className='mb-0' style={{minHeight:'50px'}}>

@@ -124,9 +124,9 @@ a:hover{
     right: 30px;
     // visibility: hidden;
     // opacity: 0;
-    -webkit-transition: .5s;
-    -o-transition: .5s;
-    transition: .5s;
+    // -webkit-transition: .5s;
+    // -o-transition: .5s;
+    // transition: .1s;
     a:hover{
       span{
         color:white;
@@ -136,16 +136,16 @@ a:hover{
       border: 1px solid #cc3333;
       background: transparent;
       // margin-top: 10px;
-      width: 45px;
-      height: 45px;
-      line-height: 45px;
-      font-size: 22px;
+      width: 42px;
+      height: 42px;
+      line-height: 42px;
+      font-size: 20px;
       border-radius: 50%;
       display: inline-block;
       text-align: center;
-      -webkit-transition: .5s;
-      -o-transition: .5s;
-      transition: .5s;
+      // -webkit-transition: .5s;
+      // -o-transition: .5s;
+      // transition: .5s;
       color: $red;
       a:hover{
         color: white;
@@ -236,4 +236,7 @@ $fh: 100px;
 }
 .white{
   color: white;
+}
+.w-50{
+  width: 50%;
 }

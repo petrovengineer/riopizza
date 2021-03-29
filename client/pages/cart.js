@@ -10,7 +10,7 @@ export default function Basket(){
 	let {cart:{value:cart=[]}} = context;
 	let amount = 0; 
     cart && cart.map(({affects, parameters, count})=>{
-        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label;
+        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].value;
         amount = amount + (coast*count);
     })
 	useEffect(()=>{
@@ -26,7 +26,7 @@ export default function Basket(){
 				<title>Корзина</title>
 			</Head>
 			<div className='container'>
-				<div className='row shadow bg-white mt-4 p-4'>
+				<div className='row bg-white mt-4 p-4'>
 					<h2 className='mt-4'>
 						Корзина
 					</h2>
@@ -66,7 +66,12 @@ function CartItem({item, index, removeFromCart}){
 	// const [count, setCount] = useState(1)
 	const context = useContext(AppContext);
 	const {name = 'Неизвестно', img = {}, parameters = {}, affects=[]} = item;
-	const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label;
+	let coast = !affects?0:affects.length===0?0:affects
+		.filter(a=>(a.parameter.name==='Цена'))
+		.map(a=>(a.value))
+		.reduce((acc, cur)=>(+acc + +cur),0); 
+	coast = coast + +parameters['Цена'].value;
+	console.log("COAST ", coast)
 	useEffect(()=>{
 		console.log("ITEM ", item)
 	}, [])
@@ -95,24 +100,24 @@ function CartItem({item, index, removeFromCart}){
 				{name}
 			</td>
 			<td>
-				{Object.keys(parameters).map((key)=>{
+				{Object.keys(parameters).map((key, i)=>{
 						if(Array.isArray(parameters[key])){
 							return (
 									parameters[key][0].selected===false ?
-									<span className='badge bg-secondary mr-1' style={{color: 'white'}}>{key}
-										{parameters[key].map((p)=>(
-											<span className='badge bg-success ml-1'>{p.label}</span>
+									<span key={'p'+i} className='badge bg-secondary mr-1' style={{color: 'white'}}>{key}
+										{parameters[key].map((p, i)=>(
+											<span key={'pk'+i} className='badge bg-success ml-1'>{p.label}</span>
 										))}
 									</span>:
-									<span className='badge bg-secondary mr-1' style={{color: 'white'}}>
+									<span key={'p'+i} className='badge bg-secondary mr-1' style={{color: 'white'}}>
 										Исключить: 
-										{parameters[key].map((p)=>(
-											<span className='badge bg-danger mr-1'>{p.label}</span>
+										{parameters[key].map((p,i)=>(
+											<span key={'pp'+i} className='badge bg-danger ml-1'>{p.label}</span>
 										))}
 									</span>
 							)
 						}else{
-							return (parameters[key].type!==0 && !parameters[key].selected && <span className='badge bg-secondary mr-1' style={{color:'white'}}>{key}
+							return (parameters[key].type!==0 && !parameters[key].selected && <span key={'p'+i} className='badge bg-secondary mr-1' style={{color:'white'}}>{key}
 								<span className='badge bg-success ml-1'>{parameters[key].label}</span>
 							</span>)
 						}

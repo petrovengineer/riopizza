@@ -36,7 +36,7 @@ module.exports.Parameter = model('Parameter',{
 	name: String,
     value: String,
     show: {type: Boolean, default: true},
-	available_items: [{value: String, _id: String}],
+	available_items: [{value: String, _id: String, sort: String}],
 	unit: String,
     type: {type: Number, default: 0}, //0-single, 1-checkable, 2-select
     created: {type: Date, default: Date.now},

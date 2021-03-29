@@ -101,6 +101,7 @@ export default function Items(){
                 /></div>
                 {!updateId?<div className='col-12 col-md-6 mt-2'><button className='btn btn-success' onClick={create}>Создать</button></div>
                 :<>
+                    <div className='col-12'></div>
                     <div className='col-12 col-md-6 mt-2'>
                         <Select
                             value={selectedParameter}
@@ -111,6 +112,7 @@ export default function Items(){
                             style={{width:'300px'}}
                         />
                     </div>
+                    <div className='col-12'></div>
                     <div className='col-12 col-md-6 my-2'>
                         <input type="text" id="affect_value" className='w-100 p-2' placeholder='Величина влияния'/>
                     </div>
@@ -120,7 +122,7 @@ export default function Items(){
                     <h5 className='col-12 mt-4 mb-2'>Влияния:</h5>
                     <div className='col'>
                         {items.find(i=>i._id===updateId) && items.find(i=>i._id===updateId).affect.map((a, i)=>(
-                            <span key={i+'aff'} className='badge bg-primary white p-2'>
+                            <span key={i+'aff'} className='badge bg-primary white p-2 mr-1'>
                                 {a.parameter.name + ' ' + a.value + ' '}
                                 <a href="#" onClick={()=>removeAffect(i)}>X</a>
                             </span>
