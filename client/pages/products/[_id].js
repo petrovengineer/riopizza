@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import Layout from '../../components/layout';
+import Parameter from '../../components/parameter';
 import AppContext from '../../context'
-import Select from 'react-select'
 
 export default function Product({product}){
   console.log("PRODUCT ",product)
@@ -26,7 +26,6 @@ export default function Product({product}){
         )).flat(2);
       setAffects(affectArray);
       // console.log("PRODUCT ", product)
-      console.log("GLOBAL ", globalSelected)
       // console.log("AFFECT ", affects)
     },[globalSelected])
 
@@ -66,7 +65,14 @@ export default function Product({product}){
                   parameter = {parameter} 
                   setGlobalSelected = {setGlobalSelected} 
                   globalSelected = {globalSelected}
-                  computed = {parameter.type===0?affects.filter(a=>{console.log("AFFECT",affects); return(a.parameter._id===parameter._id)}).map(a=>(a.value)):0}
+                  computed = {
+                    parameter.type===0?affects.filter(
+                      a=>{
+                        console.log("AFFECT",a); 
+                        return(a && a.parameter && (a.parameter._id===parameter._id))
+                      }).map(a=>(a.value))
+                    :0
+                  }
                 />)
               )}
               {true && <div className={"alert alert-success alert-dismissible fade "+(alert?'show ':'')+(!alert?'hide':'')} role="alert">
@@ -84,82 +90,6 @@ export default function Product({product}){
   )
 }
 
-function Parameter({parameter, setGlobalSelected, globalSelected, computed}){
-  var {
-      _id,
-      name = 'No name', 
-      value = null,
-      items = [],
-      unit = '',
-      type = 0,
-      selected: selectedItems = false
-  } = parameter;
-  
-  const [selected, setSelected] = useState((selectedItems && type===1)?[...items.map(i=>({
-    value: i._id, label: i.value, affect: i.affect
-  }))]:null);
-  function onChangeItem(selected){
-    setSelected(selected);
-    let newGlobalSelected = Object.assign({}, globalSelected);
-    let newSelected;
-    // if(Array.isArray(selected)){
-    //   newSelected = [...selected.map(s=>{
-    //     s.selected = selectedItems;
-    //     return s;
-    //   })]
-    if(Array.isArray(selected)){
-      if(selectedItems){
-        // const fullItems = [...items.map(i=>({
-        //   value: i._id, label: i.value, affect: i.affect
-        // }))]
-        newSelected = [...items.filter(i=>{
-          // i.selected = selectedItems;
-          return selected.find(s=>s.value===i._id)?false:true;
-        }).map(i=>({value: i._id, label: i.value, affect: i.affect, selected: selectedItems, type}))]
-      }
-      else{
-        newSelected = [...selected.map(s=>{
-          s.selected = selectedItems;
-          s.type = type;
-          return s;
-        })]
-      }
-    }else{
-      newSelected = Object.assign({parameterName:name}, selected)
-      newSelected.selected = selectedItems;
-      newSelected.type = type;
-    }
-    console.log("NEW SELECTED", newSelected);
-    newGlobalSelected[name] = newSelected;
-    setGlobalSelected(newGlobalSelected);
-  }
-  return(
-      <div className='row'>
-          <div className={(type===0 ?'col-2 ':'') + 'col-md-4'}><span className='mr-2'>{name}</span></div>
-          {
-              type===0?
-                <>
-                  <div className='col-10 col-md-8 mb-4'><span className='ml-2'>{+value + computed.reduce((acc, cur)=>(+acc + +cur),0)} {unit}</span></div>
-                </>
-              :type===1 || type===2?
-                <div className='col-md-8 mb-4'>
-                  <Select
-                    value={selected}
-                    onChange={onChangeItem}
-                    options={items.map(i=>({
-                      value: i._id, label: i.value+' '+unit, affect: i.affect
-                    }))}
-                    instanceId={_id}
-                    placeholder={'Выбрать ' + name}
-                    isMulti={type===1}
-                  />
-                </div>
-              :''
-          }
-      </div>
-  )
-}
-
 export async function getStaticPaths() {
   const {data: products} = await axios.get('http://localhost:3100/api/product');
   const paths = products.map((product) => ({
@@ -171,17 +101,23 @@ export async function getStaticPaths() {
 export async function getStaticProps({params}) {
   let {_id} = params;
   const {data: products=[]} = await axios.get('/product?_id='+_id);
-  // const {data: parameters} = await axios.get('/parameter', {_id:[...products[0].parameters.map(p=>p===_id)]});
   const {data: parameters} = await axios.get('/parameter');
+  const {data: items} = await axios.get('/item');
   const newParams = [...products[0].parameters.map(pp=>{
     let x = parameters.find(p=>p._id===pp._id)
     let newPP = Object.assign({}, pp);
+    //==========Populate=======
     newPP.type = x.type;
+    newPP.show = x.show;
+    newPP.unit = x.unit;
+    //========================
+    newPP.items = pp.items?[...pp.items.map(ppi=>items.find(i=>i._id===ppi._id))]:null;
+    console.log("NEW PP ITEMS ", newPP)
     return newPP;
   })]
   const newProduct = Object.assign({}, products[0])
   newProduct.parameters = newParams;
-  console.log("NEW PRODUCT", newProduct)
+  // console.log("NEW PRODUCT", newProduct)
   return {
     props: {
       product: newProduct
