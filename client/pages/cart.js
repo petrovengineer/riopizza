@@ -25,13 +25,13 @@ export default function Basket(){
 			<Head>
 				<title>Корзина</title>
 			</Head>
-			<div className='container shadow'>
-				<div className='row bg-white mt-4 p-4'>
-					<h2 className='mt-4 w-100'>
+			<div className='container'>
+				<div className='row px-3'>
+					<h3 className='w-100 rubic mt-4 mb-2 '>
 						Корзина
-					</h2>
+					</h3>
 					{(!cart || cart.length===0) ?<h5>В корзине пока пусто...</h5>:<>
-					<div className='table-responsive shadow'>
+					<div className='table-responsive shadow bg-white'>
 						<table className='table'>
 							<thead>
 								<tr>
@@ -64,7 +64,6 @@ export default function Basket(){
 )}
 
 function CartItem({item, index, removeFromCart}){
-	// const [count, setCount] = useState(1)
 	const context = useContext(AppContext);
 	const {name = 'Неизвестно', img = {}, parameters = {}, affects=[]} = item;
 	let coast = !affects?0:affects.length===0?0:affects
@@ -107,19 +106,19 @@ function CartItem({item, index, removeFromCart}){
 									parameters[key][0].selected===false ?
 									<span key={'p'+i} className='badge bg-secondary mr-1' style={{color: 'white'}}>{key}
 										{parameters[key].map((p, i)=>(
-											<span key={'pk'+i} className='badge bg-success ml-1'>{p.label}</span>
+											<span key={'pk'+i} className='badge bg-success ml-1'>{p.value}</span>
 										))}
 									</span>:
 									<span key={'p'+i} className='badge bg-secondary mr-1' style={{color: 'white'}}>
 										Исключить: 
 										{parameters[key].map((p,i)=>(
-											<span key={'pp'+i} className='badge bg-danger ml-1'>{p.label}</span>
+											<span key={'pp'+i} className='badge bg-danger ml-1'>{p.value}</span>
 										))}
 									</span>
 							)
 						}else{
 							return (parameters[key].type!==0 && !parameters[key].selected && <span key={'p'+i} className='badge bg-secondary mr-1' style={{color:'white'}}>{key}
-								<span className='badge bg-success ml-1'>{parameters[key].label}</span>
+								<span className='badge bg-success ml-1'>{parameters[key].value}</span>
 							</span>)
 						}
 					})
