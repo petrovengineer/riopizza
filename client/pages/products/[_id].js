@@ -51,7 +51,7 @@ export default function Product({product}){
               <img 
                 className=' float-md-right rounded mb-4'
                 width="300"
-                src={img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'}
+                src={(img && img.data)?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'}
               />
             </div>
             <div className='col-md-6'>
