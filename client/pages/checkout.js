@@ -6,11 +6,10 @@ import Layout from '../components/layout';
 import axios from 'axios';
 import {useRouter} from 'next/router'
 
-
 const Order = ()=>{
     const router = useRouter();
     const context = useContext(AppContext);
-    const {cart: cartFull} = context;
+    const {cart: cartFull, orders, accessToken} = context;
     const {cart:{value:cart=[]}, user} = context;
     const [err, setErr] = useState(false);
     const [name, setName] = useState('');
@@ -28,7 +27,7 @@ const Order = ()=>{
 
     let amount = 0; 
     cart && cart.map(({affects, parameters, count})=>{
-        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label;
+        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].value;
         amount = amount + (coast * count);
     })
 
@@ -71,6 +70,7 @@ const Order = ()=>{
             // if(user.value.floor!=null)setFloor(user.value.floor);
         }
     }, [user])
+
     const makeOrder = async ()=>{
         try{
             let re = /^\+(7\d{10})$/;
@@ -113,31 +113,23 @@ const Order = ()=>{
                     {
                         product: {_id: product._id, name: product.name},
                         count,
-                        coast: affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label,
+                        coast: affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].value,
                         parameters: Object.keys(parameters).map(key=>{
-                            if(Array.isArray(parameters[key])){
-                                return {
-                                    name: key,
-                                    selected: parameters[key][0].selected,
-                                    items: parameters[key].map(item=>({
-                                        _id: item.value,
-                                        name: item.label,
-                                    })),
-                                    ptype: parameters[key][0].type || 0,
+                            const p = parameters[key];
+                            return {
+                                    _id: p.parameter._id,
+                                    parameter: {
+                                        _id: p.parameter._id, 
+                                        name: p.parameter.name, 
+                                        type: p.parameter.type, 
+                                        selected: p.parameter.selected,
+                                        unit: p.parameter.unit
+                                    },
+                                    value: p.value || '',
+                                    items: Array.isArray(p.items)?
+                                    p.items.map(i=>({_id: i._id, name: i.value}))
+                                    : p.items?{_id: p.items._id, name: p.items.value}:null,
                                 }
-                            }
-                            else{
-                                return (
-                                    {
-                                        name: key,
-                                        ptype: parameters[key].type || 0,
-                                        items: [{
-                                            _id: parameters[key].value,
-                                            name: parameters[key].label
-                                        }]
-                                    }
-                                )
-                            }
                         })
                     }
                 )
@@ -153,11 +145,15 @@ const Order = ()=>{
                 comment
             }
             var {data:newOrder} = await axios.post(process.env.NEXT_PUBLIC_API+'/order', payload);
-            console.log("PAYLOAD ", newOrder)
+                console.log("ТОКЕН", accessToken)
+                if(!accessToken || !accessToken.value){
+                console.log("ADD LOCAL")
+                const newOrders = orders.value?[...orders.value, newOrder]:[newOrder];
+                orders.set(context, newOrders);
+            }
             setLoad(false);
             cartFull.clear(context);
-            router.push('/orders?=complite');
-            // setComplite(true);
+            router.push('/orders');
         }catch(err){
             setLoad(false);
             console.log(err);

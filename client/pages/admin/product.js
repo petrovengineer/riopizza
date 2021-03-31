@@ -59,10 +59,12 @@ export default function Product(){
         })
         reset();
     }
+
     function reset(){
         setSelectedParameter(null);
         setSelectedItems(null);
     }
+
     const handleFile = (e, _id)=>{
         let file = e.target.files[0];
         let formData = new FormData();
@@ -77,6 +79,7 @@ export default function Product(){
             console.log(err);
         });
     }
+    
     async function onChangeParameter(selected){
         const selectedParameter = parameters.find(p=>p._id===selected.value)
         selected.type = selectedParameter.type;

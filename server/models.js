@@ -80,15 +80,9 @@ module.exports.Order = model('Order',
                 coast: Number,
                 parameters: [
                     {
-                        name: String,
-                        items:[
-                            {
-                                _id: String,
-                                name: String
-                            }
-                        ],
-                        selected: Boolean,
-                        ptype: Number
+                        parameter: {_id: String, name: String, type: {type: Number}, selected: Boolean, unit: String},
+                        value: String,
+                        items:[{_id: String, name: String}],
                     }
                 ]
             }

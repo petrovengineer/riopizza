@@ -13,28 +13,33 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
     } = parameter;
     
     const [selected, setSelected] = useState((selectedItems && type===1)?[...items.map(i=>({value: i._id, label: i.value}))]:null);
+
     function onChangeItem(selected){
       setSelected(selected);
       let newGlobalSelected = Object.assign({}, globalSelected);
       let newSelected;
-
+      console.log("ITEMS", items)
       if(Array.isArray(selected)){
         if(selectedItems){
-          newSelected = [...items.filter(i=>{
-            return selected.find(s=>s.value===i._id)?false:true; //ИСКЛЮЧИТЬ
-          })]
+          newSelected = {parameter, items: [...items.filter(i=>{
+              return selected.find(s=>s.value===i._id)?false:true; //ИСКЛЮЧИТЬ
+            })]}
+          // newSelected = [...items.filter(i=>{
+          //   return selected.find(s=>s.value===i._id)?false:true; //ИСКЛЮЧИТЬ
+          // })]
         }
         else{
-          newSelected = [...items.filter(i=>{
+          newSelected = {parameter, items: [...items.filter(i=>{
             return selected.find(s=>s.value===i._id)?true:false; 
-          })]
+          })]}
         }
       }else{
-        newSelected = items.find(i=>i._id===selected.value)
+        newSelected = {parameter, items: items.find(i=>i._id===selected.value)}
       }
       newGlobalSelected[name] = newSelected;
       setGlobalSelected(newGlobalSelected);
     }
+
     return(
         <div className='row'>
             <div className={(type===0 ?'col-2 ':'') + 'col-md-4'}><span className='mr-2'>{name}</span></div>
