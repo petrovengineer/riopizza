@@ -98,22 +98,33 @@ export async function getStaticPaths() {
 export async function getStaticProps({params}) {
   let {_id} = params;
   const {data: products=[]} = await axios.get('/product?_id='+_id);
-  const {data: parameters} = await axios.get('/parameter');
-  const {data: items} = await axios.get('/item');
-  const newParams = [...products[0].parameters.map(pp=>{
-    let x = parameters.find(p=>p._id===pp._id)
+  const {data: paramsData} = await axios.get('/parameter');
+  const {data: itemsData} = await axios.get('/item');
+
+  const productData = products[0];
+
+  const fullParams = productData.parameters.map(pp=>{
+    let fullPP = paramsData.find(p=>p._id===pp._id);
+    if(!fullPP){return {_id: pp._id, name: pp.name, deleted: true}}
     let newPP = Object.assign({}, pp);
     //==========Populate=======
-    newPP.type = x.type;
-    newPP.show = x.show;
-    newPP.unit = x.unit;
+    newPP.type = fullPP.type;
+    newPP.show = fullPP.show;
+    newPP.unit = fullPP.unit;
     //========================
-    newPP.items = pp.items?[...pp.items.map(ppi=>items.find(i=>i._id===ppi._id))]:null;
+    if(pp.items){
+        const fullItems = pp.items.map(ppi=>{
+            const fullItem = itemsData.find(i=>i._id===ppi._id);
+            if(!fullItem){return {_id:ppi._id, value: ppi.value, deleted: true}}
+            return fullItem;
+          });
+          newPP.items = fullItems;
+    }
     return newPP;
-  })]
-  const newProduct = Object.assign({}, products[0])
-  newProduct.parameters = newParams;
-  // console.log("NEW PRODUCT", newProduct)
+  });
+  const newProduct = Object.assign({}, productData);
+  newProduct.parameters = fullParams;
+
   return {
     props: {
       product: newProduct
