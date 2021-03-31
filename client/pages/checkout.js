@@ -9,7 +9,7 @@ import {useRouter} from 'next/router'
 const Order = ()=>{
     const router = useRouter();
     const context = useContext(AppContext);
-    const {cart: cartFull} = context;
+    const {cart: cartFull, orders, accessToken} = context;
     const {cart:{value:cart=[]}, user} = context;
     const [err, setErr] = useState(false);
     const [name, setName] = useState('');
@@ -144,11 +144,16 @@ const Order = ()=>{
                 pay,
                 comment
             }
-            console.log("PAYLOAD ", payload);
             var {data:newOrder} = await axios.post(process.env.NEXT_PUBLIC_API+'/order', payload);
+                console.log("ТОКЕН", accessToken)
+                if(!accessToken || !accessToken.value){
+                console.log("ADD LOCAL")
+                const newOrders = orders.value?[...orders.value, newOrder]:[newOrder];
+                orders.set(context, newOrders);
+            }
             setLoad(false);
             cartFull.clear(context);
-            router.push('/orders?=complite');
+            router.push('/orders');
         }catch(err){
             setLoad(false);
             console.log(err);

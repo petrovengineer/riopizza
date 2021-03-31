@@ -53,7 +53,7 @@ router.post('/', authenticateToken, async (req, res)=>{
                 cart,
                 name, 
                 phone,
-                user_id: user._id || null,
+                user_id: user?user._id:null,
                 address,
                 apnumber,
                 floor,

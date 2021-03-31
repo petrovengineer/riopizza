@@ -7,18 +7,30 @@ import { useContext } from 'react';
 
 
 export default function Orders(){
-	const {user, accessToken} = useContext(AppContext);
+	const context = useContext(AppContext);
+	const {user, accessToken, orders: ordersLocal} = context;
     const [orders, setOrders] = useState(null)
     useEffect(async ()=>{
-		if(accessToken){
+		console.log("ACCESS TOKEN", accessToken)
+		if(accessToken && accessToken.value){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken.value;
             axios.defaults.headers.post['Content-Type'] = 'application/json';
 			const {data=[]} = await axios.get(process.env.NEXT_PUBLIC_API+'/order');
+			console.log("SET DATA")
 			setOrders(data)
-			console.log(data)
 		}
-    },[accessToken])
-    // useEffect(()=>{console.log("ORDERS",orders)},[orders])
+		else if((!accessToken || !accessToken.value) && (ordersLocal && ordersLocal.value)){
+			console.log("SET LOCAL IN TOKEN")
+			setOrders(ordersLocal.value)
+		}
+    },[accessToken && accessToken.value])
+    useEffect(()=>{
+		console.log("ORDERS Local",ordersLocal)
+		if((!accessToken || !accessToken.value) && (ordersLocal && ordersLocal.value)){
+			console.log("SET LOCAL")
+			setOrders(ordersLocal.value)
+		}
+	},[ordersLocal])
     return(
         <Layout>
 			<Head>
@@ -26,9 +38,9 @@ export default function Orders(){
 			</Head>
 			<div className='container'>
 				<div className='row px-3'>
-					<h3 className='mt-4 mb-2 w-100 rubic'>
-						Заказы
-					</h3>
+					<h4 className='mt-4 mb-2 w-100 rubic'>
+						Заказы {(!accessToken || !accessToken.value) && 'без авторизации'}
+					</h4>
 					{(!orders || orders.length===0) ?<h5>Заказов пока нет...</h5>:
 						<div className='table-responsive shadow bg-white'>
 							<table className='table '>
