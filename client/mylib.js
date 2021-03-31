@@ -24,11 +24,24 @@ export function Element(url, data, setData){
         return new Promise(async (done, fail)=>{
             try{
                 const {data} = await axios.get(this.url);
+                console.log("FETCH!!!!!!!!!!!!!!!")
                 done(data);
             }catch{
             }
         })
     }
+
+    this.fetchOneWithPromise = function(){
+        return new Promise(async (done, fail)=>{
+            try{
+                const {data} = await axios.get(this.url);
+                console.log("FETCH ONE")
+                done(((Array.isArray(data) && data.length===1) && data[0]) || null);
+            }catch{
+            }
+        })
+    }
+
     this.create = async function(args){
         if(!args){alert('Название не должно быть пустым!'); return;}
         const {data: newElement} = await axios.post(this.url, args);

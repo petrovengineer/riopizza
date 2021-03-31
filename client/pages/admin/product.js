@@ -6,7 +6,7 @@ import axios from "axios";
 import queryString from 'query-string'
 
 export default function Product(){
-    const [product, setProduct] = useState({})
+    const [product, setProduct] = useState(null)
     const [parameters, setParameters] = useState([])
     const [items, setItems] = useState([])
     const [selectedParameter, setSelectedParameter] = useState(null)
@@ -19,16 +19,46 @@ export default function Product(){
         var itemsFetcher = new Fetcher('/item', items, setItems);
     }
 
-    useEffect(()=>{console.log(product)},[product])
+
     useEffect(async()=>{
-        productFetcher.fetchOne();
-        parametersFetcher.fetch();    
-        parametersFetcher.fetch();    
+        const productData = await productFetcher.fetchOneWithPromise();
+        const paramsData = await parametersFetcher.fetchWithPromise();
+        const itemsData = await itemsFetcher.fetchWithPromise();
+        setParameters(paramsData);    
+        setItems(itemsData);   
+        // setProduct(productData);
+        populate(productData, paramsData, itemsData); 
+
         // const {data} = await axios.get(process.env.NEXT_PUBLIC_API+'/parameter');
         // const parametersData = Array.isArray(data)?data : [data];
         // console.log("PDATA ", parametersData);
         // setParameters(parametersData.map(p=>({value:p._id, label:p.name, type:p.type, available_items:p.available_items})))
     },[])
+
+    function populate(productData, paramsData, itemsData){
+        const fullParams = productData.parameters.map(pp=>{
+            let fullPP = paramsData.find(p=>p._id===pp._id);
+            if(!fullPP){return {_id: pp._id, name: pp.name, deleted: true}}
+            let newPP = Object.assign({}, pp);
+            //==========Populate=======
+            newPP.type = fullPP.type;
+            newPP.show = fullPP.show;
+            newPP.unit = fullPP.unit;
+            //========================
+            if(pp.items){
+                const fullItems = pp.items.map(ppi=>{
+                    const fullItem = itemsData.find(i=>i._id===ppi._id);
+                    if(!fullItem){return {_id:ppi._id, value: ppi.value, deleted: true}}
+                    return fullItem;
+                  });
+                  newPP.items = fullItems;
+            }
+            return newPP;
+          });
+        const newProduct = Object.assign({}, productData);
+        newProduct.parameters = fullParams;
+        setProduct(newProduct);
+    }
 
     function save(){
         const name = document.getElementById('name').value
@@ -114,25 +144,25 @@ export default function Product(){
                 </h4>
                 <div className='col'>
                     <form className='d-flex justify-content-center justify-content-md-end'>
-                        <label htmlFor={product._id} style={{cursor:'pointer'}}>
+                        <label htmlFor={product && product._id} style={{cursor:'pointer'}}>
                             <img 
                                 alt="" 
                                 height="300" 
                                 width="300" 
                                 className='rounded'
-                                src={(!product.img || !product.img.data)?'/images/noimage.png':`data:image/jpeg;base64,${product.img.data}`}
+                                src={(product && (!product.img || !product.img.data))?'/images/noimage.png':`data:image/jpeg;base64,${product && product.img.data}`}
                             />
                         </label>
-                        <input type="file" id={product._id} name="file" 
+                        <input type="file" id={product && product._id} name="file" 
                         onChange={(e)=>{handleFile(e, product._id)}} style={{display:'none'}}></input>
                     </form>
                 </div>
                 <div className='col'>
                     <input className='mb-2 ml-2 p-1' type='text' id='name' placeholder='Наименование'
-                        defaultValue={product.name}
+                        defaultValue={product && product.name}
                     />
                     <input className='mb-2 ml-2  p-1' type='text' id='description' placeholder='Описание'
-                        defaultValue={product.description}
+                        defaultValue={product && product.description}
                     />
                     <button className='btn ml-2' onClick={save}>Сохранить</button>
                     <div className='ml-2 mb-2 mt-3'>
@@ -176,7 +206,7 @@ export default function Product(){
                                     <span className='badge bg-success mr-1'>{parameter.value}</span>
                                     {parameter.items && parameter.items.length>0 && 
                                         parameter.items.map((item,i)=>(
-                                            <span key={'item'+i} className='badge bg-primary mr-1'>{item.value}</span>
+                                            <span key={'item'+i} className='badge bg-primary mr-1'>{item.value} {item.deleted && '(Не существует)'}</span>
                                         ))
                                     }
                                     <span className='badge bg-danger' 
