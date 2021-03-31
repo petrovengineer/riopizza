@@ -21,17 +21,20 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
       console.log("ITEMS", items)
       if(Array.isArray(selected)){
         if(selectedItems){
-          newSelected = [...items.filter(i=>{
-            return selected.find(s=>s.value===i._id)?false:true; //ИСКЛЮЧИТЬ
-          })]
+          newSelected = {parameter, items: [...items.filter(i=>{
+              return selected.find(s=>s.value===i._id)?false:true; //ИСКЛЮЧИТЬ
+            })]}
+          // newSelected = [...items.filter(i=>{
+          //   return selected.find(s=>s.value===i._id)?false:true; //ИСКЛЮЧИТЬ
+          // })]
         }
         else{
-          newSelected = [...items.filter(i=>{
+          newSelected = {parameter, items: [...items.filter(i=>{
             return selected.find(s=>s.value===i._id)?true:false; 
-          })]
+          })]}
         }
       }else{
-        newSelected = items.find(i=>i._id===selected.value)
+        newSelected = {parameter, items: items.find(i=>i._id===selected.value)}
       }
       newGlobalSelected[name] = newSelected;
       setGlobalSelected(newGlobalSelected);

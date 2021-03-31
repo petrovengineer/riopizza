@@ -82,15 +82,15 @@ function Order({order:{number, created, cart, pay, status}}){
                     <span className='badge bg-secondary mr-2' key={'ci'+i}>
                         {item.product.name}
                         {item.parameters.map((p,i)=>{
-                            if(p.ptype!==0){
-                                if(p.selected){
+                            if(p.parameter && p.parameter.type!==0){
+                                if(p.parameter.selected){
                                     return <span key={'pi'+i} className='badge bg-danger ml-2'>
                                                 Исключить: {p.items.map(i=>(i.name))}
                                             </span>
                                 }
                                 else{
                                     return <span key={'pi'+i} className='badge bg-success ml-2'>
-                                        {p.name} {p.items.map(i=>(i.name))}
+                                        {p.parameter.name} {p.items && p.items.map(i=>(i.name))} {p.parameter.unit}
                                     </span>
                                 }
                             }

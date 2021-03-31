@@ -115,35 +115,21 @@ const Order = ()=>{
                         count,
                         coast: affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].value,
                         parameters: Object.keys(parameters).map(key=>{
-                            if(Array.isArray(parameters[key])){
-                                return {
-                               
-                                    // name: key,
-                                    // selected: parameters[key][0].selected,
-                                    // items: parameters[key].map(item=>({
-                                    //     _id: item.value,
-                                    //     name: item.label,
-                                    // })),
-                                    // ptype: parameters[key][0].type || 0,
+                            const p = parameters[key];
+                            return {
+                                    _id: p.parameter._id,
+                                    parameter: {
+                                        _id: p.parameter._id, 
+                                        name: p.parameter.name, 
+                                        type: p.parameter.type, 
+                                        selected: p.parameter.selected,
+                                        unit: p.parameter.unit
+                                    },
+                                    value: p.value || '',
+                                    items: Array.isArray(p.items)?
+                                    p.items.map(i=>({_id: i._id, name: i.value}))
+                                    : p.items?{_id: p.items._id, name: p.items.value}:null,
                                 }
-                            }
-                            else{
-                                return (
-                                    {
-                                        name: key,
-                                        type: parameters[key].type,
-                                        value: parameters[key].value
-                                    }
-                                    // {
-                                    //     name: key,
-                                    //     ptype: parameters[key].type || 0,
-                                    //     items: [{
-                                    //         _id: parameters[key].value,
-                                    //         name: parameters[key].label
-                                    //     }]
-                                    // }
-                                )
-                            }
                         })
                     }
                 )
@@ -158,11 +144,11 @@ const Order = ()=>{
                 pay,
                 comment
             }
-            // var {data:newOrder} = await axios.post(process.env.NEXT_PUBLIC_API+'/order', payload);
-            console.log("NEW CART ", newCart)
-            // setLoad(false);
-            // cartFull.clear(context);
-            // router.push('/orders?=complite');
+            console.log("PAYLOAD ", payload);
+            var {data:newOrder} = await axios.post(process.env.NEXT_PUBLIC_API+'/order', payload);
+            setLoad(false);
+            cartFull.clear(context);
+            router.push('/orders?=complite');
         }catch(err){
             setLoad(false);
             console.log(err);

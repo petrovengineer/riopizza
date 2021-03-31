@@ -51,7 +51,7 @@ export default function Basket(){
 						</table>
 					</div>
 					<div className='d-flex justify-content-end mt-4' style={{width:'100%'}}>
-                        <h5 className='mr-4 pt-2'>К оплате {amount} руб</h5>
+                        <h5 className='mr-4 pt-2' style={{fontWeight:'900'}}>К оплате {amount} руб</h5>
 						<Link href={'/checkout'}>
 							<button className='btn btn-danger' style={{float:'right'}}>Оформить</button>
 						</Link>
@@ -71,7 +71,6 @@ function CartItem({item, index, removeFromCart}){
 		.map(a=>(a.value))
 		.reduce((acc, cur)=>(+acc + +cur),0); 
 	coast = coast + +parameters['Цена'].value;
-	console.log("COAST ", coast)
 	useEffect(()=>{
 		console.log("ITEM ", item)
 	}, [])
@@ -101,24 +100,24 @@ function CartItem({item, index, removeFromCart}){
 			</td>
 			<td>
 				{Object.keys(parameters).map((key, i)=>{
-						if(Array.isArray(parameters[key])){
+						if(Array.isArray(parameters[key].items)){
 							return (
-									parameters[key][0].selected===false ?
+									parameters[key].parameter.selected===false ?
 									<span key={'p'+i} className='badge bg-secondary mr-1' style={{color: 'white'}}>{key}
-										{parameters[key].map((p, i)=>(
+										{parameters[key].items.map((p, i)=>(
 											<span key={'pk'+i} className='badge bg-success ml-1'>{p.value}</span>
 										))}
 									</span>:
 									<span key={'p'+i} className='badge bg-secondary mr-1' style={{color: 'white'}}>
 										Исключить: 
-										{parameters[key].map((p,i)=>(
+										{parameters[key].items.map((p,i)=>(
 											<span key={'pp'+i} className='badge bg-danger ml-1'>{p.value}</span>
 										))}
 									</span>
 							)
 						}else{
-							return (parameters[key].type!==0 && !parameters[key].selected && <span key={'p'+i} className='badge bg-secondary mr-1' style={{color:'white'}}>{key}
-								<span className='badge bg-success ml-1'>{parameters[key].value}</span>
+							return (parameters[key].parameter.type!==0 && !parameters[key].parameter.selected && <span key={'p'+i} className='badge bg-secondary mr-1' style={{color:'white'}}>{key}
+								<span className='badge bg-success ml-1'>{parameters[key].items.value + parameters[key].parameter.unit}</span>
 							</span>)
 						}
 					})

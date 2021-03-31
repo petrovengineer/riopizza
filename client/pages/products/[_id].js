@@ -11,22 +11,20 @@ export default function Product({product}){
     const typeZeroGlobal = {}
     const typeZeroParams = parameters.filter(p=>(p.type===0));
     typeZeroParams.map(tz=>{
-      typeZeroGlobal[tz.name] = tz;
+      typeZeroGlobal[tz.name] = {parameter: tz, value: tz.value};
     })
+
     const [globalSelected, setGlobalSelected] = useState(typeZeroGlobal);
     const [affects, setAffects] = useState([]);
 
     useEffect(()=>{
       console.log("GLOBAL SELECTED ", globalSelected)
       let affectArray = Object.keys(globalSelected)
-        .filter(index=>globalSelected[index].type!==0)
-        .map(index=>(
-          Array.isArray(globalSelected[index])?
-            globalSelected[index]
-            .filter(f=>!f.selected)
-            .map(a=>(a.affect))
-          :globalSelected[index].affect))
-        .flat(2);
+        .filter(key=>globalSelected[key].parameter.type!==0 && !globalSelected[key].parameter.selected)
+        .map(key=>(
+          Array.isArray(globalSelected[key].items)?globalSelected[key].items.map(a=>(a.affect)):globalSelected[key].items.affect)
+        )
+        .flat(2)
       setAffects(affectArray);
     },[globalSelected])
 
@@ -44,6 +42,7 @@ export default function Product({product}){
       context.cart.set(context, newCart)
       setAlert(true);
     }
+
     return(
       <Layout>
         <div className='container mt-4 product-page p-4 shadow'>
