@@ -6,7 +6,6 @@ import Layout from '../components/layout';
 import axios from 'axios';
 import {useRouter} from 'next/router'
 
-
 const Order = ()=>{
     const router = useRouter();
     const context = useContext(AppContext);
@@ -28,7 +27,7 @@ const Order = ()=>{
 
     let amount = 0; 
     cart && cart.map(({affects, parameters, count})=>{
-        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label;
+        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].value;
         amount = amount + (coast * count);
     })
 
@@ -71,6 +70,7 @@ const Order = ()=>{
             // if(user.value.floor!=null)setFloor(user.value.floor);
         }
     }, [user])
+
     const makeOrder = async ()=>{
         try{
             let re = /^\+(7\d{10})$/;
@@ -113,29 +113,35 @@ const Order = ()=>{
                     {
                         product: {_id: product._id, name: product.name},
                         count,
-                        coast: affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label,
+                        coast: affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].value,
                         parameters: Object.keys(parameters).map(key=>{
                             if(Array.isArray(parameters[key])){
                                 return {
-                                    name: key,
-                                    selected: parameters[key][0].selected,
-                                    items: parameters[key].map(item=>({
-                                        _id: item.value,
-                                        name: item.label,
-                                    })),
-                                    ptype: parameters[key][0].type || 0,
+                               
+                                    // name: key,
+                                    // selected: parameters[key][0].selected,
+                                    // items: parameters[key].map(item=>({
+                                    //     _id: item.value,
+                                    //     name: item.label,
+                                    // })),
+                                    // ptype: parameters[key][0].type || 0,
                                 }
                             }
                             else{
                                 return (
                                     {
                                         name: key,
-                                        ptype: parameters[key].type || 0,
-                                        items: [{
-                                            _id: parameters[key].value,
-                                            name: parameters[key].label
-                                        }]
+                                        type: parameters[key].type,
+                                        value: parameters[key].value
                                     }
+                                    // {
+                                    //     name: key,
+                                    //     ptype: parameters[key].type || 0,
+                                    //     items: [{
+                                    //         _id: parameters[key].value,
+                                    //         name: parameters[key].label
+                                    //     }]
+                                    // }
                                 )
                             }
                         })
@@ -152,12 +158,11 @@ const Order = ()=>{
                 pay,
                 comment
             }
-            var {data:newOrder} = await axios.post(process.env.NEXT_PUBLIC_API+'/order', payload);
-            console.log("PAYLOAD ", newOrder)
-            setLoad(false);
-            cartFull.clear(context);
-            router.push('/orders?=complite');
-            // setComplite(true);
+            // var {data:newOrder} = await axios.post(process.env.NEXT_PUBLIC_API+'/order', payload);
+            console.log("NEW CART ", newCart)
+            // setLoad(false);
+            // cartFull.clear(context);
+            // router.push('/orders?=complite');
         }catch(err){
             setLoad(false);
             console.log(err);

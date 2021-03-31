@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
     accessToken: null,
     refreshToken: null,
     cart: [],
+    orders: [],
   });
   useEffect(()=>{
     let newState = {};

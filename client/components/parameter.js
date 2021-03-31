@@ -13,11 +13,12 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
     } = parameter;
     
     const [selected, setSelected] = useState((selectedItems && type===1)?[...items.map(i=>({value: i._id, label: i.value}))]:null);
+
     function onChangeItem(selected){
       setSelected(selected);
       let newGlobalSelected = Object.assign({}, globalSelected);
       let newSelected;
-
+      console.log("ITEMS", items)
       if(Array.isArray(selected)){
         if(selectedItems){
           newSelected = [...items.filter(i=>{
@@ -35,6 +36,7 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
       newGlobalSelected[name] = newSelected;
       setGlobalSelected(newGlobalSelected);
     }
+
     return(
         <div className='row'>
             <div className={(type===0 ?'col-2 ':'') + 'col-md-4'}><span className='mr-2'>{name}</span></div>
