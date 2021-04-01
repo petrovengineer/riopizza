@@ -10,7 +10,7 @@ export default function Basket(){
 	let {cart:{value:cart=[]}} = context;
 	let amount = 0; 
     cart && cart.map(({affects, parameters, count})=>{
-        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].value;
+        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + (parameters['Цена']?+parameters['Цена'].value:0);
         amount = amount + (coast*count);
     })
 	useEffect(()=>{
@@ -70,7 +70,7 @@ function CartItem({item, index, removeFromCart}){
 		.filter(a=>(a.parameter.name==='Цена'))
 		.map(a=>(a.value))
 		.reduce((acc, cur)=>(+acc + +cur),0); 
-	coast = coast + +parameters['Цена'].value;
+	coast = coast + +(parameters['Цена']?+parameters['Цена'].value:0);
 	useEffect(()=>{
 		console.log("ITEM ", item)
 	}, [])
@@ -124,7 +124,7 @@ function CartItem({item, index, removeFromCart}){
 				}
 			</td>
 			<td>
-				{coast} руб
+				{coast?coast+'руб':'По запросу'}
 				{/* {affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label} */}
 			</td>
 			<td>

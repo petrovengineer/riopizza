@@ -64,13 +64,15 @@ export default function Items(){
         reset();
     }
     function addAffect(){
+        var r = /\d+/;
         const affectValueInput = document.getElementById('affect_value');
+        alert(affectValueInput.value.match(r))
         const item = items.find(i=>i._id===updateId);
         const oldAffect = item.affect?[...item.affect]:[];
         Item.update({
             _id: updateId,
             affect: [...oldAffect, {
-                value: affectValueInput.value,
+                value: +affectValueInput.value.match(r),
                 parameter: {name: selectedParameter.label, _id: selectedParameter.value}
             }],
         })
