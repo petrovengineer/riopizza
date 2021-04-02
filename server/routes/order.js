@@ -1,18 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
-const {Order, User, Change, Customer} = require('../models');
-const {authenticateToken, isAdmin} = require('./auth');
+const {Order, User} = require('../models');
+const {authenticateToken, isOperator} = require('./auth');
 
 router.get('/', authenticateToken, async (req, res)=>{
     let filter = {};
     if(req.phone){
         filter = {phone: req.phone}
-    }else if(!req.phone){
+    }else{
         filter = {_id:0}
-        // res.sendStatus(200);
     }
-    console.log("FILTER",req.admin, req.phone, filter)
+    if(req.operator){filter = {}}
+    console.log("FILTER",req.operator, req.phone, filter)
     try{
         Order.find(filter,{}, { sort: { 'created' : -1 }}).
         exec((err, docs)=>{
@@ -23,22 +22,6 @@ router.get('/', authenticateToken, async (req, res)=>{
         res.sendStatus(500);
     }
 })
-
-// router.get('/', authenticateToken, async (req, res)=>{
-//     let filter = {};
-//     if(req.query){
-//         filter = req.query
-//     }
-//     try{
-//         Order.find(filter,{}, { sort: { 'created' : -1 }}).
-//         exec((err, docs)=>{
-//             res.send(docs);
-//         })
-//     }
-//     catch(err){
-//         res.sendStatus(500);
-//     }
-// })
 
 router.post('/', authenticateToken, async (req, res)=>{
     try{
@@ -73,7 +56,7 @@ router.post('/', authenticateToken, async (req, res)=>{
     }
 })
 
-router.put('/', authenticateToken, isAdmin, async (req, res)=>{
+router.put('/', authenticateToken, isOperator, async (req, res)=>{
     const {_id} = req.body;
     const update = Object.assign({}, req.body);
     delete update._id;
@@ -86,7 +69,7 @@ router.put('/', authenticateToken, isAdmin, async (req, res)=>{
     }
 })
 
-router.delete('/', authenticateToken, isAdmin, async (req, res)=>{
+router.delete('/', authenticateToken, isOperator, async (req, res)=>{
     const {_id} = req.body;
     try{
         if(_id!=null){

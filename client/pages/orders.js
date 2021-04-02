@@ -4,7 +4,7 @@ import Layout from '../components/layout';
 import axios from 'axios';
 import AppContext from '../context';
 import { useContext } from 'react';
-
+import {formatTime} from '../mylib';
 
 export default function Orders(){
 	const context = useContext(AppContext);
@@ -74,13 +74,6 @@ function Order({order:{number, created, cart, pay, status}}){
 	useEffect(()=>{
 
 	}, [])
-    const formatTime = (iso)=>{
-        const addZero = (num)=>{
-            return num<10?'0'+num:num
-        }
-        let date = new Date(iso)
-        return addZero(date.getHours()) +':'+addZero(date.getMinutes()) +' '+addZero(date.getDate()) +'.'+Number.parseInt(date.getMonth()+1)+'.'+date.getFullYear()
-    }
 	return(
 		<tr>
 			<td>

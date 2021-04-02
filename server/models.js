@@ -13,6 +13,7 @@ module.exports.User = model('User', {
     appart_number: String,
     floor: String,
     admin: {type: Boolean, default: false},
+    operator: {type: Boolean, default: false},
 });
 
 module.exports.Product = model('Product',{

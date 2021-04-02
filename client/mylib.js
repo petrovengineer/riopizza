@@ -1,5 +1,21 @@
 import axios from "axios";
 
+if(typeof window!='undefined'){
+    axios.interceptors.request.use(
+        config => {
+          if (!config.headers.Authorization) {
+            const token = JSON.parse(localStorage.getItem("accessToken"));
+            if (token) {
+              config.headers.Authorization = `Bearer ${token}`;
+            }
+          }
+          return config;
+        },
+        error => Promise.reject(error)
+      );
+      axios.defaults.headers.post['Content-Type'] = 'application/json';
+}
+
 export function Element(url, data, setData){
     this.url = process.env.NEXT_PUBLIC_API+url;
 
@@ -71,4 +87,12 @@ export function Element(url, data, setData){
             setData(data);
         }catch(e){console.log(e); alert('Ошибка, обратитесь к администратору!')}
     }
+}
+
+export function formatTime(iso){
+    const addZero = (num)=>{
+        return num<10?'0'+num:num
+    }
+    let date = new Date(iso)
+    return addZero(date.getHours()) +':'+addZero(date.getMinutes()) +' '+addZero(date.getDate()) +'.'+Number.parseInt(date.getMonth()+1)+'.'+date.getFullYear()
 }

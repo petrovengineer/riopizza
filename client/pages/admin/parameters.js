@@ -172,8 +172,8 @@ export default function Parameters(){
                             <td>{parameter.name}</td>
                             <td>{types.find(t=>t.value===parameter.type).label}</td>
                             <td>{parameter.unit}</td>
-                            <td>{parameter.available_items && parameter.available_items.map(ai=>(
-                                    <span className='badge bg-primary p-1 mr-1 white'>{ai.value}{ai.deleted && <span className='badge bg-danger'>Удален</span>}</span>
+                            <td>{parameter.available_items && parameter.available_items.map((ai, i)=>(
+                                    <span key={'ai'+i} className='badge bg-primary p-1 mr-1 white'>{ai.value}{ai.deleted && <span className='badge bg-danger'>Удален</span>}</span>
                                 ))}</td>
                             <td className='d-flex'><button className='btn mr-2' onClick={()=>{Parameter.remove(parameter._id)}}>Удалить</button>
                             <button className='btn' onClick={()=>change(parameter)}>Изменить</button></td>
