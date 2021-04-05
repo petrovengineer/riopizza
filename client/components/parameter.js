@@ -59,6 +59,7 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
                       instanceId={_id}
                       placeholder={'Выбрать ' + name}
                       isMulti={type===1}
+                      blurInputOnSelect={false}
                     />
                   </div>
                 :''
