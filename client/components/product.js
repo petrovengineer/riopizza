@@ -10,7 +10,7 @@ export default function Product({product}){
         setPrice(product.parameters.find(p=>(p.name==='Цена')));
     }, [])
     return (
-        <div className='col-sm-6 col-md-6 col-lg-4 col-xl-3 px-4 px-sm-3 rounded bg-white'>
+        <div className='col-sm-6 col-md-6 col-lg-4 col-xl-3 px-4 px-sm-3 rounded'>
             <div className='shadow'>
             <img src={img && img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'} className='w-100'/>
             <div className='product p-5 p-sm-4'>
