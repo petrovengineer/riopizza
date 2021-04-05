@@ -36,7 +36,7 @@ export default function Orders(){
 			<Head>
 				<title>Заказы</title>
 			</Head>
-			<div className='container'>
+			<div className='container position-relative'>
 				<div className='row px-3'>
 					<h4 className='mt-4 mb-2 w-100 rubic'>
 						Заказы {(!accessToken || !accessToken.value) && 'без авторизации'}

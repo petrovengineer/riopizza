@@ -166,7 +166,7 @@ const Order = ()=>{
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Layout foodtypes={[]} menu={false} home={true}>
-            <div className="container bg-white shadow mt-2">
+            <div className="container bg-white shadow mt-2 position-relative">
                 {complite?
                 <div className="row paper m-2">
                     <h4 className="pl-4 pt-4" style={{color: 'green'}}>Заказ успешно оформлен! Номер заказа: {order && order.number}
@@ -253,18 +253,21 @@ const Order = ()=>{
                         className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
                     </div>
                 </div>
-                <div className="row paper m-2 row">
+                <div className="row m-2 row">
                     <h4 className="pl-3 pt-3 w-100">Оплата</h4>
-                    <input 
-                    onChange={handlePay}
-                    checked={pay=='cash'?true:false}
-                    className="custom-radio" name="color" type="radio" id="cash" value="cash"/>
-                    <label className="p-3" htmlFor="cash">Наличными</label>
-                    <input 
-                    onChange={handlePay}
-                    checked={pay=='card'?true:false}
-                    className="custom-radio" name="color" type="radio" id="card" value="card"/>
-                    <label className="p-3" htmlFor="card">Картой</label>
+                    <div className='d-flex align-items-center ml-3 mb-4'>
+                        <input 
+                        onChange={handlePay}
+                        checked={pay=='cash'?true:false}
+                        className="custom-radio mr-2" name="color" type="radio" id="cash" value="cash"/>
+                        <label className="m-0 mr-2" htmlFor="cash">Наличными</label>
+                        <input 
+                        onChange={handlePay}
+                        checked={pay=='card'?true:false}
+                        className="custom-radio mr-2" name="color" type="radio" id="card" value="card"/>
+                        <label className="m-0" htmlFor="card">Картой</label>
+                    </div>
+
                     <div className="form-group col-12">
                         <label htmlFor="exampleInputEmail1">Комментарий*</label>
                         <input type="email" 
