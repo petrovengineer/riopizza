@@ -34,7 +34,14 @@ body {
   font-family: 'Lato';
   color: #2a435d;
 }
-body{
+// body{
+//   background: url(/images/fon.png);
+// }
+.fixed-fon{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
   background: url(/images/fon.png);
 }
 .navbar{
@@ -51,7 +58,9 @@ body{
 }
 .header-top{
   background-color: $blue;
+  position: relative;
   color: white;
+  z-index: 100;
   a:hover{
     color: $yellow;
     text-decoration: none;
@@ -172,6 +181,8 @@ a:hover{
 $fh: 100px;
 .footer{
   color: white;
+  position: relative;
+
   // height: $fh;
   // margin-top: -$fh;
 }
@@ -184,6 +195,7 @@ $fh: 100px;
   min-height: 100%;min-height: 100%;
   height: auto !important;
   height: 100%;
+  z-index: 50;
   // padding-bottom: $fh;
 }
 .form-signin{

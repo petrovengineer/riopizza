@@ -65,7 +65,7 @@ function MyApp({ Component, pageProps }) {
     }
   }, [state.accessToken])
 
-  return <AppContext.Provider value={state}><Component {...pageProps} /></AppContext.Provider>
+  return <AppContext.Provider value={state}><div className='fixed-fon'></div><Component {...pageProps} /></AppContext.Provider>
 }
 
 
