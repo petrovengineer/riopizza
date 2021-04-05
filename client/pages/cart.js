@@ -25,7 +25,7 @@ export default function Basket(){
 			<Head>
 				<title>Корзина</title>
 			</Head>
-			<div className='container'>
+			<div className='container position-relative'>
 				<div className='row px-3'>
 					<h3 className='w-100 rubic mt-4 mb-2 '>
 						Корзина
@@ -102,7 +102,7 @@ function CartItem({item, index, removeFromCart}){
 				{Object.keys(parameters).map((key, i)=>{
 						if(Array.isArray(parameters[key].items)){
 							return (
-									parameters[key].parameter.selected===false ?
+								parameters[key].parameter && parameters[key].parameter.selected===false ?
 									<span key={'p'+i} className='badge bg-secondary mr-1' style={{color: 'white'}}>{key}
 										{parameters[key].items.map((p, i)=>(
 											<span key={'pk'+i} className='badge bg-success ml-1'>{p.value}</span>
@@ -116,7 +116,7 @@ function CartItem({item, index, removeFromCart}){
 									</span>
 							)
 						}else{
-							return (parameters[key].parameter.type!==0 && !parameters[key].parameter.selected && <span key={'p'+i} className='badge bg-secondary mr-1' style={{color:'white'}}>{key}
+							return (parameters[key].parameter && parameters[key].parameter.type!==0 && !parameters[key].parameter.selected && <span key={'p'+i} className='badge bg-secondary mr-1' style={{color:'white'}}>{key}
 								<span className='badge bg-success ml-1'>{parameters[key].items.value + parameters[key].parameter.unit}</span>
 							</span>)
 						}
