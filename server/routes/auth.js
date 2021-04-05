@@ -14,11 +14,11 @@ router.post('/login', async (req, res)=>{
             return res.sendStatus(400);
         }
         if(await bcrypt.compare(req.body.password, user.password)){
-            const accessToken = generateAccessToken({phone, admin: user.admin});
+            const accessToken = generateAccessToken({phone, admin: user.admin, operator: user.operator});
             const refreshToken = jwt.sign(phone, process.env.REFRESH_TOKEN_SECRET);
             user.refreshToken = refreshToken;
             await user.save();
-            res.send({accessToken, refreshToken, user:{name:user.name, phone:user.phone, admin: user.admin}});
+            res.send({accessToken, refreshToken, user:{name:user.name, phone:user.phone, admin: user.admin, operator: user.operator}});
         }else{
             res.sendStatus(401);
         }
@@ -91,8 +91,8 @@ router.get('/makeadmin', authenticateToken, async (req, res)=>{
     }
 })
 
-function generateAccessToken({phone, admin}){
-    return jwt.sign({phone, admin}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '365d'});
+function generateAccessToken({phone, admin, operator}){
+    return jwt.sign({phone, admin, operator}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '365d'});
 }
 
 function authenticateToken(req, res, next){
@@ -106,6 +106,7 @@ function authenticateToken(req, res, next){
         if(user!=null){
             req.phone = user.phone; 
             req.admin = user.admin;
+            req.operator = user.operator;
         }
         next();
     })}
@@ -122,6 +123,15 @@ module.exports.isAdmin = (req, res, next)=>{
 
 module.exports.isSuper = (req, res, next)=>{
     if(req.phone =='+79500424342'){
+        next();
+    }
+    else{
+        res.sendStatus(402);
+    }
+}
+
+module.exports.isOperator = (req, res, next)=>{
+    if(req.operator === true){
         next();
     }
     else{

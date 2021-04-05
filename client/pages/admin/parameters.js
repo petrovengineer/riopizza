@@ -18,13 +18,28 @@ export default function Parameters(){
         { value: 1, label: 'Множественный выбор' },
         { value: 2, label: 'Одиночный выбор' },
       ];
+    function populate(parameters, items){
+        return parameters.map(pp=>{
+            const newPP = Object.assign({},pp);
+            if(pp.available_items){
+                const fullItems = pp.available_items.map(ppi=>{
+                    const fullItem = items.find(i=>i._id===ppi._id);
+                    if(!fullItem){return {_id:ppi._id, value: ppi.value, deleted: true}}
+                    return fullItem;
+                });
+                newPP.available_items = fullItems;
+            }
+            return newPP;
+        })
+    }
     useEffect(async ()=>{
         const {data: parameterData} = await axios.get(process.env.NEXT_PUBLIC_API+'/parameter');
-        setParameters(parameterData);
         const {data: itemData} = await axios.get(process.env.NEXT_PUBLIC_API+'/item');
-        setItems(itemData);
         const {data: groupData} = await axios.get(process.env.NEXT_PUBLIC_API+'/group');
+        setItems(itemData);
         setGroups(groupData);
+        // console.log("POPULATE ", populate(parameterData, itemData));
+        setParameters(populate(parameterData, itemData));
     },[])
     function reset(){
         const nameInput = document.getElementById("name");
@@ -157,8 +172,8 @@ export default function Parameters(){
                             <td>{parameter.name}</td>
                             <td>{types.find(t=>t.value===parameter.type).label}</td>
                             <td>{parameter.unit}</td>
-                            <td>{parameter.available_items && parameter.available_items.map(ai=>(
-                                    <span className='badge bg-primary p-1 mr-1' style={{color: 'white'}}>{ai.value}</span>
+                            <td>{parameter.available_items && parameter.available_items.map((ai, i)=>(
+                                    <span key={'ai'+i} className='badge bg-primary p-1 mr-1 white'>{ai.value}{ai.deleted && <span className='badge bg-danger'>Удален</span>}</span>
                                 ))}</td>
                             <td className='d-flex'><button className='btn mr-2' onClick={()=>{Parameter.remove(parameter._id)}}>Удалить</button>
                             <button className='btn' onClick={()=>change(parameter)}>Изменить</button></td>

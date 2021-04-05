@@ -26,13 +26,7 @@ export default function Product(){
         const itemsData = await itemsFetcher.fetchWithPromise();
         setParameters(paramsData);    
         setItems(itemsData);   
-        // setProduct(productData);
         populate(productData, paramsData, itemsData); 
-
-        // const {data} = await axios.get(process.env.NEXT_PUBLIC_API+'/parameter');
-        // const parametersData = Array.isArray(data)?data : [data];
-        // console.log("PDATA ", parametersData);
-        // setParameters(parametersData.map(p=>({value:p._id, label:p.name, type:p.type, available_items:p.available_items})))
     },[])
 
     function populate(productData, paramsData, itemsData){
@@ -202,11 +196,13 @@ export default function Product(){
                         {product && product.parameters && product.parameters.map((parameter, i)=>(
                             parameter &&
                                 <span key={i+'par'} className='badge bg-secondary p-2 mr-2  mb-1'>
-                                    {parameter.name} {parameter.deleted && '(Не существует)'}
+                                    {parameter.name} {parameter.deleted && <span className='badge bg-danger'>Удален</span>}
                                     <span className='badge bg-success mr-1'>{parameter.value}</span>
                                     {parameter.items && parameter.items.length>0 && 
                                         parameter.items.map((item,i)=>(
-                                            <span key={'item'+i} className='badge bg-primary mr-1'>{item.value} {item.deleted && '(Не существует)'}</span>
+                                            <span key={'item'+i} className='badge bg-primary mr-1 p-1'>{item.value} 
+                                                {item.deleted && <span className='badge bg-danger px-1'>Удален</span>}
+                                            </span>
                                         ))
                                     }
                                     <span className='badge bg-danger' 

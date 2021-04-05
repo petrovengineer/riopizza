@@ -27,7 +27,7 @@ const Order = ()=>{
 
     let amount = 0; 
     cart && cart.map(({affects, parameters, count})=>{
-        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].value;
+        const coast = affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + (parameters['Цена']?+parameters['Цена'].value:0);
         amount = amount + (coast * count);
     })
 
@@ -113,7 +113,7 @@ const Order = ()=>{
                     {
                         product: {_id: product._id, name: product.name},
                         count,
-                        coast: affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].value,
+                        coast: affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + (parameters['Цена']?+parameters['Цена'].value:0),
                         parameters: Object.keys(parameters).map(key=>{
                             const p = parameters[key];
                             return {
@@ -138,7 +138,7 @@ const Order = ()=>{
                 cart: newCart, 
                 name, 
                 phone, 
-                address, 
+                address: city + ' ' + address, 
                 apnumber, 
                 floor, 
                 pay,
