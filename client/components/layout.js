@@ -13,6 +13,7 @@ export default function Layout({children, sorted}){
 				<link rel="icon" href="/favicon.ico"/>
 			</Head>
 			<div className='wrap'>
+				
 				<HeaderTop/>
 				<Header sorted = {sorted}/>
 				{children}
