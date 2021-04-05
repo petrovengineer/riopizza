@@ -213,6 +213,8 @@ $fh: 100px;
 }
 .product-page{
   background-color: white;
+  z-index: 1;
+  position: relative;
   // border: 1px solid $yellow;
   border-radius: 5px;
   h2{
