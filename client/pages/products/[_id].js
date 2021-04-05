@@ -45,7 +45,7 @@ export default function Product({product}){
 
     return(
       <Layout>
-        <div className='container mt-4 product-page p-4 shadow'>
+        <div className='container mt-4 product-page p-4 shadow bg-white'>
           <div className='row'>
             <div className='col-12 col-md-6 d-flex justify-content-center d-md-block'>
               <img 
