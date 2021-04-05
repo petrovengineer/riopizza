@@ -26,11 +26,11 @@ export default function Header({sorted={}}){
                                 }
                             </ul>
                             <div className="customer-area mb-4 mb-md-0 mt-4 mt-md-0">
-                                <a href="#" className='p-0'>
+                                {/* <a href="#" className='p-0'>
                                     <span className='mr-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
-                                </a>
+                                </a> */}
                                 <a href="/orders" className='p-0'>
                                     <span className='mr-3'>
                                         <i className="fas fa-user"></i>
