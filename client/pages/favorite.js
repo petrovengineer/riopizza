@@ -23,7 +23,7 @@ export default function Favorite(){
                     <h3 className='w-100 rubic mt-4 mb-2 '>
                         Избранное
                     </h3>
-                    {favorite && (favorite.value.length>0?<Table head={['','Название', 'Состав', 'Цена', '']}>
+                    {favorite && favorite.value && (favorite.value.length>0?<Table head={['','Название', 'Состав', 'Цена', '']}>
                         {
                             favorite && favorite.value.map((item,i)=>(
                                 <tr>
@@ -36,7 +36,7 @@ export default function Favorite(){
                                         
                                      </td>
                                     <td>{item.name}</td>
-                                    <td>{item.description}</td>
+                                    <td style={{minWidth:'200px'}}>{item.description}</td>
                                     <td>{item.parameters.find(p=>p.name==='Цена').value}</td>
                                     <td className='d-flex pt-3'>
                                         <Link href={'/products/'+item._id}>
@@ -53,9 +53,3 @@ export default function Favorite(){
         </Layout>
     )
 }
-
-const Td = ()=>(
-    <>
-        
-    </>
-)

@@ -35,6 +35,7 @@ export default function Basket(){
 						<table className='table'>
 							<thead>
 								<tr>
+									<th></th>
 									<th>Название</th>
 									<th>Параметры</th>
 									<th>Цена</th>
@@ -96,6 +97,8 @@ function CartItem({item, index, removeFromCart}){
 					width="40"
 					src={img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'}
 				/>
+			</td>
+			<td>
 				{name}
 			</td>
 			<td>
