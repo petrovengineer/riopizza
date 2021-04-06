@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
     accessToken: null,
     refreshToken: null,
     cart: [],
+    favorite: null,
     orders: null,
   });
   useEffect(()=>{

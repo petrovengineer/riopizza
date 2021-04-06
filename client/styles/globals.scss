@@ -141,6 +141,10 @@ a:hover{
         color:white;
       }
     }
+    span:hover{
+      color:white;
+    }
+    cursor: pointer;
     span {
       border: 1px solid #cc3333;
       background: transparent;
@@ -253,4 +257,30 @@ $fh: 100px;
 }
 .w-50{
   width: 50%;
+}
+.cart-icon{
+  color: silver;
+  cursor: pointer;
+}
+.cart-icon:hover{
+  color: green;
+}
+.remove-icon{
+  color: silver;
+  cursor: pointer;
+}
+.remove-icon:hover{
+  color: $red;
+}
+.header-count{
+  position: absolute;
+  padding: 0 6px;
+  font-size: 12px;
+  // height: 18px;
+  // width: 18px;
+  border-radius: 50%;
+  background-color: $yellow;
+  right: 10px;
+  bottom: -10px;
+  color: white;
 }

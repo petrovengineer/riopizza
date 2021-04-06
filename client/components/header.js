@@ -1,8 +1,12 @@
-import { useState } from "react"
+import Link from "next/link"
+import {useState, useContext} from "react"
 import User from './user'
+import AppContext from '../context'
 
 export default function Header({sorted={}}){
     const [show, setShow] = useState(false)
+    const context = useContext(AppContext);
+    const {favorite, cart} = context;
     return (
                 <nav className="navbar navbar-expand-md navbar-dark pl-4 pl-md-0" style={{position:'sticky', top:'0'}}>
                     <div className='container'>
@@ -26,19 +30,23 @@ export default function Header({sorted={}}){
                                 }
                             </ul>
                             <div className="customer-area mb-4 mb-md-0 mt-4 mt-md-0">
-                                {/* <a href="#" className='p-0'>
+                                <Link href='/favorite'>
+                                    <a className='p-0 position-relative'>
+                                        <span className='mr-3'>
+                                            <i className="fas fa-heart"></i>
+                                        </span>
+                                        {favorite && favorite.value && favorite.value.length>0 && <div className='header-count'>{favorite.value.length}</div>}
+                                    </a>
+                                </Link>
+                                <a href="/cart" className='p-0 position-relative'>
                                     <span className='mr-3'>
-                                        <i className="fas fa-heart"></i>
+                                        <i className="fas fa-shopping-basket"></i>
                                     </span>
-                                </a> */}
+                                    {cart && cart.value && cart.value.length>0 && <div className='header-count'>{cart.value.length}</div>}
+                                </a>
                                 <a href="/orders" className='p-0'>
                                     <span className='mr-3'>
                                         <i className="fas fa-user"></i>
-                                    </span>
-                                </a>
-                                <a href="/cart" className='p-0'>
-                                    <span className='mr-3'>
-                                        <i className="fas fa-shopping-basket"></i>
                                     </span>
                                 </a>
                                 {/* <a href="#" className="btn">login</a> */}
