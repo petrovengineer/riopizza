@@ -24,9 +24,6 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
           newSelected = {parameter, items: [...items.filter(i=>{
               return selected.find(s=>s.value===i._id)?false:true; //ИСКЛЮЧИТЬ
             })]}
-          // newSelected = [...items.filter(i=>{
-          //   return selected.find(s=>s.value===i._id)?false:true; //ИСКЛЮЧИТЬ
-          // })]
         }
         else{
           newSelected = {parameter, items: [...items.filter(i=>{
@@ -54,7 +51,11 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
                       value={selected}
                       onChange={onChangeItem}
                       options={items.map(i=>({
-                        value: i._id, label: i.value+' '+unit, affect: i.affect
+                        value: i._id, label: i.value+' ' + unit + ' ' + 
+                        ((i.affect && Array.isArray(i.affect))?i.affect.map(a=>(
+                           ' +'+ a.value+' '+a.parameter.unit
+                          )):''), 
+                        affect: i.affect
                       }))}
                       instanceId={_id}
                       placeholder={'Выбрать ' + name}

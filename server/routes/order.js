@@ -13,7 +13,7 @@ router.get('/', authenticateToken, async (req, res)=>{
     if(req.operator){filter = {}}
     console.log("FILTER",req.operator, req.phone, filter)
     try{
-        Order.find(filter,{}, { sort: { 'created' : -1 }}).
+        Order.find(filter,{}, { sort: { 'status' : 1, 'created': -1 }}).
         exec((err, docs)=>{
             res.send(docs);
         })
@@ -61,8 +61,10 @@ router.put('/', authenticateToken, isOperator, async (req, res)=>{
     const update = Object.assign({}, req.body);
     delete update._id;
     try{
-        await Food.findByIdAndUpdate(_id, update);
-        res.sendStatus(200);
+        await Order.findByIdAndUpdate(_id, update,{}, (err, doc)=>{
+            res.send(doc);
+        });
+        // res.sendStatus(200);
     }
     catch(err){
         res.sendStatus(500);

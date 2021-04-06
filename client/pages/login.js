@@ -37,8 +37,8 @@ export default function Login(){
         }
     }
     return (
-        // <Layout>
-            <div className="form-signin mt-4 shadow">
+        <Layout>
+            <div className="form-signin mt-4 shadow position-relative">
                 <Link href="/">
                     <a href="#">
                         <img className="mb-4" src="/images/logo.png" alt="" height="72"/>
@@ -49,7 +49,7 @@ export default function Login(){
                 <input type="text" id="phone" onChange={handlePhone} value={phone} className="form-control mb-2" placeholder="Номер телефона" required="" autoFocus=""/>
                 <label htmlFor="inputPassword" className="sr-only">Пароль</label>
                 <input type="password" id="password" onChange={handlePassword} value={password} className="form-control" placeholder="Пароль" required=""/>
-                <div className="checkbox mb-3">
+                <div className="checkbox mb-3 mt-3">
                     <label>
                     <input type="checkbox" value="remember-me"/> Запомнить меня
                     </label>
@@ -62,6 +62,6 @@ export default function Login(){
                 </Link>
                 <p className="mt-5 mb-3 text-muted">© 2021</p>
             </div>
-        // </Layout>
+        </Layout>
     )
 }

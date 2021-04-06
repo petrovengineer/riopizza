@@ -116,6 +116,11 @@ export async function getStaticProps({params}) {
         const fullItems = pp.items.map(ppi=>{
             const fullItem = itemsData.find(i=>i._id===ppi._id);
             if(!fullItem){return {_id:ppi._id, value: ppi.value, deleted: true}}
+            const newAffect = [...fullItem.affect.map(a=>({
+              value: a.value,
+              parameter: paramsData.find(p=>p._id===a.parameter._id) || a.parameter
+            }))];
+            fullItem.affect = newAffect;
             return fullItem;
           });
           newPP.items = fullItems;

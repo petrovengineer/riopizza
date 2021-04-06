@@ -41,8 +41,8 @@ export default function Login(){
         }
     }
     return (
-        // <Layout>
-            <div className="form-signin mt-4 shadow">
+        <Layout>
+            <div className="form-signin mt-4 shadow position-relative">
                 <Link href="/">
                     <a href="#">
                         <img className="mb-4" src="/images/logo.png" alt="" height="72"/>
@@ -60,6 +60,6 @@ export default function Login(){
                 <button className="btn btn-lg btn-primary btn-block" onClick={reg}>Подтвердить</button>
                 <p className="mt-5 mb-3 text-muted">© 2021</p>
             </div>
-        // </Layout>
+        </Layout>
     )
 }

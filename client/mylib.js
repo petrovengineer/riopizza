@@ -73,10 +73,12 @@ export function Element(url, data, setData){
     this.update = async function(args){
         if(!args){alert('Нет аргументов!'); return;}
         try{
-            await axios.put(this.url, args)
+            const {data: newItem} = await axios.put(this.url, args)
             const newData = [...data];
             const index = newData.findIndex(d=>d._id===args._id);
-            Object.assign(newData[index], args);
+            console.log("NEW ITEM ", newItem)
+            Object.assign(newData[index], newItem);
+            // Object.assign(newData[index], args);
             setData(newData);
         }catch(e){console.log(e); alert('Ошибка, обратитесь к администратору!')}
     }

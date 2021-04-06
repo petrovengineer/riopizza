@@ -75,10 +75,11 @@ function CartItem({item, index, removeFromCart}){
 	useEffect(()=>{
 		console.log("ITEM ", item)
 	}, [])
-	function handleCount(e){
+	function handleCount(value){
+		console.log("VALUE", value)
 		let newCart = [];
 		if(context.cart.value){newCart.push(...context.cart.value)}
-		newCart[index].count = e.target.value.length<3?(+e.target.value.replace(/[^\d]/g, '') || 0):newCart[index].count
+		newCart[index].count = value.length<3?(+value.replace(/[^\d]/g, '') || 0):newCart[index].count
 		console.log("NEW CART", newCart)
 		context.cart.set(context, newCart)
 		// setCount(e.target.value.length<3?(+e.target.value.replace(/[^\d]/g, '') || 0):count)
@@ -131,7 +132,9 @@ function CartItem({item, index, removeFromCart}){
 				{/* {affects.filter(a=>(a.parameter.name==='Цена')).map(a=>(a.value)).reduce((acc, cur)=>(+acc + +cur),0) + +parameters['Цена'].label} */}
 			</td>
 			<td>
-				<input type="text" size='2' value={item.count} onChange={handleCount}/>
+				<i className="fas fa-minus-circle btn-remove mr-2" onClick={(e)=>{handleCount((item.count-1>0?item.count-=1:1))}}></i>
+				<input type="text" size='1' id='count' value={item.count} onChange={(e)=>handleCount(e.target.value)}/>
+				<i className="fas fa-plus-circle btn-remove ml-2" onClick={(e)=>{handleCount(item.count+=1);}}></i>
 			</td>
 			<td>
 				<span>{+coast*context.cart.value[index].count} руб</span>

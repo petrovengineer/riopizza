@@ -95,6 +95,7 @@ module.exports.Order = model('Order',
         apnumber:{type: String},
         floor:{type: String},
         pay:{type: String},
-        comment:String
+        comment:String,
+        history: [{date: {type: Date, default: Date.now}, text: {type:String, default:'Пустая запись'}}]
     }
 )
