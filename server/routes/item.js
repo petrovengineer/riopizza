@@ -25,7 +25,7 @@ router.put('/', authenticateToken, isAdmin, async (req, res)=>{
     delete update._id;
     try{
         await Item.findByIdAndUpdate(_id, update);
-        res.sendStatus(200);
+        res.send(await Item.findById(_id));
     }
     catch(err){
         console.log(err);

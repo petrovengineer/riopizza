@@ -66,7 +66,6 @@ export default function Items(){
     function addAffect(){
         var r = /\d+/;
         const affectValueInput = document.getElementById('affect_value');
-        alert(affectValueInput.value.match(r))
         const item = items.find(i=>i._id===updateId);
         const oldAffect = item.affect?[...item.affect]:[];
         Item.update({
