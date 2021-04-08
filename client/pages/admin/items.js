@@ -38,6 +38,7 @@ export default function Items(){
         setSelectedParameter(selectedParameter);
     }
     function change(item){
+        window.scroll(0, 0);
         const itemInput = document.getElementById('value');
         const itemInputSort = document.getElementById('sort');
         itemInput.value = item.value;
