@@ -86,7 +86,7 @@ export default function Product({product}){
   )
 }
 
-export async function getStaticPaths() {
+export async function getStaticPaths(){
   const {data: products} = await axios.get('http://localhost:3100/api/product');
   const paths = products.map((product) => ({
     params: {_id: product._id.toString()},
