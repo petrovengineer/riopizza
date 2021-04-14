@@ -66,11 +66,12 @@ router.get('/', authenticateToken, async (req, res)=>{
 
 router.post('/', authenticateToken, isAdmin, async (req, res)=>{
     try{
-        const {name='New product', description=""} = req.body;
+        const {name='New product', description="", parameters=[]} = req.body;
+        console.log("PARAMS", parameters)
         const count = await Product.countDocuments({});
-        const product = new Product({name, description, place:count});
+        const product = new Product({name, description, place:count, parameters});
         await product.save();
-        let {parameters=[]} = product;
+        // let {parameters=[]} = product;
         const extParameters = [];
         for (let i=0; i<parameters.length; i++){
             let parameter = await Parameter.findById(parameters[i].parameter_id);

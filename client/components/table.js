@@ -4,7 +4,7 @@ export default function Table({head=[], children, theadDark}){
             <table className='table'>
                 <thead className={theadDark?'thead-dark':''}>
                     <tr>
-                        {head.map(h=><th>{h}</th>)}
+                        {head.map((h, i)=><th key={'h'+i}>{h}</th>)}
                     </tr>
                 </thead>
                 <tbody>

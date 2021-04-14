@@ -1,6 +1,6 @@
 export default function Modal({children, close}){
     return (
-        <div className="modal fade show d-block" tabindex="-1" role="dialog" style={{backgroundColor:'rgba(0,0,0,0.5)'}}>
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{backgroundColor:'rgba(0,0,0,0.5)'}}>
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                 <div className="modal-header">
@@ -10,7 +10,7 @@ export default function Modal({children, close}){
                     </button>
                 </div>
                 <div className="modal-body">
-                    <p>{children[1]}</p>
+                    <div>{children[1]}</div>
                 </div>
                 <div className="modal-footer">
                     {children[2]}

@@ -58,7 +58,7 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
                         affect: i.affect
                       }))}
                       instanceId={_id}
-                      placeholder={'Выбрать ' + name}
+                      placeholder={name}
                       isMulti={type===1}
                       blurInputOnSelect
                       captureMenuScroll
