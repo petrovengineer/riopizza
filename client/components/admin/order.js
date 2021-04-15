@@ -18,37 +18,39 @@ export default function Order({order: o, index, ordersFetcher}){
         setSelectedStatus(selected)
     }
     return(
-        <tr key={index+'ot'}>
+        <tr>
             <td className={'white '+(o.status===0?'bg-danger':o.status===1?'bg-warning':o.status===2?'bg-primary':o.status===3?'bg-success':'')}>{o.number}</td>
             <td>{formatTime(o.created)}</td>
             <td>
                 <table className='table table-bordered table-sm'>
-                {
-                    o.cart && o.cart.map(({product, count, coast, parameters}, i)=>{
-                        return (
-                            <tr key={'o'+i}>
-                                <td>{(i+1)+'. '}</td>
-                                <td>{product.name}</td>
-                                <td>
-                                    {parameters.map((p,i)=>{
-                                        if(p.parameter && p.parameter.type!==0){
-                                            if(p.parameter.selected){
-                                                return <span key={'pi'+i} className='badge bg-danger white ml-2'>
-                                                            Исключить: {p.items.map(i=>(i.name))}
+                    <tbody>
+                        {
+                            o.cart && o.cart.map(({product, count, coast, parameters}, i)=>{
+                                return (
+                                    <tr key={'o'+i}>
+                                        <td>{(i+1)+'. '}</td>
+                                        <td>{product.name}</td>
+                                        <td>
+                                            {parameters.map((p,i)=>{
+                                                if(p.parameter && p.parameter.type!==0){
+                                                    if(p.parameter.selected){
+                                                        return <span key={'pi'+i} className='badge bg-danger white ml-2'>
+                                                                    Исключить: {p.items.map(i=>(i.name))}
+                                                                </span>
+                                                    }
+                                                    else{
+                                                        return <span key={'pi'+i} className='badge bg-success white ml-2'>
+                                                            {p.parameter.name} {p.items && p.items.map(i=>(i.name))} {p.parameter.unit}
                                                         </span>
-                                            }
-                                            else{
-                                                return <span key={'pi'+i} className='badge bg-success white ml-2'>
-                                                    {p.parameter.name} {p.items && p.items.map(i=>(i.name))} {p.parameter.unit}
-                                                </span>
-                                            }
-                                        }
-                                    })}
-                                </td>
-                                <td className='d-flex'><span>{count*coast} </span><span>руб</span></td>
-                            </tr>
-                        )})
-                }
+                                                    }
+                                                }
+                                            })}
+                                        </td>
+                                        <td className='d-flex'><span>{count*coast} </span><span>руб</span></td>
+                                    </tr>
+                                )})
+                        }
+                    </tbody>
                 </table>
             </td>
             <td>
@@ -69,7 +71,7 @@ export default function Order({order: o, index, ordersFetcher}){
                     value={selectedStatus}
                     onChange={handleChangeStatus}
                     options={statusList}
-                    instanceId="selectStatus"
+                    instanceId={"selectStatus"+index}
                     placeholder='Статус'
                 />
                 {/* {o.status===0?'Не подтверждён':o.status===1?'Принят':o.status===2?'Доставка':o.status===3?'Завершён':''} */}

@@ -6,21 +6,45 @@ import Order from "../../components/admin/order";
 
 export default function Orders(){
     const [orders, setOrders] = useState(null);
-    // const [cart, setCart] = useState(null);
     const Orders = new ordersFetcher('/order', orders, setOrders);
+    const [skip, setSkip] = useState(0);
+    const [pages, setPages] = useState([]);
+    const limit = 2;
+
     useEffect(async ()=>{
-        Orders.fetch();
+        let {count: fetchedCount} = await Orders.count();
+        // setCount(+fetchedCount);
+        // let args = {limit, skip};
+        // Orders.fetch(args);
+        console.log("COUNT ", fetchedCount)
+        let pages = parseInt(fetchedCount/limit)+1;
+        if(fetchedCount%limit===0){pages--}
+        console.log("PAGES ", pages);
+        let pageItems = [];
+        for(let i=0; i<pages; i++){
+            pageItems.push(i)
+        }
+        console.log(pageItems);
+        setPages(pageItems);
     }, [])
 
+    useEffect(()=>{
+        console.log("SKIP ", skip)
+        let args = {limit, skip};
+        Orders.fetch(args);
+    }, [skip])
     // useEffect(()=>{
     //     console.log(orders)
     // },[orders])
+    
+
     return (
         // <Layout>
         <div className='container-fluid'>
             <h4 className='rubic my-4'>
                 Заказы
             </h4>
+            {pages.map(p=><span key={'page'+p} className='link mr-2' onClick={()=>{setSkip(p*limit)}}>{p+1}</span>)}
             <div className="table-responsive p-2">
                 <table className='table table-hover shadow'>
                     <thead className='thead-dark'>
@@ -37,7 +61,7 @@ export default function Orders(){
                     </thead>
                     <tbody>
                         {orders && orders.map((o, i)=>{
-                            return <Order order={o} index={i} ordersFetcher={Orders}/>
+                            return <Order key={'order'+i} order={o} index={i} ordersFetcher={Orders}/>
                         })}
                     </tbody>
                 </table>

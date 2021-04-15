@@ -5,6 +5,13 @@ const {authenticateToken, isOperator} = require('./auth');
 
 router.get('/', authenticateToken, async (req, res)=>{
     let filter = {};
+    let options = { sort: { 'status' : 1, 'created': -1 }};
+    console.log("REQ QUERY ", req.query);
+    if(req.query){
+        Object.keys(req.query).map(key=>{
+            options[key] = +req.query[key];
+        })
+    }
     if(req.phone){
         filter = {phone: req.phone}
     }else{
@@ -13,12 +20,31 @@ router.get('/', authenticateToken, async (req, res)=>{
     if(req.operator){filter = {}}
     console.log("FILTER",req.operator, req.phone, filter)
     try{
-        Order.find(filter,{}, { sort: { 'status' : 1, 'created': -1 }}).
+        Order.find(filter, null, options).
         exec((err, docs)=>{
+            console.log()
             res.send(docs);
         })
     }
     catch(err){
+        res.sendStatus(500);
+    }
+})
+
+router.get('/count', authenticateToken, async (req, res)=>{
+    let filter = {};
+    if(req.phone){
+        filter = {phone: req.phone}
+    }else{
+        filter = {_id:0}
+    }
+    if(req.operator){filter = {}}
+    try{
+        const count = await Order.countDocuments(filter);
+        res.send({count});
+    }
+    catch(err){
+        console.log(err);
         res.sendStatus(500);
     }
 })
@@ -61,9 +87,8 @@ router.put('/', authenticateToken, isOperator, async (req, res)=>{
     const update = Object.assign({}, req.body);
     delete update._id;
     try{
-        await Order.findByIdAndUpdate(_id, update,{}, (err, doc)=>{
-            res.send(doc);
-        });
+        await Order.findByIdAndUpdate(_id, update,{});
+        res.send(await Order.findById(_id))
         // res.sendStatus(200);
     }
     catch(err){

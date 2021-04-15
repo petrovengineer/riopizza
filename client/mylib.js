@@ -19,15 +19,42 @@ if(typeof window!='undefined'){
 export function Element(url, data, setData){
     this.url = process.env.NEXT_PUBLIC_API+url;
 
-    this.fetch = async function(){
+    this.toArgs = function(args){
+        let query = '?';
+        if(args){
+            Object.keys(args).map(key=>{
+                query += key+'='+args[key]+'&' 
+            })
+            return query;
+        }else return null;
+    }
+
+    this.fetch = async function(args){
         try{
-            const {data} = await axios.get(this.url);
+            console.log(this.toArgs(args));
+            const res = await axios.get(this.url+this.toArgs(args));
+            const {data} = res;
             if(!data) return null;
             setData(data);
         }
         catch(e){
             console.log(e)
         }
+    }
+
+    this.count = function(){
+        return new Promise(async (done, fail)=>{
+            try{
+                const res = await axios.get(this.url+'/count');
+                const {data} = res;
+                if(!data) return null;
+                done(data);
+            }
+            catch(e){
+                console.log(e)
+            }
+        })
+
     }
 
     this.fetchOne = async function(){
@@ -40,7 +67,6 @@ export function Element(url, data, setData){
         return new Promise(async (done, fail)=>{
             try{
                 const {data} = await axios.get(this.url);
-                console.log("FETCH!!!!!!!!!!!!!!!")
                 done(data);
             }catch{
             }
@@ -51,7 +77,6 @@ export function Element(url, data, setData){
         return new Promise(async (done, fail)=>{
             try{
                 const {data} = await axios.get(this.url);
-                console.log("FETCH ONE")
                 done(((Array.isArray(data) && data.length===1) && data[0]) || null);
             }catch{
             }
