@@ -11,15 +11,15 @@ export default function Slider(){
                 // showArrows={true} onChange={onChange} onClickItem={onClickItem} onClickThumb={onClickThumb}
             >
                     <div>
-                        <img src="/images/banner1.jpg" />
+                        <img src="/images/banner1.jpg" loading="lazy"/>
                         {/* <p className="legend">Legend 1</p> */}
                     </div>
                     <div>
-                        <img src="/images/banner2.jpg" />
+                        <img src="/images/banner2.jpg" loading="lazy"/>
                         {/* <p className="legend">Legend 1</p> */}
                     </div>
                     <div>
-                        <img src="/images/banner3.jpg" />
+                        <img src="/images/banner3.jpg" loading="lazy"/>
                         {/* <p className="legend">Legend 3</p> */}
                     </div>
             </Carousel>
