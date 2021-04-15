@@ -31,8 +31,7 @@ export function Element(url, data, setData){
 
     this.fetch = async function(args){
         try{
-            console.log(this.toArgs(args));
-            const res = await axios.get(this.url+this.toArgs(args));
+            const res = await axios.get(this.url+(args?this.toArgs(args):''));
             const {data} = res;
             if(!data) return null;
             setData(data);
