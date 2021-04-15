@@ -30,7 +30,7 @@ export default function Product({product}){
     return (
         <div className='col-sm-6 col-md-6 col-lg-4 col-xl-3 px-4 px-sm-3 rounded'>
             <div className='shadow'>
-            <img src={img && img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'} className='w-100'/>
+            <img loading="lazy" src={img && img.data?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'} className='w-100'/>
             <div className='product p-5 p-sm-4'>
                 <div className='d-flex flex-column justify-content-between' style={{height:'220px'}}>
                     <h5 className='mb-0' style={{minHeight:'50px'}}>

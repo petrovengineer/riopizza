@@ -67,14 +67,15 @@ export default function Order({order: o, index, ordersFetcher}){
                 {o.comment}
             </td>
             <td style={{minWidth:'150px'}}>
+                {o.status<3?
                 <Select
                     value={selectedStatus}
                     onChange={handleChangeStatus}
-                    options={statusList}
+                    options={statusList.filter(s=>(s.value===o.status+1))}
                     instanceId={"selectStatus"+index}
                     placeholder='Статус'
                 />
-                {/* {o.status===0?'Не подтверждён':o.status===1?'Принят':o.status===2?'Доставка':o.status===3?'Завершён':''} */}
+                :<span>{statusList.find(s=>s.value===o.status).label}</span>}
             </td>
         </tr>
     )

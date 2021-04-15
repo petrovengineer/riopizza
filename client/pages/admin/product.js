@@ -195,17 +195,17 @@ export default function Product(){
                     <div className='col mb-2' style={{color:'white'}}>
                         {product && product.parameters && product.parameters.map((parameter, i)=>(
                             parameter &&
-                                <span key={i+'par'} className='badge bg-secondary p-2 mr-2  mb-1'>
+                                <span key={i+'par'} className='badge bg-secondary p-2 mr-2  mb-1 d-flex flex-wrap'>
                                     {parameter.name} {parameter.deleted && <span className='badge bg-danger'>Удален</span>}
-                                    <span className='badge bg-success mr-1'>{parameter.value}</span>
+                                    <span className='badge bg-success mb-1'>{parameter.value}</span>
                                     {parameter.items && parameter.items.length>0 && 
                                         parameter.items.map((item,i)=>(
-                                            <span key={'item'+i} className='badge bg-primary mr-1 p-1'>{item.value} 
-                                                {item.deleted && <span className='badge bg-danger px-1'>Удален</span>}
+                                            <span key={'item'+i} className='badge bg-primary mr-1 p-1 mb-1'>{item.value} 
+                                                {item.deleted && <span className='badge bg-danger mb-1 px-1'>Удален</span>}
                                             </span>
                                         ))
                                     }
-                                    <span className='badge bg-danger' 
+                                    <span className='badge bg-danger mb-1' 
                                         style={{cursor:'pointer'}}
                                         onClick={()=>{removeParameter(i)}}
                                     >
