@@ -31,7 +31,7 @@ export default function Favorite(){
                                         <img 
                                             className='rounded mr-1'
                                             width="40"
-                                            src={item.img.data?`data:image/jpeg;base64,${item.img.data}`:'/images/pizza.jpg'}
+                                            src={(item.img && item.img.data)?`data:image/jpeg;base64,${item.img.data}`:'/images/pizza.jpg'}
                                         />
                                         
                                      </td>
