@@ -4,7 +4,7 @@ const {Order, User} = require('../models');
 const {authenticateToken, isOperator} = require('./auth');
 const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ port: 3200 })
+const wss = new WebSocket.Server({port: 3200 })
 
 wss.on('connection', (ws) => {
     // console.log("CONNECTED WS CLIENTS", wss.clients.size);
