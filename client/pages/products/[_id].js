@@ -49,7 +49,7 @@ export default function Product({product}){
             <div className='col-12 col-md-6 d-flex justify-content-center d-md-block'>
               <img 
                 className=' float-md-right rounded mb-4 w-100'
-                style={{maxWidth:'300px'}}
+                style={{maxWidth:'300px', maxHeight:'300px'}}
                 // width="300"
                 src={(img && img.data)?`data:image/jpeg;base64,${img.data}`:'/images/pizza.jpg'}
               />
