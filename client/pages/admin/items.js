@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Layout from "../../components/admin/layout";
 import {Element} from "../../mylib"
 import Select from 'react-select';
+import {Affects} from '../../components/admin/affects';
 
 export default function Items(){
     const [items, setItems] = useState([])
@@ -122,14 +123,15 @@ export default function Items(){
                         <button className='btn' onClick={addAffect}>Добавить</button>
                     </div>
                     <h5 className='col-12 mt-4 mb-2'>Влияния:</h5>
-                    <div className='col'>
+                    <Affects affect={items.find(i=>i._id===updateId).affect}/>
+                    {/* <div className='col'>
                         {items.find(i=>i._id===updateId) && items.find(i=>i._id===updateId).affect.map((a, i)=>(
                             <span key={i+'aff'} className='badge bg-primary white p-2 mr-1'>
                                 {a.parameter.name + ' ' + a.value + ' '}
                                 <a href="#" onClick={()=>removeAffect(i)}>X</a>
                             </span>
                         ))}
-                    </div>
+                    </div> */}
                     <div className='col-12 mt-4 d-flex'>
                         <button className='btn mr-2' onClick={save}>Сохранить</button>
                         <button className='btn' onClick={reset}>Отмена</button>

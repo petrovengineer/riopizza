@@ -13,6 +13,7 @@ export default function Parameter({parameter, setGlobalSelected, globalSelected,
     } = parameter;
     
     const [selected, setSelected] = useState((selectedItems && type===1)?[...items.map(i=>({value: i._id, label: i.value}))]:null);
+    console.log("PARAMETER", parameter)
 
     function onChangeItem(selected){
       setSelected(selected);

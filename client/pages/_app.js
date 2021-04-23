@@ -4,6 +4,8 @@ import '../styles/globals.scss'
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import AppContext from '../context'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
 
 axios.defaults.baseURL = 'http://localhost:3100/api';
 
@@ -66,7 +68,7 @@ function MyApp({ Component, pageProps }) {
     }
   }, [state.accessToken])
 
-  return <AppContext.Provider value={state}><Component {...pageProps} /></AppContext.Provider>
+  return <DndProvider backend={HTML5Backend}><AppContext.Provider value={state}><Component {...pageProps} /></AppContext.Provider></DndProvider>
 }
 
 

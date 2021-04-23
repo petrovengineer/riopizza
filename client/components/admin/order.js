@@ -11,11 +11,11 @@ export default function Order({order: o, index, ordersFetcher}){
     ]
     const [selectedStatus, setSelectedStatus] = useState({value: o.staus, label:statusList.find(s=>s.value===o.status).label});
     function handleChangeStatus(selected){
+        setSelectedStatus(selected);
         ordersFetcher.update({
             _id: o._id,
             status: selected.value
         })
-        setSelectedStatus(selected)
     }
     return(
         <tr>

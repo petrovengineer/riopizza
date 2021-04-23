@@ -230,6 +230,9 @@ const Order = ()=>{
                                             </span>
                                         ))
                                 }
+                                {
+                                    cities.filter(c=>c.name.indexOf(city.toUpperCase())>-1).length===0 && <span className='px-2'>Сюда пока не лоставляем</span>
+                                }
                             </div>
                             :null}
                     </div>
