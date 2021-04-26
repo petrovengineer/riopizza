@@ -1,16 +1,14 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Affect } from './affect';
 import update from 'immutability-helper';
-const style = {
-    width: 400,
-};
-export const Affects = ({affect}) => {
+export const Affects = ({cards, setCards}) => {
     {
-        const [cards, setCards] = useState(affect || []);
+        // const [cards, setCards] = useState(affect || []);
         // useEffect(()=>{
         //     console.log("CARDS ", cards);
         // }, [cards]);
         const moveCard = useCallback((dragIndex, hoverIndex) => {
+            console.log("CARDS ", cards)
             const dragCard = cards[dragIndex];
             setCards(update(cards, {
                 $splice: [
@@ -19,11 +17,12 @@ export const Affects = ({affect}) => {
                 ],
             }));
         }, [cards]);
-        const renderCard = (card, index) => {
-            return (<Affect key={card._id} index={index} id={card._id} text={card.parameter.name} moveCard={moveCard}/>);
-        };
+        // const renderCard = (card, index) => {
+        //     return (<Affect key={card._id || 'ci'+index} index={index} id={card._id || 'ci'+index} text={card.parameter.name} moveCard={moveCard}/>);
+        // };
         return (<>
-				<div style={style}>{cards.map((card, i) => renderCard(card, i))}</div>
-			</>);
+				    {cards.map((card, i) => <Affect key={card._id} index={i} id={card._id} text={card.parameter.name} moveCard={moveCard}/>)}
+			    </>
+            );
     }
 };
